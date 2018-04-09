@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+  <title>Color Code</title>
+<style>
+  body { margin: 0; padding: 0; background: #dde; }
+  #readme { background: #334; padding: 20px; margin-top: 20px; }
+  #readme .inner { width: 600px; margin: 20px auto; color: #889; font-family: sans-serif; }
+  button {
+    /* border: none; */
+    background: #ccd;
+    color: #334;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    padding: 0 10px;
+    line-height: 32px;
+    border-radius: 5px;
+    margin-bottom: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+  .status-icon {
+    padding: 0 10px;
+    line-height: 32px;
+    border-radius: 5px;
+    margin-bottom: 2px;
+    background: #aab;
+    color: #334;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+</style>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css" integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css" integrity="sha384-q3jl8XQu1OpdLgGFvNRnPdj5VIlCvgsDQTQB6owSOHWlAurxul7f+JpUOVdAiJ5P" crossorigin="anonymous">
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/immutable/3.8.2/immutable.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <div id="readme">
+    <div class="inner">
+
+<h1>Welcome to Color Code!</h1>
+<p>
+Color Code is 1-part paint program 1-part rule editor. With it you can draw pretty pictures or compose rules to draw pretty pictures for you!
+</p>
+
+<h2>What am I looking at?</h2>
+<p>
+The Color Code interface has 3 main components:
+</p>
+<ol>
+<li>The color palette at the top</li>
+<li>The paint window on the left</li>
+<li>The rules editor on the right</li>
+</ol>
+<p>
+You can select colors from the palette at the top and click+drag in the paint window to draw just like you would in a normal paint program. However, you can also use the palette to define “rules” which can be used to do a kind of visual programming.
+</p>
+
+<h2>Think from the point of view of each pixel</h2>
+<p>
+The hardest part of understanding Color Code is how to use the rules to do interesting things. To understand how it works, it’s important to know what Color Code is doing under the hood.
+</p>
+<p>
+Around 60 times per second, Color Code loops through every single pixel in the paint window and for each one, checks to see if the pixel matches any of the conditions for the rules listed in the rules editor. If none of the conditions match, the pixel will stay the color it is, otherwise it will update its color to whatever is specified by the first rule where a condition is met.
+</p>
+<p>
+Because of this, you can define rules that effectively draw things for you, create animations or even make bizarre visual programs simply by coding with colors!
+</p>
+
+<h2>The Rules</h2>
+<p>
+In order to do cool stuff you need to know how rules work. Rules have two parts:
+</p>
+<ol>
+<li>The “desired color” the pixel should become if the conditions are met (shown as the big swatch on the left of each rule).</li>
+<li>A list of pattern-based conditions (shown as the set of 5x5 grids on the right of each rule).</li>
+</ol>
+<p>
+Each rule can conceptually understood as “Make a pixel a certain color if condition A or condition B or condition C, etc… are met”. Each condition is represented by a 5x5 grid of pixels. You can use the palette to change the color of the pixels in the grid to define a pattern.
+</p>
+
+<h2>Conditions are like transparencies</h2>
+<p>
+You know the transparencies your teacher would use with the projector during class? Imagine each condition is a transparency with a 5x5 grid drawn on it. 60 times a second, for every pixel in the paint window, Color Code lays each one of these transparencies over the pixel to see if any pattern matches (such that the size of each little square is shrunk to match the size of the pixels). The transparencies are laid down with the center square of the grid directly over the pixel you’re checking. If the colored parts of the transparency match the pixels under it, then the condition is met and the rule is executed resulting in the pixel underneath becoming the color defined by the rule’s “desired color” (the swatch to the left of the conditions). If a condition is not met, Color Code skips to the next condition until the first condition is met, otherwise the pixel stays like it was.
+</p>
+
+<h2>Challenges</h2>
+<p>
+Feel free to play around and if you want challenges that slowly get harder, we got those too!
+</p>
+
+<h3>1. Blue is banned!</h3>
+<p>
+For this first challenge you need to make a rule such that if a pixel is blue, the rule turns the pixel to white.
+</p>
+<p>
+<b>Stuck?</b> If you’re having trouble, remember that the center square on the grid references the pixel.
+</p>
+
+<h3>2. Candy Cane</h3>
+<p>
+For this challenge make rule(s) such that if you draw a red pixel in the paint window, a red and white striped line grows in a direction (the direction is up to you) out from it.
+</p>
+
+<h3>3. Drop the ball</h3>
+<p>
+For this challenge, define rule(s) such that if you draw a green pixel, it looks like that pixel moves down the screen similar to a ball being dropped.
+</p>
+
+<h3>4. Catch the ball</h3>
+<p>
+Building on the last challenge, define additional rule(s) such that if the “ball” hits any black pixel it stops dead in its tracks on top of the black pixel as if it was “caught”.
+</p>
+
+<h3>5. Make a ball pit!</h3>
+<p>
+Continuing the last challenge, now define additional rule(s) such that if a “ball” is also dropped onto another “ball” it stacks on top of it.
+</p>
+
+<h3>6. Bouncing balls</h3>
+<p>
+Using what you’ve learned, write rules such that a green pixel drops, a red pixel rises and if either one hits a black pixel, they change from red to green or green to red. Then draw a black line across the top and a black line across the bottom of the paint window and drop in green pixels to see them bounce between the top and bottom lines!
+</p>
+<p>Have fun!</p>
+</div>
+  </div>
+  <script src="ruleset.js"></script>
+  <script src="lib/petri-dish.js"></script>
+  <script src="lib/ui.js"></script>
+</body>
+</html>
