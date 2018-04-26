@@ -1,4 +1,10 @@
+import Pattern from './pattern';
+
 export default class Rule {
+
+  static fromJSON ({ targetValue, patterns }) {
+    return new Rule(targetValue, patterns.map(p => Pattern.fromJSON(p)));
+  }
 
   constructor (targetValue = 0, patterns = []) {
     this.targetValue = targetValue;
@@ -27,6 +33,13 @@ export default class Rule {
 
   clone () {
     return new Rule(this.targetValue, this.patterns.map(p => p.clone()));
+  }
+
+  toJSON () {
+    return {
+      targetValue: this.targetValue,
+      patterns: this.patterns
+    };
   }
 
 }

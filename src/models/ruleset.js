@@ -1,4 +1,10 @@
+import Rule from './rule';
+
 export default class Ruleset {
+
+  static fromJSON ({ rules }) {
+    return new Ruleset(rules.map(r => Rule.fromJSON(r)));
+  }
 
   constructor (rules = []) {
     this.rules = rules;
@@ -17,7 +23,7 @@ export default class Ruleset {
 
   execute (srcGrid, dstGrid) {
     for (let x = 0; x < srcGrid.width; x += 1) {
-      for (let y = 0; y < srcGrid.width; y += 1) {
+      for (let y = 0; y < srcGrid.height; y += 1) {
         const ruleToFollow = this.getFirstRuleThatMatchesGridAtCoordinates(srcGrid, x, y);
         if (ruleToFollow) {
           dstGrid.set(x, y, ruleToFollow.targetValue);
@@ -40,6 +46,10 @@ export default class Ruleset {
 
   clone () {
     return new Ruleset(this.rules.map(r => r.clone()));
+  }
+
+  toJSON () {
+    return { rules: this.rules };
   }
 
 }

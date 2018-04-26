@@ -1,3 +1,5 @@
+import Grid from './grid';
+
 export default class PuzzleAttempt {
 
   constructor (puzzle, ruleset) {
@@ -6,27 +8,37 @@ export default class PuzzleAttempt {
     this.succeeded = false;
     this.puzzle = puzzle;
     this.ruleset = ruleset.clone();
-    this.history = [initialGrid];
+    this.frames = [initialGrid];
   }
 
-  get tickCount () {
-    return this.history.length - 1;
+  get frameCount () {
+    return this.frames.length - 1;
   }
 
-  get complete () {
-    return this.failed || this.succeeded || this.tickCount >= this.puzzle.maxTicks;
+  get completed () {
+    return this.failed || this.succeeded || this.frameCount >= this.puzzle.maxTicks;
   }
 
   get currentGrid () {
-    return this.history[this.tickCount];
+    return this.frames[this.frameCount];
+  }
+
+  getFrame (index) {
+    return this.frames[index];
+  }
+
+  run () {
+    while (!this.completed) {
+      this.tick();
+    }
   }
 
   tick () {
-    const { complete, puzzle, history, currentGrid } = this;
-    if (!complete) {
+    const { completed, puzzle, frames, currentGrid, frameCount, ruleset } = this;
+    if (!completed) {
       const nextGrid = new Grid(currentGrid.width, currentGrid.height);
       ruleset.execute(currentGrid, nextGrid);
-      history.push(nextGrid);
+      frames.push(nextGrid);
       for (let x = 0; x < nextGrid.width; x++) {
         for (let y = 0; y < nextGrid.height; y += 1) {
           for (const illegalPattern of puzzle.illegalPatterns) {

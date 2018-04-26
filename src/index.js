@@ -1,224 +1,104 @@
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 
-const WIDTH = 200;
-const HEIGHT = 200;
+import PuzzleView from './views/PuzzleView';
+import PuzzleEditor from './views/PuzzleEditor';
+import PatternEditor from './views/PatternEditor';
+import RuleEditor from './views/RuleEditor';
 
-const COLORS = ['black', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'brown', 'white', 'black'];
-const MAX_VALUE = COLORS.length - 1;
+import Puzzle from './models/puzzle';
+import Grid from './models/grid';
+import Rule from './models/rule';
+import Ruleset from './models/ruleset';
+import Pattern from './models/pattern';
 
-ctx.fillStyle = 'rgb(0,0,0)';
-ctx.fillRect(0, 0, WIDTH, HEIGHT);
+const DEFAULT_PALETTE = [
+  'white',
+  'black',
+  'red',
+  'orange',
+  'yellow',
+  'green',
+  'blue',
+  'purple',
+  'brown',
+];
 
-function rand(min, max) {
-  if (min && max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-  return Math.floor(Math.random() * min);
-}
+class App extends Component {
 
-function prob(p) {
-  return Math.floor(Math.random() * 100) < p ? 1 : 0;
-}
-
-function zeroes(width, height) {
-  const grid = [];
-  for (let y = 0; y < height; y += 1) {
-    const row = [];
-    grid.push(row);
-    for (let x = 0; x < width; x += 1) {
-      row.push(0);
+  constructor (props) {
+    super(props);
+    const puzzleJson = localStorage.getItem('puzzle');
+    if (puzzleJson) {
+      console.log(JSON.parse(puzzleJson))
     }
-  }
-  return grid;
-}
-
-function printGrid(grid) {
-  for (let y = 0; y < grid.length; y += 1) {
-    console.log(y + ': ' + grid[y].join(' '));
-  }
-}
-
-class Condition {
-
-  constructor(grid) {
-    this.grid = grid;
-  }
-
-  get width() {
-    return this.grid[0].length;
-  }
-
-  get height() {
-    return this.grid.length;
-  }
-
-  getCellValue(x, y) {
-    return this.grid[y][x];
-  }
-
-  isPassed(biome, x, y) {
-    for (let r = 0; r < this.height; r += 1) {
-      const row = this.grid[r];
-      for (let c = 0; c < this.width; c += 1) {
-        const checkX = (x - Math.floor(this.width / 2)) + c;
-        const checkY = (y - Math.floor(this.height / 2)) + r;
-        const existingCellValue = biome.getCellValue(checkX, checkY);
-        const conditionCellValue = this.getCellValue(c, r);
-        if (conditionCellValue && existingCellValue !== conditionCellValue) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-  toJSON() {
-    return this.grid;
-  }
-
-}
-
-// a cell needs food and water, if it runs out of either it dies
-class Rule {
-
-  constructor(conditions, targetValue) {
-    this.conditions = conditions;
-    this.targetValue = targetValue;
-  }
-
-  isPassed(biome, x, y) {
-    for (let i = 0; i < this.conditions.length; i += 1) {
-      if (this.conditions[i].isPassed(biome, x, y)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  static fromJSON(json) {
-    return new Rule(json.conditions.map(c => new Condition(c)), json.targetValue);
-  }
-
-  toJSON() {
-    return {
-      conditions: this.conditions.map(c => c.toJSON()),
-      targetValue: this.targetValue,
+    const puzzle = puzzleJson ?
+      Puzzle.fromJSON(JSON.parse(puzzleJson)) :
+      new Puzzle({
+        initialGrid: new Grid(32, 24),
+        initialRuleset: new Ruleset(),
+        goalPattern: new Pattern(new Grid(32, 24)),
+        illegalPatterns: [],
+        palette: DEFAULT_PALETTE,
+      });
+    this.state = {
+      grid: new Grid(32, 24),
+      pattern: new Pattern(new Grid(5, 5)),
+      rule: new Rule(),
+      puzzle,
     };
   }
 
-}
-
-class Ruleset {
-
-  constructor(rules) {
-    this.rules = rules;
+  save (puzzle) {
+    localStorage.setItem('puzzle', JSON.stringify(puzzle));
+    this.setState({ puzzle });
   }
 
-  getNextCellValue(biome, x, y) {
-    for (let i = 0; i < this.rules.length; i += 1) {
-      const rule = this.rules[i];
-      if (rule.isPassed(biome, x, y)) {
-        return rule.targetValue;
-      }
-    }
-    return biome.getCellValue(x, y);
+  renderPuzzle () {
+    const { puzzle } = this.state;
+    return (
+      <PuzzleView puzzle={puzzle} />
+    );
   }
 
-  static fromJSON(jsonRules) {
-    return new Ruleset(jsonRules.map(r => Rule.fromJSON(r)));
+  renderPuzzleEditor () {
+    const { puzzle } = this.state;
+    return (
+      <PuzzleEditor
+        puzzle={puzzle}
+        onSave={puzzle => this.save(puzzle)}
+      />
+    );
   }
 
-  toJSON() {
-    return this.rules.map(r => r.toJSON());
+  updatePattern (pattern) {
+    this.setState({ grid: pattern.grid });
   }
 
-}
-
-const RULESET = Ruleset.fromJSON([
-  {
-    targetValue: 1,
-    conditions: [
-      [
-        [0, 0, 0],
-        [0, 0, 0],
-        [1, 0, 0],
-      ],
-    ],
-  },
-  {
-    targetValue: 0,
-    conditions: [
-      [
-        [0, 0, 0],
-        [0, 1, 0],
-        [0, 0, 0],
-      ],
-    ],
-  },
-]);
-
-class Biome {
-
-  constructor(width, height) {
-    this.width = width;
-    this.height = height;
-    this.body = zeroes(width, height, 3);
-    this.buffer = zeroes(width, height, 3);
+  renderRuleEditor () {
+    return (
+      <RuleEditor
+        penValue={1}
+        rule={this.state.rule}
+        onUpdate={rule => this.setState({ rule })}
+      />
+    );
   }
 
-  setCellValue(x, y, value) {
-    this.body[y][x] = value;
-    return this;
+  renderPatternEditor () {
+    return (
+      <PatternEditor
+        penValue={1}
+        pattern={this.state.pattern}
+        onUpdate={pattern => this.setState({ pattern })}
+      />
+    );
   }
 
-  getCellValue(x, y) {
-    if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
-      return 0;
-    }
-    return this.body[y][x];
-  }
-
-  tick() {
-    const clone = [];
-    for (let y = 0; y < this.height; y += 1) {
-      for (let x = 0; x < this.width; x += 1) {
-        this.buffer[y][x] = RULESET.getNextCellValue(this, x, y);
-      }
-    }
-    const swap = this.body;
-    this.body = this.buffer;
-    this.buffer = swap;
-    return this;
-  }
-
-  draw(ctx) {
-    ctx.clearRect(0, 0, this.width, this.height);
-    for (let y = 0; y < this.height; y += 1) {
-      for (let x = 0; x < this.width; x += 1) {
-        const value = this.body[y][x];
-        ctx.fillStyle = COLORS[value];
-        ctx.fillRect(x * 2, y * 2, 2, 2);
-      }
-    }
-    return this;
+  render () {
+    return this.renderPuzzleEditor();
   }
 
 }
 
-const biome = new Biome(WIDTH, HEIGHT);
-for (let i = 0; i < 5; i += 1) {
-  biome.setCellValue(rand(WIDTH), rand(HEIGHT), 1);
-}
-// for (let i = 0; i < 5; i += 1) {
-//   biome.setCellValue((i * (WIDTH / 5)) + (WIDTH / 10), HEIGHT - 20, 7);
-// }
-// biome.setCellValue(Math.floor(WIDTH / 2), Math.floor(HEIGHT / 2), 1);
-
-
-function tick() {
-  biome.tick().draw(ctx);
-  window.requestAnimationFrame(tick);
-}
-
-window.requestAnimationFrame(tick);
+ReactDOM.render(<App />, document.getElementById('root'));

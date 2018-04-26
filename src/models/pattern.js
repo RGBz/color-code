@@ -2,6 +2,10 @@ import Grid from './grid';
 
 export default class Pattern {
 
+  static fromJSON ({ grid }) {
+    return new Pattern(Grid.fromJSON(grid));
+  }
+
   constructor (grid) {
     if (grid instanceof Grid) {
       this.grid = grid;
@@ -47,6 +51,10 @@ export default class Pattern {
 
   clone () {
     return new Pattern(this.grid.clone());
+  }
+
+  toJSON () {
+    return { grid: this.grid };
   }
 
 }
