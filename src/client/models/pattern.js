@@ -21,7 +21,11 @@ export default class Pattern {
   }
 
   matchesGrid (gridToCheck) {
-    if (this.grid.width !== gridToCheck.width || this.grid.height !== gridToCheck.height) {
+    if (
+      this.grid.width !== gridToCheck.width ||
+      this.grid.height !== gridToCheck.height ||
+      this.isEmpty()
+    ) {
       return false;
     }
     for (let x = 0; x < this.grid.width; x += 1) {
@@ -36,6 +40,9 @@ export default class Pattern {
   }
 
   matchesGridAtCoordinates (gridToCheck, x, y) {
+    if (this.isEmpty()) {
+      return false;
+    }
     const startX = x - Math.floor(this.grid.width / 2);
     const startY = y - Math.floor(this.grid.height / 2);
     for (let patternX = 0; patternX < this.grid.width; patternX += 1) {
