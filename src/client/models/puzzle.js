@@ -1,3 +1,4 @@
+import uuidv4 from 'uuid/v4';
 import Ruleset from './ruleset';
 import Grid from './grid';
 import Pattern from './pattern';
@@ -5,8 +6,10 @@ import PuzzleAttempt from './puzzle-attempt';
 
 export default class Puzzle {
 
-  static fromJSON ({ initialGrid, initialRuleset, solutionRuleset, palette, goalPattern, illegalPatterns, maxTicks }) {
+  static fromJSON ({ id, name, initialGrid, initialRuleset, solutionRuleset, palette, goalPattern, illegalPatterns, maxTicks }) {
     return new Puzzle({
+      id,
+      name,
       initialGrid: Grid.fromJSON(initialGrid),
       initialRuleset: Ruleset.fromJSON(initialRuleset),
       solutionRuleset: Ruleset.fromJSON(solutionRuleset),
@@ -17,7 +20,9 @@ export default class Puzzle {
     });
   }
 
-  constructor ({ initialGrid, initialRuleset, solutionRuleset, palette, goalPattern, illegalPatterns, maxTicks }) {
+  constructor ({ id, name, initialGrid, initialRuleset, solutionRuleset, palette, goalPattern, illegalPatterns, maxTicks }) {
+    this.id = id || uuidv4();
+    this.name = name;
     this.initialGrid = initialGrid;
     this.initialRuleset = initialRuleset || new Ruleset();
     this.solutionRuleset = solutionRuleset || new Ruleset();
@@ -29,6 +34,8 @@ export default class Puzzle {
 
   clone () {
     return new Puzzle({
+      id: this.id,
+      name: this.name,
       initialGrid: this.initialGrid.clone(),
       initialRuleset: this.initialRuleset.clone(),
       solutionRuleset: this.solutionRuleset.clone(),
@@ -41,6 +48,8 @@ export default class Puzzle {
 
   toJSON () {
     return {
+      id: this.id,
+      name: this.name,
       initialGrid: this.initialGrid,
       initialRuleset: this.initialRuleset,
       solutionRuleset: this.solutionRuleset,

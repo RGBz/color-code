@@ -22,12 +22,19 @@ export default class PatternEditor extends Component {
           <div key={y} className="row">
             {cells.map((cellValue, x) => {
               const isCenter = x === centerX && y === centerY;
+              const cellStyle = {};
+              if (isCenter) {
+                cellStyle.border = '2px solid rgba(0,0,0,0.5)';
+                cellStyle.margin = 0;
+                cellStyle.width = 14;
+                cellStyle.height = 14;
+              }
               return (
                 <CellView
                   key={x}
                   penValue={cellValue}
                   palette={palette}
-                  style={{ border: isCenter ? '1px solid black' : undefined }}
+                  style={cellStyle}
                   onClick={() => this.onCellClick(x, y)}
                 />
               );

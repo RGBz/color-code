@@ -38,6 +38,10 @@ export default class PuzzleAttempt {
     if (!completed) {
       const nextGrid = new Grid(currentGrid.width, currentGrid.height);
       ruleset.execute(currentGrid, nextGrid);
+      if (nextGrid.equals(currentGrid)) {
+        this.failed = true;
+        return this;
+      }
       frames.push(nextGrid);
       for (let x = 0; x < nextGrid.width; x++) {
         for (let y = 0; y < nextGrid.height; y += 1) {

@@ -6,11 +6,9 @@ import { GridPropType } from '../prop-types';
 export default class GridView extends Component {
 
   componentDidMount () {
-    this.canvas.onmousedown = () => { this.isMousDown = true; }
-    this.canvas.onmouseup = () => { this.isMousDown = false; }
     this.canvas.onclick = e => this.setCellValue(e);
     this.canvas.onmousemove = e => {
-      if (this.isMousDown) {
+      if (e.buttons == 1) {
         this.setCellValue(e);
       }
     };
@@ -43,10 +41,14 @@ export default class GridView extends Component {
   updateCanvas (props) {
     const { width, height, grid, palette } = props;
     const ctx = this.canvas.getContext('2d');
+    ctx.strokeStyle = '#CCCCCC';
     for (let x = 0; x < grid.width; x += 1) {
       for (let y = 0; y < grid.height; y += 1) {
+        const scaledX = x * this.hScale;
+        const scaledY = y * this.vScale;
         ctx.fillStyle = palette[grid.get(x, y)];
-        ctx.fillRect(x * this.hScale, y * this.vScale, this.hScale, this.vScale);
+        ctx.fillRect(scaledX, scaledY, this.hScale, this.vScale);
+        ctx.strokeRect(scaledX, scaledY, this.hScale, this.vScale);
       }
     }
   }
@@ -63,6 +65,7 @@ export default class GridView extends Component {
         width={width}
         height={height}
         style={style}
+        className="grid"
       />
     );
   }

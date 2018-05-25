@@ -23,9 +23,11 @@ export default class Rule {
   }
 
   matchesGridAtCoordinates (grid, x, y) {
-    for (const pattern of this.patterns) {
-      if (pattern.matchesGridAtCoordinates(grid, x, y)) {
-        return true;
+    if (this.targetValue) {
+      for (const pattern of this.patterns) {
+        if (pattern.matchesGridAtCoordinates(grid, x, y)) {
+          return true;
+        }
       }
     }
     return false;

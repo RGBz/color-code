@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "develop": "node test-server.js & webpack -w",
+    "develop": "babel-node src/server/server.js & webpack -w",
     "test": "mocha --opts .mocharc test/**/*.js"
   },
   "devDependencies": {

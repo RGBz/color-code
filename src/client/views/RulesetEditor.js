@@ -20,7 +20,11 @@ export default class RulesetEditor extends Component {
   updateRule (ruleIndex, rule) {
     const { ruleset, onUpdate } = this.props;
     const updatedRuleset = ruleset.clone();
-    updatedRuleset.rules[ruleIndex] = rule;
+    if (rule.patterns.length === 0) {
+      updatedRuleset.rules.splice(ruleIndex, 1);
+    } else {
+      updatedRuleset.rules[ruleIndex] = rule;
+    }
     onUpdate(updatedRuleset);
   }
 
@@ -37,7 +41,7 @@ export default class RulesetEditor extends Component {
             onUpdate={r => this.updateRule(i, r)}
           />
         )}
-        <button onClick={() => this.addRule()}>ADD</button>
+        <button className="add-button" onClick={() => this.addRule()}>+</button>
       </div>
     );
   }
