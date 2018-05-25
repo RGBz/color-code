@@ -85,10 +85,24 @@
     font-size: 14px;
     text-transform: uppercase;
   }
+  .sign {
+    width: fit-content;
+    margin-left: -5px;
+    margin-bottom: -3px;
+    transform: rotate(-2deg);
+    color: white;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+    background: #4A4A4A;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
+    padding: 4px 8px;
+  }
   .header {
     padding: 16px;
     border-bottom: 1px solid #F1F1F1;
     align-items: center;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);
+    z-index: 1;
   }
   .header .column {
     justify-content: center;
@@ -112,7 +126,7 @@
     padding-right: 16px;
   }
   .puzzle-name {
-    margin-left: 10px;
+    margin: 0 10px;
     font-size: 18px;
     font-weight: 500;
     border: none;
@@ -181,17 +195,17 @@
     border-radius: 24px;
   }
   .palette .swatch.selected {
-    border: 2px solid black;
+    border: 3px solid #00AAFF;
     background-color: white;
-    padding: 2px;
+    padding: 4px;
   }
   .palette .swatch.selected .inner {
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
+    width: 34px;
+    height: 34px;
+    border-radius: 17px;
   }
   .palette .swatch:hover {
-    box-shadow: 0 3px 6px 0 rgba(0,0,0,0.5);
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.4);
   }
   .palette .swatch:active {
     box-shadow: none;
@@ -313,7 +327,7 @@
     margin: 0px;
   }
 </style>
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css" integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk" crossorigin="anonymous">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css" integrity="sha384-q3jl8XQu1OpdLgGFvNRnPdj5VIlCvgsDQTQB6owSOHWlAurxul7f+JpUOVdAiJ5P" crossorigin="anonymous">
 </head>

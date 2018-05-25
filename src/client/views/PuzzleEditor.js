@@ -5,6 +5,9 @@ import { PuzzlePropType } from '../prop-types';
 import GridView from './GridView';
 import PaletteView from './PaletteView';
 import RulesetEditor from './RulesetEditor';
+import IconButton from './buttons/IconButton';
+import AttemptControls from './AttemptControls';
+import Sign from './Sign';
 
 import Grid from '../models/grid';
 import PuzzleAttempt from '../models/puzzle-attempt';
@@ -133,9 +136,7 @@ export default class PuzzleEditor extends Component {
       <div className="puzzle-editor">
         <div className="header row">
           <div className="column" style={{ flex: 1, flexDirection: 'row' }}>
-            <button className="back-button" onClick={onBackPress}>
-              <i className="fa fa-arrow-left">back</i>
-            </button>
+            <IconButton icon="arrow-left" className="back-button" onPress={onBackPress} />
             <div className="puzzle-name-container">
               <input
                 className="puzzle-name"
@@ -145,69 +146,72 @@ export default class PuzzleEditor extends Component {
               />
             </div>
           </div>
-          <div className="column controls">
+          <div className="column">
             {hasChanges && (
               <button onClick={() => onSave(this.state.puzzle)}>SAVE</button>
             )}
-            <button className="inverted" onClick={() => this.play()}>
-              <i className="fa fa-play">play</i>
-            </button>
-            <div className="frame-index">
-              {frameIndex}
-            </div>
-            <button onClick={() => this.stepBackward()}>
-              <i className="fa fa-step-backward">&laquo;</i>
-            </button>
-            <button onClick={() => this.stepForward()}>
-              <i className="fa fa-step-forward">&raquo;</i>
-            </button>
+            <AttemptControls
+              frameIndex={frameIndex}
+              frameCount={attempt.frameCount}
+              onReplayPress={() => this.play()}
+              onStepForwardPress={() => this.stepForward()}
+              onStepBackwardPress={() => this.stepBackward()}
+            />
           </div>
         </div>
         <div className="row" style={{ background: '#E4E4E4', flex: 1 }}>
           <div className="column sidebar">
-            <PaletteView
-              selectedPenValue={penValue}
-              palette={palette}
-              onSelectPen={penValue => this.setState({ penValue })}
-            />
+            <div className="inner">
+              <PaletteView
+                selectedPenValue={penValue}
+                palette={palette}
+                onSelectPen={penValue => this.setState({ penValue })}
+              />
+            </div>
           </div>
           <div className="column full">
-            <RulesetEditor
-              ruleset={solutionRuleset}
-              palette={palette}
-              penValue={penValue}
-              onUpdate={r => this.updateSolutionRuleset(r)}
-            />
+            <div className="inner">
+              <RulesetEditor
+                ruleset={solutionRuleset}
+                palette={palette}
+                penValue={penValue}
+                onUpdate={r => this.updateSolutionRuleset(r)}
+              />
+            </div>
           </div>
           <div className="column sidebar" style={{ padding: 20 }}>
-            <GridView
-              penValue={penValue}
-              grid={grid}
-              width={200}
-              height={200}
-              palette={palette}
-              onUpdate={g => this.updateInitialGrid(g)}
-            />
-            <button onClick={() => this.updateInitialGrid(new Grid(grid.width, grid.height))}>CLEAR</button>
-            <div style={{ height: 16 }} />
-            <GridView
-              penValue={penValue}
-              grid={goalGrid}
-              width={200}
-              height={200}
-              palette={palette}
-              onUpdate={g => this.updateGoalGrid(g)}
-            />
-            <button onClick={() => this.updateGoalGrid(new Grid(grid.width, grid.height))}>CLEAR</button>
-            <div>
-              <input value={width} onChange={e => this.setState({ width: e.target.value })} />
-              x
-              <input value={height} onChange={e => this.setState({ height: e.target.value })} />
-              <button onClick={() => this.updateGridSizes()}>UPDATE</button>
-              <button onClick={() => this.resetGridSizes()}>RESET</button>
+            <div className="inner">
+              <Sign label="YOURS" />
+              <GridView
+                penValue={penValue}
+                grid={grid}
+                width={200}
+                height={200}
+                palette={palette}
+                onUpdate={g => this.updateInitialGrid(g)}
+              />
+              <button onClick={() => this.updateInitialGrid(new Grid(grid.width, grid.height))}>CLEAR</button>
+              <div style={{ height: 16 }} />
+              <Sign label="GOAL" />
+              <GridView
+                penValue={penValue}
+                grid={goalGrid}
+                width={200}
+                height={200}
+                palette={palette}
+                onUpdate={g => this.updateGoalGrid(g)}
+              />
+              <button onClick={() => this.updateGoalGrid(new Grid(grid.width, grid.height))}>CLEAR</button>
+              <div>
+                <input value={width} onChange={e => this.setState({ width: e.target.value })} />
+                x
+                <input value={height} onChange={e => this.setState({ height: e.target.value })} />
+                <button onClick={() => this.updateGridSizes()}>UPDATE</button>
+                <button onClick={() => this.resetGridSizes()}>RESET</button>
+              </div>
+              <br/>
+              <input value={maxTicks} />
             </div>
-            <br/>
-            <input value={maxTicks} />
           </div>
         </div>
       </div>

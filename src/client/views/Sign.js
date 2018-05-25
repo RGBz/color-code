@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class Placard extends Component {
+export default class Sign extends Component {
 
   render () {
-    const { label } = this.props;
     return (
-      <div className="placard">{label}</div>
+      <div className="sign">
+        {this.props.label}
+      </div>
     );
   }
 
 }
 
-Placard.propTypes = {
+Sign.propTypes = {
   label: PropTypes.string.isRequired,
+  style: PropTypes.object,
 };

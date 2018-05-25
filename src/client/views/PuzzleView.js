@@ -6,6 +6,8 @@ import GridView from './GridView';
 import PaletteView from './PaletteView';
 import RulesetEditor from './RulesetEditor';
 import AttemptControls from './AttemptControls';
+import IconButton from './buttons/IconButton';
+import Sign from './Sign';
 
 import Grid from '../models/grid';
 import Pattern from '../models/pattern';
@@ -95,9 +97,7 @@ export default class PuzzleView extends Component {
       <div className="puzzle-editor">
         <div className="header row">
           <div className="column" style={{ flex: 1, flexDirection: 'row' }}>
-            <button className="back-button" onClick={onBackPress}>
-              <i className="fa fa-arrow-left" />
-            </button>
+            <IconButton icon="arrow-left" className="back-button" onPress={onBackPress} />
             <div className="puzzle-name-container">
               <div className="puzzle-name">{name || ''}</div>
             </div>
@@ -132,6 +132,7 @@ export default class PuzzleView extends Component {
           </div>
           <div className="column sidebar">
             <div className="inner" style={{ padding: 20 }}>
+              <Sign label="YOURS" />
               <GridView
                 grid={grid}
                 width={200}
@@ -139,6 +140,7 @@ export default class PuzzleView extends Component {
                 palette={palette}
               />
               <div style={{ height: 16 }} />
+              <Sign label="GOAL" />
               <GridView
                 grid={goalGrid}
                 width={200}

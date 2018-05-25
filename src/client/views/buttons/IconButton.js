@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 export default class IconButton extends Component {
 
   render () {
-    const { style, icon, onPress, disabled } = this.props;
+    const { style, className, icon, onPress, disabled } = this.props;
     return (
-      <button onClick={onPress} disabled={disabled}>
+      <button className={className} onClick={onPress} disabled={disabled}>
         <i className={`fa fa-${icon}`} />
       </button>
     );
@@ -17,5 +17,6 @@ export default class IconButton extends Component {
 IconButton.propTypes = {
   icon: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired,
+  className: PropTypes.string,
   disabled: PropTypes.bool,
 };
