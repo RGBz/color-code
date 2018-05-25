@@ -10,6 +10,10 @@ export default class Ruleset {
     this.rules = rules;
   }
 
+  get patternCount () {
+    return this.rules.reduce((count, rule) => count + rule.patterns.length, 0);
+  }
+
   addRule (rule) {
     this.rules.push(rule);
   }
