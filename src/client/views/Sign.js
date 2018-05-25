@@ -5,7 +5,7 @@ export default class Sign extends Component {
 
   render () {
     return (
-      <div className="sign">
+      <div className="sign" style={this.props.style}>
         {this.props.label}
       </div>
     );

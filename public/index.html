@@ -326,6 +326,72 @@
     border: 2px solid rgba(0,0,0,0.25);
     margin: 0px;
   }
+  .stats-table {
+    display: flex;
+    justify-content: space-around;
+  }
+  .stat-column {
+    padding: 0 16px;
+  }
+  .stat-label {
+    text-align: center;
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  .stat-value {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 500;
+  }
+  .win-modal-overlay {
+    background: rgba(0,0,0,0.75);
+    z-index: 2;
+  }
+  .win-modal .stats-table {
+    background-color: #F9F9F9;
+    border: 1px solid #D7D7D7;
+    padding: 24px;
+    border-radius: 2px;
+  }
+  .win-modal .row {
+    justify-content: space-between;
+  }
+  .win-modal button {
+    background-color: #00AAFF;
+    height: 48px;
+    color: white;
+    padding: 0 24px;
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+  .win-modal .stat-column {
+    width: 150px;
+  }
+  .win-modal .message {
+    font-size: 24px;
+    padding: 16px 0;
+  }
+  .ReactModal__Overlay {
+    opacity: 0;
+  }
+  .ReactModal__Overlay--after-open {
+    opacity: 1;
+    transition: opacity 500ms;
+  }
+  .ReactModal__Overlay--before-close {
+    opacity: 0;
+  }
+  .ReactModal__Content {
+    opacity: 0;
+  }
+  .ReactModal__Content--after-open {
+    opacity: 1;
+    transition: opacity 1000ms;
+  }
+  .ReactModal__Content--before-close {
+    opacity: 0;
+  }
 </style>
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css" integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk" crossorigin="anonymous">

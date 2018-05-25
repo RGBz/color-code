@@ -8,6 +8,7 @@ import RulesetEditor from './RulesetEditor';
 import AttemptControls from './AttemptControls';
 import IconButton from './buttons/IconButton';
 import Sign from './Sign';
+import WinModal from './WinModal';
 
 import Grid from '../models/grid';
 import Pattern from '../models/pattern';
@@ -29,7 +30,8 @@ export default class PuzzleView extends Component {
       penValue: 1,
       solutionRuleset,
       attempt,
-      frameIndex: 0
+      frameIndex: 0,
+      showWinModal: false,
     };
   }
 
@@ -65,7 +67,7 @@ export default class PuzzleView extends Component {
     } else {
       this.pause();
       if (attempt.succeeded) {
-        alert('You win!');
+        this.setState({ showWinModal: true });
       }
     }
   }
@@ -95,6 +97,12 @@ export default class PuzzleView extends Component {
     const grid = attempt.getFrame(frameIndex);
     return (
       <div className="puzzle-editor">
+        <WinModal
+          isOpen={this.state.showWinModal}
+          onDismiss={onBackPress}
+          stepCount={attempt.frameCount}
+          patternCount={solutionRuleset.patternCount}
+        />
         <div className="header row">
           <div className="column" style={{ flex: 1, flexDirection: 'row' }}>
             <IconButton icon="arrow-left" className="back-button" onPress={onBackPress} />

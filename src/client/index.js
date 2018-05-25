@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
 
 import PuzzleList from './views/PuzzleList';
 import PuzzleView from './views/PuzzleView';
@@ -106,4 +107,5 @@ class App extends Component {
 
 }
 
+Modal.setAppElement('#root');
 ReactDOM.render(<App />, document.getElementById('root'));
