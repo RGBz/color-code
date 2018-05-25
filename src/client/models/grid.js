@@ -79,6 +79,17 @@ export default class Grid {
     return new Grid(rows);
   }
 
+  isEmpty () {
+    for (let y = 0; y < this.height; y += 1) {
+      for (let x = 0; x < this.width; x++) {
+        if (this.get(x, y) !== EMPTY_CELL_VALUE) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   toJSON () {
     return { rows: this.rows };
   }

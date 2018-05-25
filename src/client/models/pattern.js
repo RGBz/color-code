@@ -16,6 +16,10 @@ export default class Pattern {
     }
   }
 
+  isEmpty () {
+    return this.grid.isEmpty();
+  }
+
   matchesGrid (gridToCheck) {
     if (this.grid.width !== gridToCheck.width || this.grid.height !== gridToCheck.height) {
       return false;
