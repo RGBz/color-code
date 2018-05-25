@@ -30,6 +30,7 @@ export default class RulesetEditor extends Component {
 
   render () {
     const { ruleset, palette, penValue } = this.props;
+    const isOnlyOneRule = ruleset.rules.length === 1;
     return (
       <div className="ruleset-editor">
         {ruleset.rules.map((rule, i) =>
@@ -39,6 +40,7 @@ export default class RulesetEditor extends Component {
             palette={palette}
             penValue={penValue}
             onUpdate={r => this.updateRule(i, r)}
+            isOnlyRule={isOnlyOneRule}
           />
         )}
         <button className="add-button" onClick={() => this.addRule()}>+</button>

@@ -39,13 +39,17 @@ export default class RuleEditor extends Component {
   }
 
   renderPatterns () {
-    const { palette, penValue, rule: { targetValue, patterns } } = this.props;
+    const { palette, penValue, isOnlyRule, rule: { targetValue, patterns } } = this.props;
     const elements = [];
+    const isOnlyOnePattern = patterns.length === 1;
     for (let i = 0; i < patterns.length; i++) {
       const pattern = patterns[i];
+      const showDelete = !(isOnlyRule && isOnlyOnePattern && pattern.isEmpty());
       elements.push(
         <div key={i} className="pattern-container">
-          <button className="delete-button" onClick={() => this.removePattern(i)}>&times;</button>
+          {showDelete && (
+            <button className="delete-button" onClick={() => this.removePattern(i)}>&times;</button>
+          )}
           <PatternEditor
             key={i}
             penValue={penValue}
@@ -109,4 +113,5 @@ RuleEditor.propTypes = {
   palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   rule: RulePropType.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  isOnlyRule: PropTypes.bool.isRequired,
 };
