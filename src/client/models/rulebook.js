@@ -1,9 +1,9 @@
 import Rule from './rule';
 
-export default class Ruleset {
+export default class Rulebook {
 
   static fromJSON ({ rules }) {
-    return new Ruleset(rules.map(r => Rule.fromJSON(r)));
+    return new Rulebook(rules.map(r => Rule.fromJSON(r)));
   }
 
   constructor (rules = []) {
@@ -49,7 +49,7 @@ export default class Ruleset {
   }
 
   clone () {
-    return new Ruleset(this.rules.map(r => r.clone()));
+    return new Rulebook(this.rules.map(r => r.clone()));
   }
 
   toJSON () {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { RulesetPropType } from '../prop-types';
+import { RulebookPropType } from '../prop-types';
 
 import Rule from '../models/rule';
 import Pattern from '../models/pattern';
@@ -8,32 +8,32 @@ import Grid from '../models/grid';
 
 import RuleEditor from './RuleEditor';
 
-export default class RulesetEditor extends Component {
+export default class RulebookEditor extends Component {
 
   addRule () {
-    const { ruleset, onUpdate } = this.props;
-    const updatedRuleset = ruleset.clone();
-    updatedRuleset.addRule(new Rule(0, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))]));
-    onUpdate(updatedRuleset);
+    const { rulebook, onUpdate } = this.props;
+    const updatedRulebook = rulebook.clone();
+    updatedRulebook.addRule(new Rule(0, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))]));
+    onUpdate(updatedRulebook);
   }
 
   updateRule (ruleIndex, rule) {
-    const { ruleset, onUpdate } = this.props;
-    const updatedRuleset = ruleset.clone();
+    const { rulebook, onUpdate } = this.props;
+    const updatedRulebook = rulebook.clone();
     if (rule.patterns.length === 0) {
-      updatedRuleset.rules.splice(ruleIndex, 1);
+      updatedRulebook.rules.splice(ruleIndex, 1);
     } else {
-      updatedRuleset.rules[ruleIndex] = rule;
+      updatedRulebook.rules[ruleIndex] = rule;
     }
-    onUpdate(updatedRuleset);
+    onUpdate(updatedRulebook);
   }
 
   render () {
-    const { ruleset, palette, penValue } = this.props;
-    const isOnlyOneRule = ruleset.rules.length === 1;
+    const { rulebook, palette, penValue } = this.props;
+    const isOnlyOneRule = rulebook.rules.length === 1;
     return (
-      <div className="ruleset-editor">
-        {ruleset.rules.map((rule, i) =>
+      <div className="rulebook-editor">
+        {rulebook.rules.map((rule, i) =>
           <RuleEditor
             key={i}
             rule={rule}
@@ -50,9 +50,9 @@ export default class RulesetEditor extends Component {
 
 }
 
-RulesetEditor.propTypes = {
+RulebookEditor.propTypes = {
   penValue: PropTypes.number.isRequired,
   palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  ruleset: RulesetPropType.isRequired,
+  rulebook: RulebookPropType.isRequired,
   onUpdate: PropTypes.func.isRequired,
 };

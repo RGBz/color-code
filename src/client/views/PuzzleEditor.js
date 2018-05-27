@@ -4,7 +4,7 @@ import { PuzzlePropType } from '../prop-types';
 
 import GridView from './GridView';
 import PaletteView from './PaletteView';
-import RulesetEditor from './RulesetEditor';
+import RulebookEditor from './RulebookEditor';
 import IconButton from './buttons/IconButton';
 import AttemptControls from './AttemptControls';
 import Sign from './Sign';
@@ -17,7 +17,7 @@ export default class PuzzleEditor extends Component {
   constructor (props) {
     super(props);
     const { puzzle } = props;
-    const attempt = new PuzzleAttempt(puzzle, puzzle.solutionRuleset);
+    const attempt = new PuzzleAttempt(puzzle, puzzle.solutionRulebook);
     attempt.run();
     this.state = {
       penValue: 1,
@@ -76,7 +76,7 @@ export default class PuzzleEditor extends Component {
   }
 
   updatePuzzle (puzzle) {
-    const attempt = new PuzzleAttempt(puzzle, puzzle.solutionRuleset);
+    const attempt = new PuzzleAttempt(puzzle, puzzle.solutionRulebook);
     attempt.run();
     this.setState({ puzzle, attempt, frameIndex: 0 }, () => this.play());
   }
@@ -100,15 +100,15 @@ export default class PuzzleEditor extends Component {
     this.updatePuzzle(puzzle);
   }
 
-  updateInitialRuleset (ruleset) {
+  updateInitialRulebook (rulebook) {
     const puzzle = this.state.puzzle.clone();
-    puzzle.initialRuleset = ruleset;
+    puzzle.initialRulebook = rulebook;
     this.updatePuzzle(puzzle);
   }
 
-  updateSolutionRuleset (ruleset) {
+  updateSolutionRulebook (rulebook) {
     const puzzle = this.state.puzzle.clone();
-    puzzle.solutionRuleset = ruleset;
+    puzzle.solutionRulebook = rulebook;
     this.updatePuzzle(puzzle);
   }
 
@@ -129,7 +129,7 @@ export default class PuzzleEditor extends Component {
     const { onSave, onBackPress, puzzle: savedPuzzle } = this.props;
     const {
       penValue, puzzle, frameIndex, attempt, width, height,
-      puzzle: { maxTicks, palette, goalPattern: { grid: goalGrid }, solutionRuleset }
+      puzzle: { maxTicks, palette, goalPattern: { grid: goalGrid }, solutionRulebook }
     } = this.state;
     const grid = attempt.getFrame(frameIndex);
     const hasChanges = puzzle !== savedPuzzle;
@@ -172,11 +172,11 @@ export default class PuzzleEditor extends Component {
           </div>
           <div className="column full">
             <div className="inner">
-              <RulesetEditor
-                ruleset={solutionRuleset}
+              <RulebookEditor
+                rulebook={solutionRulebook}
                 palette={palette}
                 penValue={penValue}
-                onUpdate={r => this.updateSolutionRuleset(r)}
+                onUpdate={r => this.updateSolutionRulebook(r)}
               />
             </div>
           </div>

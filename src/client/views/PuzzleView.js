@@ -4,7 +4,7 @@ import { PuzzlePropType } from '../prop-types';
 
 import GridView from './GridView';
 import PaletteView from './PaletteView';
-import RulesetEditor from './RulesetEditor';
+import RulebookEditor from './RulebookEditor';
 import AttemptControls from './AttemptControls';
 import IconButton from './buttons/IconButton';
 import Sign from './Sign';
@@ -13,22 +13,22 @@ import WinModal from './WinModal';
 import Grid from '../models/grid';
 import Pattern from '../models/pattern';
 import Rule from '../models/rule';
-import Ruleset from '../models/ruleset';
+import Rulebook from '../models/rulebook';
 import PuzzleAttempt from '../models/puzzle-attempt';
 
-const EMPTY_RULESET = new Ruleset([new Rule(0, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))])]);
+const EMPTY_RULESET = new Rulebook([new Rule(0, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))])]);
 
 export default class PuzzleView extends Component {
 
   constructor (props) {
     super(props);
     const { puzzle } = props;
-    const solutionRuleset = EMPTY_RULESET;
-    const attempt = new PuzzleAttempt(puzzle, solutionRuleset);
+    const solutionRulebook = EMPTY_RULESET;
+    const attempt = new PuzzleAttempt(puzzle, solutionRulebook);
     attempt.run();
     this.state = {
       penValue: 1,
-      solutionRuleset,
+      solutionRulebook,
       attempt,
       frameIndex: 0,
       showWinModal: false,
@@ -81,14 +81,14 @@ export default class PuzzleView extends Component {
     }
   }
 
-  updateSolutionRuleset (ruleset) {
-    const solutionRuleset = ruleset.rules.length > 0 ? ruleset : EMPTY_RULESET;
-    const attempt = new PuzzleAttempt(this.props.puzzle, solutionRuleset);
+  updateSolutionRulebook (rulebook) {
+    const solutionRulebook = rulebook.rules.length > 0 ? rulebook : EMPTY_RULESET;
+    const attempt = new PuzzleAttempt(this.props.puzzle, solutionRulebook);
     attempt.run();
     if (!attempt.equals(this.state.attempt)) {
-      this.setState({ attempt, solutionRuleset, frameIndex: 0 }, () => this.play());
+      this.setState({ attempt, solutionRulebook, frameIndex: 0 }, () => this.play());
     } else {
-      this.setState({ solutionRuleset });
+      this.setState({ solutionRulebook });
     }
   }
 
@@ -97,7 +97,7 @@ export default class PuzzleView extends Component {
       onBackPress,
       puzzle: { name, maxTicks, palette, goalPattern: { grid: goalGrid } }
     } = this.props;
-    const { penValue, frameIndex, attempt, solutionRuleset } = this.state;
+    const { penValue, frameIndex, attempt, solutionRulebook } = this.state;
     const grid = attempt.getFrame(frameIndex);
     return (
       <div className="puzzle-editor">
@@ -105,7 +105,7 @@ export default class PuzzleView extends Component {
           isOpen={this.state.showWinModal}
           onDismiss={onBackPress}
           stepCount={attempt.frameCount}
-          patternCount={solutionRuleset.patternCount}
+          patternCount={solutionRulebook.patternCount}
         />
         <div className="header row">
           <div className="column" style={{ flex: 1, flexDirection: 'row' }}>
@@ -134,11 +134,11 @@ export default class PuzzleView extends Component {
           </div>
           <div className="column full">
             <div className="inner">
-              <RulesetEditor
-                ruleset={solutionRuleset}
+              <RulebookEditor
+                rulebook={solutionRulebook}
                 palette={palette}
                 penValue={penValue}
-                onUpdate={r => this.updateSolutionRuleset(r)}
+                onUpdate={r => this.updateSolutionRulebook(r)}
               />
             </div>
           </div>

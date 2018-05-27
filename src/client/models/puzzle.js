@@ -1,18 +1,18 @@
 import uuidv4 from 'uuid/v4';
-import Ruleset from './ruleset';
+import Rulebook from './rulebook';
 import Grid from './grid';
 import Pattern from './pattern';
 import PuzzleAttempt from './puzzle-attempt';
 
 export default class Puzzle {
 
-  static fromJSON ({ id, name, initialGrid, initialRuleset, solutionRuleset, palette, goalPattern, illegalPatterns, maxTicks }) {
+  static fromJSON ({ id, name, initialGrid, initialRulebook, solutionRulebook, palette, goalPattern, illegalPatterns, maxTicks }) {
     return new Puzzle({
       id,
       name,
       initialGrid: Grid.fromJSON(initialGrid),
-      initialRuleset: Ruleset.fromJSON(initialRuleset),
-      solutionRuleset: Ruleset.fromJSON(solutionRuleset),
+      initialRulebook: Rulebook.fromJSON(initialRulebook),
+      solutionRulebook: Rulebook.fromJSON(solutionRulebook),
       goalPattern: Pattern.fromJSON(goalPattern),
       illegalPatterns: illegalPatterns.map(p => Pattern.fromJSON(p)),
       palette,
@@ -20,12 +20,12 @@ export default class Puzzle {
     });
   }
 
-  constructor ({ id, name, initialGrid, initialRuleset, solutionRuleset, palette, goalPattern, illegalPatterns, maxTicks }) {
+  constructor ({ id, name, initialGrid, initialRulebook, solutionRulebook, palette, goalPattern, illegalPatterns, maxTicks }) {
     this.id = id || uuidv4();
     this.name = name;
     this.initialGrid = initialGrid;
-    this.initialRuleset = initialRuleset || new Ruleset();
-    this.solutionRuleset = solutionRuleset || new Ruleset();
+    this.initialRulebook = initialRulebook || new Rulebook();
+    this.solutionRulebook = solutionRulebook || new Rulebook();
     this.palette = palette || [];
     this.goalPattern = goalPattern;
     this.illegalPatterns = illegalPatterns;
@@ -37,8 +37,8 @@ export default class Puzzle {
       id: this.id,
       name: this.name,
       initialGrid: this.initialGrid.clone(),
-      initialRuleset: this.initialRuleset.clone(),
-      solutionRuleset: this.solutionRuleset.clone(),
+      initialRulebook: this.initialRulebook.clone(),
+      solutionRulebook: this.solutionRulebook.clone(),
       palette: this.palette.map(s => s),
       goalPattern: this.goalPattern.clone(),
       illegalPatterns: this.illegalPatterns.map(p => p.clone()),
@@ -51,8 +51,8 @@ export default class Puzzle {
       id: this.id,
       name: this.name,
       initialGrid: this.initialGrid,
-      initialRuleset: this.initialRuleset,
-      solutionRuleset: this.solutionRuleset,
+      initialRulebook: this.initialRulebook,
+      solutionRulebook: this.solutionRulebook,
       palette: this.palette,
       goalPattern: this.goalPattern,
       illegalPatterns: this.illegalPatterns,

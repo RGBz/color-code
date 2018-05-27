@@ -9,13 +9,13 @@ import PuzzleEditor from './views/PuzzleEditor';
 import Puzzle from './models/puzzle';
 import Grid from './models/grid';
 import Rule from './models/rule';
-import Ruleset from './models/ruleset';
+import Rulebook from './models/rulebook';
 import Pattern from './models/pattern';
 import puzzles from './puzzles';
 
 const DEFAULT_PUZZLE = new Puzzle({
   initialGrid: new Grid({ width: 9, height: 9 }),
-  initialRuleset: new Ruleset(),
+  initialRulebook: new Rulebook(),
   goalPattern: new Pattern(new Grid({ width: 9, height: 9 })),
   illegalPatterns: [],
   palette: [

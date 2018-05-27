@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { PuzzlePropType, RulesetPropType } from '../prop-types';
+import { PuzzlePropType, RulebookPropType } from '../prop-types';
 import PuzzleAttempt from '../models/puzzle-attempt';
 import GridView from './GridView';
 
@@ -8,8 +8,8 @@ export default class PuzzleAttemptPlayer extends Component {
 
   constructor (props) {
     super(props);
-    const { puzzle, ruleset } = props;
-    this.state = { attempt: new PuzzleAttempt(puzzle, ruleset), frameIndex: 0 };
+    const { puzzle, rulebook } = props;
+    this.state = { attempt: new PuzzleAttempt(puzzle, rulebook), frameIndex: 0 };
   }
 
   componentDidMount () {
@@ -25,8 +25,8 @@ export default class PuzzleAttemptPlayer extends Component {
   }
 
   buildAttempt (props) {
-    const { puzzle, ruleset } = props;
-    const attempt = new PuzzleAttempt(puzzle, ruleset);
+    const { puzzle, rulebook } = props;
+    const attempt = new PuzzleAttempt(puzzle, rulebook);
     attempt.run();
     this.setState({ attempt, frameIndex: 0 });
   }
@@ -105,5 +105,5 @@ export default class PuzzleAttemptPlayer extends Component {
 
 PuzzleAttemptPlayer.propTypes = {
   puzzle: PuzzlePropType.isRequired,
-  ruleset: RulesetPropType.isRequired,
+  rulebook: RulebookPropType.isRequired,
 };

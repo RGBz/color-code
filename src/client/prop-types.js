@@ -15,13 +15,13 @@ export const RulePropType = PropTypes.shape({
   patterns: PropTypes.arrayOf(PatternPropType.isRequired),
 })
 
-export const RulesetPropType = PropTypes.shape({
+export const RulebookPropType = PropTypes.shape({
   rules: PropTypes.arrayOf(RulePropType.isRequired),
 });
 
 export const PuzzlePropType = PropTypes.shape({
   initialGrid: GridPropType.isRequired,
-  initialRuleset: RulesetPropType.isRequired,
+  initialRulebook: RulebookPropType.isRequired,
   palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   goalPattern: PatternPropType.isRequired,
   illegalPatterns: PropTypes.arrayOf(PatternPropType.isRequired),
