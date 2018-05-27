@@ -11,7 +11,7 @@ import Grid from './models/grid';
 import Rule from './models/rule';
 import Ruleset from './models/ruleset';
 import Pattern from './models/pattern';
-import { loadPageOfPuzzles, savePuzzle } from './dao';
+import puzzles from './puzzles';
 
 const DEFAULT_PUZZLE = new Puzzle({
   initialGrid: new Grid(9, 9),
@@ -37,11 +37,7 @@ class App extends Component {
 
   constructor (props) {
     super(props);
-    this.state = {
-      puzzles: loadPageOfPuzzles({ count: 100 }).puzzles,
-      mode: 'list',
-      selectedPuzzle: null,
-    };
+    this.state = { puzzles: puzzles.map(Puzzle.fromJSON), mode: 'list', selectedPuzzle: null };
   }
 
   createPuzzle () {
@@ -49,9 +45,28 @@ class App extends Component {
     this.setState({ selectedPuzzle, mode: 'edit' });
   }
 
-  save (selectedPuzzle) {
-    savePuzzle(selectedPuzzle);
-    this.setState({ selectedPuzzle, puzzles: loadPageOfPuzzles({ count: 100 }).puzzles });
+  async save (puzzle) {
+    console.log('saving', puzzle)
+    const isExistingPuzzle = this.state.puzzles.some(p => p.id === puzzle.id);
+    const updatedPuzzles = isExistingPuzzle ?
+      this.state.puzzles.map(p => {
+        if (p.id === puzzle.id) {
+          return puzzle;
+        }
+        return p;
+      }) :
+      this.state.puzzles.concat([puzzle]);
+    console.log('updated puzzles', updatedPuzzles)
+    try {
+      await fetch('/puzzles', {
+        method: 'POST',
+        body: JSON.stringify(updatedPuzzles),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      this.setState({ selectedPuzzle: puzzle, puzzles: updatedPuzzles });
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   attemptPuzzle (selectedPuzzle) {
