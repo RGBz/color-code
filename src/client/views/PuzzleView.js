@@ -30,7 +30,7 @@ export default class PuzzleView extends Component {
       penValue: 1,
       solutionRulebook,
       execution,
-      frameIndex: 0,
+      stepIndex: 0,
       showWinModal: false,
     };
   }
@@ -40,9 +40,9 @@ export default class PuzzleView extends Component {
   }
 
   play () {
-    const { frameIndex, execution } = this.state;
-    if (frameIndex === execution.frameCount) {
-      this.setState({ frameIndex: 0 });
+    const { stepIndex, execution } = this.state;
+    if (stepIndex === execution.stepCount) {
+      this.setState({ stepIndex: 0 });
     }
     this.pause();
     this.ticker = setInterval(() => this.stepForward(), 100);
@@ -57,13 +57,13 @@ export default class PuzzleView extends Component {
 
   reset () {
     this.pause();
-    this.setState({ frameIndex: 0 });
+    this.setState({ stepIndex: 0 });
   }
 
   stepForward () {
-    const { frameIndex, execution } = this.state;
-    if (frameIndex < execution.frameCount) {
-      this.setState({ frameIndex: frameIndex + 1 });
+    const { stepIndex, execution } = this.state;
+    if (stepIndex < execution.stepCount) {
+      this.setState({ stepIndex: stepIndex + 1 });
     } else {
       this.pause();
       if (execution.succeeded) {
@@ -73,11 +73,11 @@ export default class PuzzleView extends Component {
   }
 
   stepBackward () {
-    const { frameIndex, execution } = this.state;
-    if (frameIndex > 0) {
-      this.setState({ frameIndex: frameIndex - 1 });
+    const { stepIndex, execution } = this.state;
+    if (stepIndex > 0) {
+      this.setState({ stepIndex: stepIndex - 1 });
     } else {
-      this.setState({ frameIndex: execution.frameCount });
+      this.setState({ stepIndex: execution.stepCount });
     }
   }
 
@@ -86,7 +86,7 @@ export default class PuzzleView extends Component {
     const execution = new RulebookExecution(this.props.puzzle, solutionRulebook);
     execution.run();
     if (!execution.equals(this.state.execution)) {
-      this.setState({ execution, solutionRulebook, frameIndex: 0 }, () => this.play());
+      this.setState({ execution, solutionRulebook, stepIndex: 0 }, () => this.play());
     } else {
       this.setState({ solutionRulebook });
     }
@@ -97,14 +97,14 @@ export default class PuzzleView extends Component {
       onBackPress,
       puzzle: { name, maxTicks, palette, goalPattern: { grid: goalGrid } }
     } = this.props;
-    const { penValue, frameIndex, execution, solutionRulebook } = this.state;
-    const grid = execution.getFrame(frameIndex);
+    const { penValue, stepIndex, execution, solutionRulebook } = this.state;
+    const grid = execution.getStep(stepIndex);
     return (
       <div className="puzzle-editor">
         <WinModal
           isOpen={this.state.showWinModal}
           onDismiss={onBackPress}
-          stepCount={execution.frameCount}
+          stepCount={execution.stepCount}
           patternCount={solutionRulebook.patternCount}
         />
         <div className="header row">
@@ -115,8 +115,8 @@ export default class PuzzleView extends Component {
             </div>
           </div>
           <RulebookExecutionControls
-            frameIndex={frameIndex}
-            frameCount={execution.frameCount}
+            stepIndex={stepIndex}
+            stepCount={execution.stepCount}
             onReplayPress={() => this.play()}
             onStepForwardPress={() => this.stepForward()}
             onStepBackwardPress={() => this.stepBackward()}

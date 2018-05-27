@@ -8,23 +8,23 @@ export default class RulebookExecution {
     this.succeeded = false;
     this.puzzle = puzzle;
     this.rulebook = rulebook.clone();
-    this.frames = [initialGrid];
+    this.steps = [initialGrid];
   }
 
-  get frameCount () {
-    return this.frames.length - 1;
+  get stepCount () {
+    return this.steps.length - 1;
   }
 
   get completed () {
-    return this.failed || this.succeeded || this.frameCount >= 50;//this.puzzle.maxTicks;
+    return this.failed || this.succeeded || this.stepCount >= 50;//this.puzzle.maxTicks;
   }
 
   get currentGrid () {
-    return this.frames[this.frameCount];
+    return this.steps[this.stepCount];
   }
 
-  getFrame (index) {
-    return this.frames[index];
+  getStep (index) {
+    return this.steps[index];
   }
 
   run () {
@@ -34,7 +34,7 @@ export default class RulebookExecution {
   }
 
   tick () {
-    const { completed, puzzle, frames, currentGrid, rulebook } = this;
+    const { completed, puzzle, steps, currentGrid, rulebook } = this;
     if (!completed) {
       const nextGrid = new Grid({ width: currentGrid.width, height: currentGrid.height });
       rulebook.execute(currentGrid, nextGrid);
@@ -42,7 +42,7 @@ export default class RulebookExecution {
         this.failed = true;
         return this;
       }
-      frames.push(nextGrid);
+      steps.push(nextGrid);
       if (!this.failed && puzzle.goalPattern.matchesGrid(nextGrid)) {
         this.succeeded = true;
       }
@@ -51,11 +51,11 @@ export default class RulebookExecution {
   }
 
   equals (otherExecution) {
-    if (this.frames.length !== otherExecution.frames.length) {
+    if (this.steps.length !== otherExecution.steps.length) {
       return false;
     }
-    for (let i = 0; i < this.frames.length; i += 1) {
-      if (!this.frames[i].equals(otherExecution.frames[i])) {
+    for (let i = 0; i < this.steps.length; i += 1) {
+      if (!this.steps[i].equals(otherExecution.steps[i])) {
         return false;
       }
     }
