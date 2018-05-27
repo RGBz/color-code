@@ -12,37 +12,43 @@ export default class PatternEditor extends Component {
     onUpdate(updatedPattern);
   }
 
-  render () {
-    const { penValue, palette, pattern: { grid, grid: { rows } } } = this.props;
-    const centerX = Math.floor(grid.width / 2);
-    const centerY = Math.floor(grid.height / 2);
+  renderRow (y) {
+    const cells = [];
+    for (let x = 0; x < this.props.pattern.grid.width; x += 1) {
+      cells.push(this.renderCell(x, y))
+    }
+    return (<div key={y} className="row">{cells}</div>);
+  }
+
+  renderCell (x, y) {
+    const centerX = Math.floor(this.props.pattern.grid.width / 2);
+    const centerY = Math.floor(this.props.pattern.grid.height / 2);
+    const cellValue = this.props.pattern.grid.get(x, y);
+    const isCenter = x === centerX && y === centerY;
+    const cellStyle = {};
+    if (isCenter) {
+      cellStyle.border = '2px solid rgba(0,0,0,0.5)';
+      cellStyle.margin = 0;
+      cellStyle.width = 14;
+      cellStyle.height = 14;
+    }
     return (
-      <div className="pattern">
-        {rows.map((cells, y) =>
-          <div key={y} className="row">
-            {cells.map((cellValue, x) => {
-              const isCenter = x === centerX && y === centerY;
-              const cellStyle = {};
-              if (isCenter) {
-                cellStyle.border = '2px solid rgba(0,0,0,0.5)';
-                cellStyle.margin = 0;
-                cellStyle.width = 14;
-                cellStyle.height = 14;
-              }
-              return (
-                <CellView
-                  key={x}
-                  penValue={cellValue}
-                  palette={palette}
-                  style={cellStyle}
-                  onClick={() => this.onCellClick(x, y)}
-                />
-              );
-            })}
-          </div>
-        )}
-      </div>
+      <CellView
+        key={x}
+        penValue={cellValue}
+        palette={this.props.palette}
+        style={cellStyle}
+        onClick={() => this.onCellClick(x, y)}
+      />
     );
+  }
+
+  render () {
+    const rows = [];
+    for (let y = 0; y < this.props.pattern.grid.height; y += 1) {
+      rows.push(this.renderRow(y));
+    }
+    return (<div className="pattern">{rows}</div>);
   }
 
 }

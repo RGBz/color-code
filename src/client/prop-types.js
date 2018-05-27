@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 export const GridPropType = PropTypes.shape({
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  rows: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number.isRequired).isRequired).isRequired,
+  cells: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
 });
 
 export const PatternPropType = PropTypes.shape({

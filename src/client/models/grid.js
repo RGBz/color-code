@@ -2,96 +2,52 @@ const EMPTY_CELL_VALUE = 0;
 
 export default class Grid {
 
-  static fromJSON ({ rows }) {
-    return new Grid(rows);
+  static fromJSON ({ width, height, cells }) {
+    return new Grid(width, height, cells);
   }
 
-  constructor (width, height) {
-    if (width instanceof Array) {
-      this.rows = width;
-    } else if (width > 0 && height > 0){
-      this.rows = [];
-      for (let r = 0; r < height; r += 1) {
-        const row = [];
-        this.rows.push(row);
-        for (let c = 0; c < width; c++) {
-          row.push(EMPTY_CELL_VALUE);
-        }
-      }
-    } else {
-      throw new TypeError(`Args must either be (width, height) or (array)`);
-    }
-  }
-
-  get width () {
-    if (this.rows.length > 0) {
-      return this.rows[0].length;
-    }
-    return 0;
-  }
-
-  get height () {
-    return this.rows.length;
+  constructor (width, height, cells) {
+    this.width = width;
+    this.height = height;
+    this.cells = cells || new Array(width * height).fill(EMPTY_CELL_VALUE);
   }
 
   get (x, y) {
     if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
       return 0;
     }
-    return this.rows[y][x];
+    return this.cells[this.getCellIndex(x, y)];
   }
 
   set (x, y, value) {
-    this.rows[y][x] = value;
+    this.cells[this.getCellIndex(x, y)] = value;
+  }
+
+  getCellIndex (x, y) {
+    return y * this.width + x;
   }
 
   clear () {
-    for (let y = 0; y < this.height; y += 1) {
-      for (let x = 0; x < this.width; x++) {
-        this.set(x, y, EMPTY_CELL_VALUE);
-      }
-    }
+    this.cells.fill(EMPTY_CELL_VALUE);
   }
 
   equals (otherGrid) {
     if (otherGrid.width !== this.width || otherGrid.height !== this.height) {
       return false;
     }
-    for (let y = 0; y < this.height; y += 1) {
-      for (let x = 0; x < this.width; x++) {
-        if (otherGrid.get(x, y) !== this.get(x, y)) {
-          return false;
-        }
-      }
-    }
-    return true;
+    return this.cells.every((c, i) => c === otherGrid.cells[i]);
   }
 
-  clone (width = this.width, height = this.height) {
-    const rows = [];
-    for (let y = 0; y < height; y += 1) {
-      const row = [];
-      rows.push(row);
-      for (let x = 0; x < width; x++) {
-        row.push(this.get(x, y));
-      }
-    }
-    return new Grid(rows);
+  clone () {
+    return new Grid(this.width, this.height, this.cells.slice(0));
   }
 
   isEmpty () {
-    for (let y = 0; y < this.height; y += 1) {
-      for (let x = 0; x < this.width; x++) {
-        if (this.get(x, y) !== EMPTY_CELL_VALUE) {
-          return false;
-        }
-      }
-    }
-    return true;
+    return this.cells.every(c => c === EMPTY_CELL_VALUE);
   }
 
   toJSON () {
-    return { rows: this.rows };
+    return { width: this.width, height: this.height, cells: this.cells };
   }
 
 }
