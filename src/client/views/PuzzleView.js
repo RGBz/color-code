@@ -16,14 +16,14 @@ import Rule from '../models/rule';
 import Rulebook from '../models/rulebook';
 import RulebookExecution from '../models/rulebook-execution';
 
-const EMPTY_RULESET = new Rulebook([new Rule(0, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))])]);
+const EMPTY_RULEBOOK = new Rulebook([new Rule(0, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))])]);
 
 export default class PuzzleView extends Component {
 
   constructor (props) {
     super(props);
     const { puzzle } = props;
-    const solutionRulebook = EMPTY_RULESET;
+    const solutionRulebook = EMPTY_RULEBOOK;
     const execution = new RulebookExecution(puzzle, solutionRulebook);
     execution.run();
     this.state = {
@@ -82,7 +82,7 @@ export default class PuzzleView extends Component {
   }
 
   updateSolutionRulebook (rulebook) {
-    const solutionRulebook = rulebook.rules.length > 0 ? rulebook : EMPTY_RULESET;
+    const solutionRulebook = rulebook.rules.length > 0 ? rulebook : EMPTY_RULEBOOK;
     const execution = new RulebookExecution(this.props.puzzle, solutionRulebook);
     execution.run();
     if (!execution.equals(this.state.execution)) {

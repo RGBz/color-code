@@ -21,9 +21,7 @@ export const RulebookPropType = PropTypes.shape({
 
 export const PuzzlePropType = PropTypes.shape({
   initialGrid: GridPropType.isRequired,
-  initialRulebook: RulebookPropType.isRequired,
   palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   goalPattern: PatternPropType.isRequired,
-  illegalPatterns: PropTypes.arrayOf(PatternPropType.isRequired),
   maxTicks: PropTypes.number,
 });

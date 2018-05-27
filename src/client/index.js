@@ -15,9 +15,7 @@ import puzzles from './puzzles';
 
 const DEFAULT_PUZZLE = new Puzzle({
   initialGrid: new Grid({ width: 9, height: 9 }),
-  initialRulebook: new Rulebook(),
   goalPattern: new Pattern(new Grid({ width: 9, height: 9 })),
-  illegalPatterns: [],
   palette: [
     '#FFFFFF', // white
     '#90A4AE', // gray

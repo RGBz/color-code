@@ -10,6 +10,7 @@ import RulebookExecutionControls from './RulebookExecutionControls';
 import Sign from './Sign';
 
 import Grid from '../models/grid';
+import Rulebook from '../models/rulebook';
 import RulebookExecution from '../models/rulebook-execution';
 
 export default class PuzzleEditor extends Component {
@@ -17,15 +18,17 @@ export default class PuzzleEditor extends Component {
   constructor (props) {
     super(props);
     const { puzzle } = props;
-    const execution = new RulebookExecution(puzzle, puzzle.solutionRulebook);
+    const solutionRulebook = new Rulebook();
+    const execution = new RulebookExecution(puzzle, solutionRulebook);
     execution.run();
     this.state = {
       penValue: 1,
-      puzzle,
+      frameIndex: 0,
       width: puzzle.initialGrid.width,
       height: puzzle.initialGrid.height,
+      puzzle,
+      solutionRulebook,
       execution,
-      frameIndex: 0
     };
   }
 
@@ -76,9 +79,8 @@ export default class PuzzleEditor extends Component {
   }
 
   updatePuzzle (puzzle) {
-    const execution = new RulebookExecution(puzzle, puzzle.solutionRulebook);
-    execution.run();
-    this.setState({ puzzle, execution, frameIndex: 0 }, () => this.play());
+    this.setState({ puzzle });
+    this.executeSolutionRulebook();
   }
 
   updatePuzzleName (name) {
@@ -100,16 +102,15 @@ export default class PuzzleEditor extends Component {
     this.updatePuzzle(puzzle);
   }
 
-  updateInitialRulebook (rulebook) {
-    const puzzle = this.state.puzzle.clone();
-    puzzle.initialRulebook = rulebook;
-    this.updatePuzzle(puzzle);
+  updateSolutionRulebook (solutionRulebook) {
+    this.setState({ solutionRulebook });
+    this.executeSolutionRulebook();
   }
 
-  updateSolutionRulebook (rulebook) {
-    const puzzle = this.state.puzzle.clone();
-    puzzle.solutionRulebook = rulebook;
-    this.updatePuzzle(puzzle);
+  executeSolutionRulebook () {
+    const execution = new RulebookExecution(puzzle, this.state.solutionRulebook);
+    execution.run();
+    this.setState({ execution, frameIndex: 0 }, () => this.play());
   }
 
   updateGridSizes () {
@@ -128,8 +129,8 @@ export default class PuzzleEditor extends Component {
   render () {
     const { onSave, onBackPress, puzzle: savedPuzzle } = this.props;
     const {
-      penValue, puzzle, frameIndex, execution, width, height,
-      puzzle: { maxTicks, palette, goalPattern: { grid: goalGrid }, solutionRulebook }
+      penValue, puzzle, frameIndex, execution, width, height, solutionRulebook,
+      puzzle: { maxTicks, palette, goalPattern: { grid: goalGrid } }
     } = this.state;
     const grid = execution.getFrame(frameIndex);
     const hasChanges = puzzle !== savedPuzzle;

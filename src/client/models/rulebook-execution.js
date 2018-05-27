@@ -43,16 +43,6 @@ export default class RulebookExecution {
         return this;
       }
       frames.push(nextGrid);
-      for (let x = 0; x < nextGrid.width; x++) {
-        for (let y = 0; y < nextGrid.height; y += 1) {
-          for (const illegalPattern of puzzle.illegalPatterns) {
-            if (illegalPattern.matchesGridAtCoordinates(nextGrid, x, y)) {
-              this.failed = true;
-              break;
-            }
-          }
-        }
-      }
       if (!this.failed && puzzle.goalPattern.matchesGrid(nextGrid)) {
         this.succeeded = true;
       }
