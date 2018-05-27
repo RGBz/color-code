@@ -16,7 +16,7 @@ export default class PuzzleAttempt {
   }
 
   get completed () {
-    return this.failed || this.succeeded || this.frameCount >= this.puzzle.maxTicks;
+    return this.failed || this.succeeded || this.frameCount >= 50;//this.puzzle.maxTicks;
   }
 
   get currentGrid () {
@@ -34,7 +34,7 @@ export default class PuzzleAttempt {
   }
 
   tick () {
-    const { completed, puzzle, frames, currentGrid, frameCount, ruleset } = this;
+    const { completed, puzzle, frames, currentGrid, ruleset } = this;
     if (!completed) {
       const nextGrid = new Grid(currentGrid.width, currentGrid.height);
       ruleset.execute(currentGrid, nextGrid);
@@ -58,6 +58,18 @@ export default class PuzzleAttempt {
       }
     }
     return this;
+  }
+
+  equals (otherAttempt) {
+    if (this.frames.length !== otherAttempt.frames.length) {
+      return false;
+    }
+    for (let i = 0; i < this.frames.length; i += 1) {
+      if (!this.frames[i].equals(otherAttempt.frames[i])) {
+        return false;
+      }
+    }
+    return true;
   }
 
 }

@@ -85,7 +85,11 @@ export default class PuzzleView extends Component {
     const solutionRuleset = ruleset.rules.length > 0 ? ruleset : EMPTY_RULESET;
     const attempt = new PuzzleAttempt(this.props.puzzle, solutionRuleset);
     attempt.run();
-    this.setState({ attempt, solutionRuleset, frameIndex: 0 }, () => this.play());
+    if (!attempt.equals(this.state.attempt)) {
+      this.setState({ attempt, solutionRuleset, frameIndex: 0 }, () => this.play());
+    } else {
+      this.setState({ solutionRuleset });
+    }
   }
 
   render () {
