@@ -43,7 +43,7 @@ export default class Grid {
   }
 
   isEmpty () {
-    return this.cells.every(c => c === EMPTY_CELL_VALUE);
+    return this.cells.every(c => c < 0);
   }
 
   toJSON () {
