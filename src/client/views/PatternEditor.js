@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { PatternPropType } from '../prop-types';
+import { PatternPropType } from './prop-types';
 import CellView from './CellView';
 
 export default class PatternEditor extends Component {

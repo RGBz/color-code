@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { RulePropType } from '../prop-types';
+import { RulePropType } from './prop-types';
 
 import CellView from './CellView';
 import PatternEditor from './PatternEditor';
