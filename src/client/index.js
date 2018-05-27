@@ -14,22 +14,20 @@ import Pattern from './models/pattern';
 import puzzles from './puzzles';
 
 const DEFAULT_PUZZLE = new Puzzle({
-  initialGrid: new Grid(9, 9),
+  initialGrid: new Grid({ width: 9, height: 9 }),
   initialRuleset: new Ruleset(),
-  goalPattern: new Pattern(new Grid(9, 9)),
+  goalPattern: new Pattern(new Grid({ width: 9, height: 9 })),
   illegalPatterns: [],
   palette: [
-    '#F1F1F1', // neutral gray
+    '#FFFFFF', // white
+    '#90A4AE', // gray
+    '#000000', // black
     '#D0011B', // red
     '#FFA000', // orange
     '#F8E81C', // yellow
     '#00C467', // green
     '#1190EE', // blue
     '#9012FE', // purple
-    '#8B572A', // brown
-    '#90A4AE', // gray
-    '#000000', // black
-    '#FFFFFF', // white
   ],
 });
 

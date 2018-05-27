@@ -16,7 +16,7 @@ import Rule from '../models/rule';
 import Ruleset from '../models/ruleset';
 import PuzzleAttempt from '../models/puzzle-attempt';
 
-const EMPTY_RULESET = new Ruleset([new Rule(0, [new Pattern(new Grid(5, 5))])]);
+const EMPTY_RULESET = new Ruleset([new Rule(0, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))])]);
 
 export default class PuzzleView extends Component {
 

@@ -31,7 +31,7 @@ export default class Pattern {
     for (let x = 0; x < this.grid.width; x += 1) {
       for (let y = 0; y < this.grid.height; y += 1) {
         const patternCellValue = this.grid.get(x, y);
-        if (patternCellValue !== 0 && patternCellValue !== gridToCheck.get(x, y)) {
+        if (patternCellValue >= 0 && patternCellValue !== gridToCheck.get(x, y)) {
           return false;
         }
       }
@@ -48,7 +48,7 @@ export default class Pattern {
     for (let patternX = 0; patternX < this.grid.width; patternX += 1) {
       for (let patternY = 0; patternY < this.grid.height; patternY += 1) {
         const patternCellValue = this.grid.get(patternX, patternY);
-        if (patternCellValue !== 0) {
+        if (patternCellValue >= 0) {
           const checkX = startX + patternX;
           const checkY = startY + patternY;
           if (gridToCheck.get(checkX, checkY) !== patternCellValue) {

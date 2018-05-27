@@ -5,7 +5,8 @@ export default class CellView extends Component {
 
   render () {
     const { penValue, palette, onClick, style } = this.props;
-    const divStyle = Object.assign({ backgroundColor: palette[penValue] }, style);
+    const backgroundColor = penValue >= 0 ? palette[penValue] : '#F1F1F1';
+    const divStyle = Object.assign({ backgroundColor }, style);
     return (
       <div className="cell" style={divStyle} onClick={onClick} />
     );

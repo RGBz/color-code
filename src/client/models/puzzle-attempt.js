@@ -36,7 +36,7 @@ export default class PuzzleAttempt {
   tick () {
     const { completed, puzzle, frames, currentGrid, ruleset } = this;
     if (!completed) {
-      const nextGrid = new Grid(currentGrid.width, currentGrid.height);
+      const nextGrid = new Grid({ width: currentGrid.width, height: currentGrid.height });
       ruleset.execute(currentGrid, nextGrid);
       if (nextGrid.equals(currentGrid)) {
         this.failed = true;

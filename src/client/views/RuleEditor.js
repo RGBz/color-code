@@ -20,7 +20,7 @@ export default class RuleEditor extends Component {
   addPattern () {
     const { rule, onUpdate } = this.props;
     const updatedRule = rule.clone();
-    updatedRule.patterns.push(new Pattern(new Grid(5, 5)));
+    updatedRule.patterns.push(new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 })));
     onUpdate(updatedRule);
   }
 

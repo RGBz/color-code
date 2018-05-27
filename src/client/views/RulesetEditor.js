@@ -13,7 +13,7 @@ export default class RulesetEditor extends Component {
   addRule () {
     const { ruleset, onUpdate } = this.props;
     const updatedRuleset = ruleset.clone();
-    updatedRuleset.addRule(new Rule(0, [new Pattern(new Grid(5, 5))]));
+    updatedRuleset.addRule(new Rule(0, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))]));
     onUpdate(updatedRuleset);
   }
 

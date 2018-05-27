@@ -23,7 +23,7 @@ export default class PaletteView extends Component {
 
   renderSwatchInner (penValue) {
     const { palette } = this.props;
-    if (penValue === 0) {
+    if (penValue === -1) {
       return (
         <img key={penValue} className="inner" src="/images/eraser.png" />
       );
@@ -41,7 +41,7 @@ export default class PaletteView extends Component {
         <div className="colors">
           {this.renderSwatches()}
         </div>
-        {this.renderSwatch(0)}
+        {this.renderSwatch(-1)}
       </div>
     );
   }

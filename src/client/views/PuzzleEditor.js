@@ -96,6 +96,7 @@ export default class PuzzleEditor extends Component {
   updateGoalGrid (grid) {
     const puzzle = this.state.puzzle.clone();
     puzzle.goalPattern.grid = grid;
+    console.log('updated', grid)
     this.updatePuzzle(puzzle);
   }
 
@@ -190,7 +191,7 @@ export default class PuzzleEditor extends Component {
                 palette={palette}
                 onUpdate={g => this.updateInitialGrid(g)}
               />
-              <button onClick={() => this.updateInitialGrid(new Grid(grid.width, grid.height))}>CLEAR</button>
+              <button onClick={() => this.updateInitialGrid(new Grid({ width: grid.width, height: grid.height }))}>CLEAR</button>
               <div style={{ height: 16 }} />
               <Sign label="GOAL" />
               <GridView
@@ -201,7 +202,7 @@ export default class PuzzleEditor extends Component {
                 palette={palette}
                 onUpdate={g => this.updateGoalGrid(g)}
               />
-              <button onClick={() => this.updateGoalGrid(new Grid(grid.width, grid.height))}>CLEAR</button>
+              <button onClick={() => this.updateGoalGrid(new Grid({ width: grid.width, height: grid.height }))}>CLEAR</button>
               <div>
                 <input value={width} onChange={e => this.setState({ width: e.target.value })} />
                 x

@@ -3,13 +3,13 @@ const EMPTY_CELL_VALUE = 0;
 export default class Grid {
 
   static fromJSON ({ width, height, cells }) {
-    return new Grid(width, height, cells);
+    return new Grid({ width, height, cells });
   }
 
-  constructor (width, height, cells) {
+  constructor ({ width, height, cells, fillValue }) {
     this.width = width;
     this.height = height;
-    this.cells = cells || new Array(width * height).fill(EMPTY_CELL_VALUE);
+    this.cells = cells || new Array(width * height).fill(fillValue || EMPTY_CELL_VALUE);
   }
 
   get (x, y) {
@@ -39,7 +39,7 @@ export default class Grid {
   }
 
   clone () {
-    return new Grid(this.width, this.height, this.cells.slice(0));
+    return new Grid({ width: this.width, height: this.height, cells: this.cells.slice(0) });
   }
 
   isEmpty () {
