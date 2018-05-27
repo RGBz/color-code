@@ -31,6 +31,7 @@
     box-sizing: border-box;
     box-shadow: 0 1px 4px 0 rgba(0,0,0,0.2);
     color: #333;
+    letter-spacing: 1px;
     font-weight: 700;
     font-size: 14px;
     text-transform: uppercase;
@@ -91,7 +92,7 @@
     margin-bottom: -3px;
     transform: rotate(-2deg);
     color: white;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     font-weight: 500;
     background: #4A4A4A;
     box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
@@ -159,6 +160,7 @@
     font-weight: 500;
     /* width: 30px; */
     text-align: center;
+    letter-spacing: 1px;
   }
   .puzzle-editor {
     display: flex;
@@ -337,6 +339,7 @@
     text-align: center;
     font-size: 12px;
     margin-bottom: 4px;
+    letter-spacing: 1px;
   }
   .stat-value {
     text-align: center;
@@ -349,9 +352,15 @@
   }
   .win-modal .stats-table {
     background-color: #F9F9F9;
-    border: 1px solid #D7D7D7;
+    box-shadow: 0px 1px 4px rgba(0,0,0,0.05) inset;
     padding: 24px;
-    border-radius: 2px;
+    border-radius: 5px;
+  }
+  .win-modal .stat-label {
+    color: #AAAAAA;
+  }
+  .win-modal .stat-value {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.25);
   }
   .win-modal .row {
     justify-content: space-between;
