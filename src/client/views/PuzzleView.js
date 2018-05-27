@@ -10,11 +10,11 @@ import IconButton from './buttons/IconButton';
 import Sign from './Sign';
 import WinModal from './WinModal';
 
-import Grid from '../models/grid';
-import Pattern from '../models/pattern';
-import Rule from '../models/rule';
-import Rulebook from '../models/rulebook';
-import RulebookExecution from '../models/rulebook-execution';
+import Grid from '../models/Grid';
+import Pattern from '../models/Pattern';
+import Rule from '../models/Rule';
+import Rulebook from '../models/Rulebook';
+import RulebookExecution from '../models/RulebookExecution';
 
 const EMPTY_RULEBOOK = new Rulebook([new Rule(0, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))])]);
 

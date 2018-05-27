@@ -6,11 +6,11 @@ import PuzzleList from './views/PuzzleList';
 import PuzzleView from './views/PuzzleView';
 import PuzzleEditor from './views/PuzzleEditor';
 
-import Puzzle from './models/puzzle';
-import Grid from './models/grid';
-import Rule from './models/rule';
-import Rulebook from './models/rulebook';
-import Pattern from './models/pattern';
+import Puzzle from './models/Puzzle';
+import Grid from './models/Grid';
+import Rule from './models/Rule';
+import Rulebook from './models/Rulebook';
+import Pattern from './models/Pattern';
 import puzzles from './puzzles';
 
 const DEFAULT_PUZZLE = new Puzzle({

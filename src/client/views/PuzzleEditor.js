@@ -9,9 +9,9 @@ import IconButton from './buttons/IconButton';
 import RulebookExecutionControls from './RulebookExecutionControls';
 import Sign from './Sign';
 
-import Grid from '../models/grid';
-import Rulebook from '../models/rulebook';
-import RulebookExecution from '../models/rulebook-execution';
+import Grid from '../models/Grid';
+import Rulebook from '../models/Rulebook';
+import RulebookExecution from '../models/RulebookExecution';
 
 export default class PuzzleEditor extends Component {
 

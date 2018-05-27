@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { RulebookPropType } from './prop-types';
 
-import Rule from '../models/rule';
-import Pattern from '../models/pattern';
-import Grid from '../models/grid';
+import Rule from '../models/Rule';
+import Pattern from '../models/Pattern';
+import Grid from '../models/Grid';
 
 import RuleEditor from './RuleEditor';
 

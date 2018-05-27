@@ -1,8 +1,8 @@
 import uuidv4 from 'uuid/v4';
-import Rulebook from './rulebook';
-import Grid from './grid';
-import Pattern from './pattern';
-import RulebookExecution from './rulebook-execution';
+import Rulebook from './Rulebook';
+import Grid from './Grid';
+import Pattern from './Pattern';
+import RulebookExecution from './RulebookExecution';
 
 export default class Puzzle {
 

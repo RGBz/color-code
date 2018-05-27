@@ -5,8 +5,8 @@ import { RulePropType } from './prop-types';
 import CellView from './CellView';
 import PatternEditor from './PatternEditor';
 
-import Pattern from '../models/pattern';
-import Grid from '../models/grid';
+import Pattern from '../models/Pattern';
+import Grid from '../models/Grid';
 
 export default class RuleEditor extends Component {
 
