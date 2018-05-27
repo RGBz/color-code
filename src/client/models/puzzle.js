@@ -2,7 +2,7 @@ import uuidv4 from 'uuid/v4';
 import Rulebook from './rulebook';
 import Grid from './grid';
 import Pattern from './pattern';
-import PuzzleAttempt from './puzzle-attempt';
+import RulebookExecution from './rulebook-execution';
 
 export default class Puzzle {
 

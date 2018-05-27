@@ -5,7 +5,7 @@ import { PuzzlePropType } from '../prop-types';
 import GridView from './GridView';
 import PaletteView from './PaletteView';
 import RulebookEditor from './RulebookEditor';
-import AttemptControls from './AttemptControls';
+import RulebookExecutionControls from './RulebookExecutionControls';
 import IconButton from './buttons/IconButton';
 import Sign from './Sign';
 import WinModal from './WinModal';
@@ -14,7 +14,7 @@ import Grid from '../models/grid';
 import Pattern from '../models/pattern';
 import Rule from '../models/rule';
 import Rulebook from '../models/rulebook';
-import PuzzleAttempt from '../models/puzzle-attempt';
+import RulebookExecution from '../models/rulebook-execution';
 
 const EMPTY_RULESET = new Rulebook([new Rule(0, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))])]);
 
@@ -24,12 +24,12 @@ export default class PuzzleView extends Component {
     super(props);
     const { puzzle } = props;
     const solutionRulebook = EMPTY_RULESET;
-    const attempt = new PuzzleAttempt(puzzle, solutionRulebook);
-    attempt.run();
+    const execution = new RulebookExecution(puzzle, solutionRulebook);
+    execution.run();
     this.state = {
       penValue: 1,
       solutionRulebook,
-      attempt,
+      execution,
       frameIndex: 0,
       showWinModal: false,
     };
@@ -40,8 +40,8 @@ export default class PuzzleView extends Component {
   }
 
   play () {
-    const { frameIndex, attempt } = this.state;
-    if (frameIndex === attempt.frameCount) {
+    const { frameIndex, execution } = this.state;
+    if (frameIndex === execution.frameCount) {
       this.setState({ frameIndex: 0 });
     }
     this.pause();
@@ -61,32 +61,32 @@ export default class PuzzleView extends Component {
   }
 
   stepForward () {
-    const { frameIndex, attempt } = this.state;
-    if (frameIndex < attempt.frameCount) {
+    const { frameIndex, execution } = this.state;
+    if (frameIndex < execution.frameCount) {
       this.setState({ frameIndex: frameIndex + 1 });
     } else {
       this.pause();
-      if (attempt.succeeded) {
+      if (execution.succeeded) {
         this.setState({ showWinModal: true });
       }
     }
   }
 
   stepBackward () {
-    const { frameIndex, attempt } = this.state;
+    const { frameIndex, execution } = this.state;
     if (frameIndex > 0) {
       this.setState({ frameIndex: frameIndex - 1 });
     } else {
-      this.setState({ frameIndex: attempt.frameCount });
+      this.setState({ frameIndex: execution.frameCount });
     }
   }
 
   updateSolutionRulebook (rulebook) {
     const solutionRulebook = rulebook.rules.length > 0 ? rulebook : EMPTY_RULESET;
-    const attempt = new PuzzleAttempt(this.props.puzzle, solutionRulebook);
-    attempt.run();
-    if (!attempt.equals(this.state.attempt)) {
-      this.setState({ attempt, solutionRulebook, frameIndex: 0 }, () => this.play());
+    const execution = new RulebookExecution(this.props.puzzle, solutionRulebook);
+    execution.run();
+    if (!execution.equals(this.state.execution)) {
+      this.setState({ execution, solutionRulebook, frameIndex: 0 }, () => this.play());
     } else {
       this.setState({ solutionRulebook });
     }
@@ -97,14 +97,14 @@ export default class PuzzleView extends Component {
       onBackPress,
       puzzle: { name, maxTicks, palette, goalPattern: { grid: goalGrid } }
     } = this.props;
-    const { penValue, frameIndex, attempt, solutionRulebook } = this.state;
-    const grid = attempt.getFrame(frameIndex);
+    const { penValue, frameIndex, execution, solutionRulebook } = this.state;
+    const grid = execution.getFrame(frameIndex);
     return (
       <div className="puzzle-editor">
         <WinModal
           isOpen={this.state.showWinModal}
           onDismiss={onBackPress}
-          stepCount={attempt.frameCount}
+          stepCount={execution.frameCount}
           patternCount={solutionRulebook.patternCount}
         />
         <div className="header row">
@@ -114,9 +114,9 @@ export default class PuzzleView extends Component {
               <div className="puzzle-name">{name || ''}</div>
             </div>
           </div>
-          <AttemptControls
+          <RulebookExecutionControls
             frameIndex={frameIndex}
-            frameCount={attempt.frameCount}
+            frameCount={execution.frameCount}
             onReplayPress={() => this.play()}
             onStepForwardPress={() => this.stepForward()}
             onStepBackwardPress={() => this.stepBackward()}

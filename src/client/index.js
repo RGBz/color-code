@@ -67,9 +67,9 @@ class App extends Component {
     }
   }
 
-  attemptPuzzle (selectedPuzzle) {
-    // window.history.pushState({ }, "ColorCode - Attempt", `/attempt/${puzzleId}`);
-    this.setState({ mode: 'attempt', selectedPuzzle });
+  executeRulebook (selectedPuzzle) {
+    // window.history.pushState({ }, "ColorCode - Execution", `/execution/${puzzleId}`);
+    this.setState({ mode: 'execution', selectedPuzzle });
   }
 
   editPuzzle (selectedPuzzle) {
@@ -83,7 +83,7 @@ class App extends Component {
       <PuzzleList
         puzzles={puzzles}
         onCreatePuzzle={() => this.createPuzzle()}
-        onSelectPuzzle={selectedPuzzle => this.attemptPuzzle(selectedPuzzle)}
+        onSelectPuzzle={selectedPuzzle => this.executeRulebook(selectedPuzzle)}
         onEditPuzzle={selectedPuzzle => this.editPuzzle(selectedPuzzle)}
       />
     );
@@ -113,7 +113,7 @@ class App extends Component {
   render () {
     switch (this.state.mode) {
       case 'list': return this.renderPuzzleList();
-      case 'attempt': return this.renderPuzzle();
+      case 'execution': return this.renderPuzzle();
       case 'edit': return this.renderPuzzleEditor();
     }
   }

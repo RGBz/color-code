@@ -1,6 +1,6 @@
 import Grid from './grid';
 
-export default class PuzzleAttempt {
+export default class RulebookExecution {
 
   constructor (puzzle, rulebook) {
     const initialGrid = puzzle.initialGrid.clone();
@@ -60,12 +60,12 @@ export default class PuzzleAttempt {
     return this;
   }
 
-  equals (otherAttempt) {
-    if (this.frames.length !== otherAttempt.frames.length) {
+  equals (otherExecution) {
+    if (this.frames.length !== otherExecution.frames.length) {
       return false;
     }
     for (let i = 0; i < this.frames.length; i += 1) {
-      if (!this.frames[i].equals(otherAttempt.frames[i])) {
+      if (!this.frames[i].equals(otherExecution.frames[i])) {
         return false;
       }
     }

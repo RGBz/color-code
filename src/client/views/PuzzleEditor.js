@@ -6,25 +6,25 @@ import GridView from './GridView';
 import PaletteView from './PaletteView';
 import RulebookEditor from './RulebookEditor';
 import IconButton from './buttons/IconButton';
-import AttemptControls from './AttemptControls';
+import RulebookExecutionControls from './RulebookExecutionControls';
 import Sign from './Sign';
 
 import Grid from '../models/grid';
-import PuzzleAttempt from '../models/puzzle-attempt';
+import RulebookExecution from '../models/rulebook-execution';
 
 export default class PuzzleEditor extends Component {
 
   constructor (props) {
     super(props);
     const { puzzle } = props;
-    const attempt = new PuzzleAttempt(puzzle, puzzle.solutionRulebook);
-    attempt.run();
+    const execution = new RulebookExecution(puzzle, puzzle.solutionRulebook);
+    execution.run();
     this.state = {
       penValue: 1,
       puzzle,
       width: puzzle.initialGrid.width,
       height: puzzle.initialGrid.height,
-      attempt,
+      execution,
       frameIndex: 0
     };
   }
@@ -34,8 +34,8 @@ export default class PuzzleEditor extends Component {
   }
 
   play () {
-    const { frameIndex, attempt } = this.state;
-    if (frameIndex === attempt.frameCount) {
+    const { frameIndex, execution } = this.state;
+    if (frameIndex === execution.frameCount) {
       this.setState({ frameIndex: 0 });
     }
     this.pause();
@@ -55,30 +55,30 @@ export default class PuzzleEditor extends Component {
   }
 
   stepForward () {
-    const { frameIndex, attempt } = this.state;
-    if (frameIndex < attempt.frameCount) {
+    const { frameIndex, execution } = this.state;
+    if (frameIndex < execution.frameCount) {
       this.setState({ frameIndex: frameIndex + 1 });
     } else {
       this.reset();
-      if (attempt.succeeded) {
+      if (execution.succeeded) {
         alert('You win!');
       }
     }
   }
 
   stepBackward () {
-    const { frameIndex, attempt } = this.state;
+    const { frameIndex, execution } = this.state;
     if (frameIndex > 0) {
       this.setState({ frameIndex: frameIndex - 1 });
     } else {
-      this.setState({ frameIndex: attempt.frameCount });
+      this.setState({ frameIndex: execution.frameCount });
     }
   }
 
   updatePuzzle (puzzle) {
-    const attempt = new PuzzleAttempt(puzzle, puzzle.solutionRulebook);
-    attempt.run();
-    this.setState({ puzzle, attempt, frameIndex: 0 }, () => this.play());
+    const execution = new RulebookExecution(puzzle, puzzle.solutionRulebook);
+    execution.run();
+    this.setState({ puzzle, execution, frameIndex: 0 }, () => this.play());
   }
 
   updatePuzzleName (name) {
@@ -128,10 +128,10 @@ export default class PuzzleEditor extends Component {
   render () {
     const { onSave, onBackPress, puzzle: savedPuzzle } = this.props;
     const {
-      penValue, puzzle, frameIndex, attempt, width, height,
+      penValue, puzzle, frameIndex, execution, width, height,
       puzzle: { maxTicks, palette, goalPattern: { grid: goalGrid }, solutionRulebook }
     } = this.state;
-    const grid = attempt.getFrame(frameIndex);
+    const grid = execution.getFrame(frameIndex);
     const hasChanges = puzzle !== savedPuzzle;
     return (
       <div className="puzzle-editor">
@@ -151,9 +151,9 @@ export default class PuzzleEditor extends Component {
             {hasChanges && (
               <button onClick={() => onSave(this.state.puzzle)}>SAVE</button>
             )}
-            <AttemptControls
+            <RulebookExecutionControls
               frameIndex={frameIndex}
-              frameCount={attempt.frameCount}
+              frameCount={execution.frameCount}
               onReplayPress={() => this.play()}
               onStepForwardPress={() => this.stepForward()}
               onStepBackwardPress={() => this.stepBackward()}

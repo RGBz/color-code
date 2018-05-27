@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import IconButton from './buttons/IconButton';
 
-export default class AttemptControls extends Component {
+export default class RulebookExecutionControls extends Component {
 
   render () {
     const {
@@ -28,7 +28,7 @@ export default class AttemptControls extends Component {
 
 }
 
-AttemptControls.propTypes = {
+RulebookExecutionControls.propTypes = {
   frameIndex: PropTypes.number.isRequired,
   frameCount: PropTypes.number.isRequired,
   onReplayPress: PropTypes.func.isRequired,
