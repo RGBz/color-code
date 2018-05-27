@@ -24,12 +24,10 @@ export default class PuzzleView extends Component {
     super(props);
     const { puzzle } = props;
     const solutionRulebook = EMPTY_RULEBOOK;
-    const execution = new RulebookExecution(puzzle, solutionRulebook);
-    execution.run();
     this.state = {
       penValue: 1,
       solutionRulebook,
-      execution,
+      execution: new RulebookExecution(puzzle, solutionRulebook),
       stepIndex: 0,
       showWinModal: false,
     };
@@ -84,7 +82,6 @@ export default class PuzzleView extends Component {
   updateSolutionRulebook (rulebook) {
     const solutionRulebook = rulebook.rules.length > 0 ? rulebook : EMPTY_RULEBOOK;
     const execution = new RulebookExecution(this.props.puzzle, solutionRulebook);
-    execution.run();
     if (!execution.equals(this.state.execution)) {
       this.setState({ execution, solutionRulebook, stepIndex: 0 }, () => this.play());
     } else {

@@ -9,6 +9,7 @@ export default class RulebookExecution {
     this.puzzle = puzzle;
     this.rulebook = rulebook.clone();
     this.steps = [initialGrid];
+    this.run();
   }
 
   get stepCount () {

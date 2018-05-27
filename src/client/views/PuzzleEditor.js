@@ -19,8 +19,6 @@ export default class PuzzleEditor extends Component {
     super(props);
     const { puzzle } = props;
     const solutionRulebook = new Rulebook();
-    const execution = new RulebookExecution(puzzle, solutionRulebook);
-    execution.run();
     this.state = {
       penValue: 1,
       stepIndex: 0,
@@ -28,7 +26,7 @@ export default class PuzzleEditor extends Component {
       height: puzzle.initialGrid.height,
       puzzle,
       solutionRulebook,
-      execution,
+      execution: new RulebookExecution(puzzle, solutionRulebook),
     };
   }
 
@@ -109,7 +107,6 @@ export default class PuzzleEditor extends Component {
 
   executeSolutionRulebook () {
     const execution = new RulebookExecution(puzzle, this.state.solutionRulebook);
-    execution.run();
     this.setState({ execution, stepIndex: 0 }, () => this.play());
   }
 
