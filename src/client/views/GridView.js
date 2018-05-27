@@ -42,6 +42,7 @@ export default class GridView extends Component {
     const { width, height, grid, palette } = props;
     const ctx = this.canvas.getContext('2d');
     ctx.strokeStyle = '#CCCCCC';
+    ctx.lineWidth = 0.1;
     for (let x = 0; x < grid.width; x += 1) {
       for (let y = 0; y < grid.height; y += 1) {
         const scaledX = x * this.hScale;
