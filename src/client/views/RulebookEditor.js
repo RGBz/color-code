@@ -11,9 +11,9 @@ import RuleEditor from './RuleEditor';
 export default class RulebookEditor extends Component {
 
   addRule () {
-    const { rulebook, onUpdate } = this.props;
+    const { rulebook, patternSize, onUpdate } = this.props;
     const updatedRulebook = rulebook.clone();
-    updatedRulebook.addRule(new Rule(-1, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))]));
+    updatedRulebook.addRule(createEmptyRuleForSize(patternSize));
     onUpdate(updatedRulebook);
   }
 
@@ -52,7 +52,17 @@ export default class RulebookEditor extends Component {
 
 RulebookEditor.propTypes = {
   penValue: PropTypes.number.isRequired,
+  patternSize: PropTypes.number.isRequired,
   palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   rulebook: RulebookPropType.isRequired,
   onUpdate: PropTypes.func.isRequired,
 };
+
+
+function createEmptyPatternForSize (size) {
+  return new Pattern(new Grid({ width: size, height: size, fillValue: -1 }))
+}
+
+function createEmptyRuleForSize (size) {
+  return new Rule(-1, [createEmptyPatternForSize(size)]);
+}

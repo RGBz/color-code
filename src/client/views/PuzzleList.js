@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { PuzzlePropType } from './prop-types';
 
 import GridView from './GridView';
+import AddButton from './buttons/AddButton';
+import IconButton from './buttons/IconButton';
 
 export default class PuzzleList extends Component {
 
@@ -11,17 +13,20 @@ export default class PuzzleList extends Component {
     return (
       <div className="puzzle-list">
         {puzzles.map(puzzle => (
-          <div key={puzzle.id} className="puzzle-tile" onClick={() => onSelectPuzzle(puzzle)}>
-            <GridView
-              grid={puzzle.goalPattern.grid}
-              width={100}
-              height={100}
-              palette={puzzle.palette}
-            />
-            <div>{puzzle.name}</div>
+          <div key={puzzle.id} className="puzzle-tile">
+            <div onClick={() => onSelectPuzzle(puzzle)}>
+              <GridView
+                grid={puzzle.goalPattern.grid}
+                width={100}
+                height={100}
+                palette={puzzle.palette}
+              />
+              <div>{puzzle.name}</div>
+            </div>
+            <IconButton icon="pencil-alt" onPress={() => onEditPuzzle(puzzle)} />
           </div>
         ))}
-        <button className="add-button" onClick={() => onCreatePuzzle()}>+</button>
+        <AddButton onPress={onCreatePuzzle} />
       </div>
     );
   }

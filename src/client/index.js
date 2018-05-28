@@ -21,11 +21,14 @@ const DEFAULT_PUZZLE = new Puzzle({
     '#90A4AE', // gray
     '#000000', // black
     '#D0011B', // red
-    '#FFA000', // orange
+    '#FFB500', // orange
     '#F8E81C', // yellow
     '#00C467', // green
     '#1190EE', // blue
     '#9012FE', // purple
+    '#8B572A', // brown
+    '#EEAD74', // tan
+    '#FFE7BF', // peach
   ],
 });
 
@@ -34,11 +37,6 @@ class App extends Component {
   constructor (props) {
     super(props);
     this.state = { puzzles: puzzles.map(Puzzle.fromJSON), mode: 'list', selectedPuzzle: null };
-  }
-
-  createPuzzle () {
-    const selectedPuzzle = DEFAULT_PUZZLE.clone();
-    this.setState({ selectedPuzzle, mode: 'edit' });
   }
 
   async save (puzzle) {
@@ -65,9 +63,14 @@ class App extends Component {
     }
   }
 
-  executeRulebook (selectedPuzzle) {
-    // window.history.pushState({ }, "ColorCode - Execution", `/execution/${puzzleId}`);
-    this.setState({ mode: 'execution', selectedPuzzle });
+  playPuzzle (selectedPuzzle) {
+    // window.history.pushState({ }, "ColorCode - Execution", `/play/${puzzleId}`);
+    this.setState({ mode: 'play', selectedPuzzle });
+  }
+
+  createPuzzle () {
+    const selectedPuzzle = DEFAULT_PUZZLE.clone();
+    this.setState({ mode: 'edit', selectedPuzzle });
   }
 
   editPuzzle (selectedPuzzle) {
@@ -81,7 +84,7 @@ class App extends Component {
       <PuzzleList
         puzzles={puzzles}
         onCreatePuzzle={() => this.createPuzzle()}
-        onSelectPuzzle={selectedPuzzle => this.executeRulebook(selectedPuzzle)}
+        onSelectPuzzle={selectedPuzzle => this.playPuzzle(selectedPuzzle)}
         onEditPuzzle={selectedPuzzle => this.editPuzzle(selectedPuzzle)}
       />
     );
@@ -111,7 +114,7 @@ class App extends Component {
   render () {
     switch (this.state.mode) {
       case 'list': return this.renderPuzzleList();
-      case 'execution': return this.renderPuzzle();
+      case 'play': return this.renderPuzzle();
       case 'edit': return this.renderPuzzleEditor();
     }
   }

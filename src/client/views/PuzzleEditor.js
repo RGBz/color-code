@@ -8,6 +8,7 @@ import RulebookEditor from './RulebookEditor';
 import IconButton from './buttons/IconButton';
 import RulebookExecutionControls from './RulebookExecutionControls';
 import Sign from './Sign';
+import Setting from './Setting';
 
 import Grid from '../models/Grid';
 import Rulebook from '../models/Rulebook';
@@ -20,12 +21,10 @@ export default class PuzzleEditor extends Component {
     const { puzzle } = props;
     const solutionRulebook = new Rulebook();
     this.state = {
-      penValue: 1,
-      stepIndex: 0,
-      width: puzzle.initialGrid.width,
-      height: puzzle.initialGrid.height,
       puzzle,
       solutionRulebook,
+      penValue: 2,
+      stepIndex: 0,
       execution: new RulebookExecution(puzzle, solutionRulebook),
     };
   }
@@ -60,10 +59,7 @@ export default class PuzzleEditor extends Component {
     if (stepIndex < execution.stepCount) {
       this.setState({ stepIndex: stepIndex + 1 });
     } else {
-      this.reset();
-      if (execution.succeeded) {
-        alert('You win!');
-      }
+      this.pause();
     }
   }
 
@@ -77,8 +73,7 @@ export default class PuzzleEditor extends Component {
   }
 
   updatePuzzle (puzzle) {
-    this.setState({ puzzle });
-    this.executeSolutionRulebook();
+    this.setState({ puzzle }, () => this.executeSolutionRulebook());
   }
 
   updatePuzzleName (name) {
@@ -96,41 +91,63 @@ export default class PuzzleEditor extends Component {
   updateGoalGrid (grid) {
     const puzzle = this.state.puzzle.clone();
     puzzle.goalPattern.grid = grid;
-    console.log('updated', grid)
     this.updatePuzzle(puzzle);
   }
 
   updateSolutionRulebook (solutionRulebook) {
-    this.setState({ solutionRulebook });
-    this.executeSolutionRulebook();
+    this.setState({ solutionRulebook }, () => this.executeSolutionRulebook());
   }
 
   executeSolutionRulebook () {
-    const execution = new RulebookExecution(puzzle, this.state.solutionRulebook);
+    const execution = new RulebookExecution(this.state.puzzle, this.state.solutionRulebook);
     this.setState({ execution, stepIndex: 0 }, () => this.play());
   }
 
-  updateGridSizes () {
-    const { width, height, puzzle: { initialGrid, goalPattern: { grid: goalGrid } } } = this.state;
+  copyGoalGridToInitialGrid () {
+    const { puzzle: { goalPattern: { grid: goalGrid } } } = this.state;
     const puzzle = this.state.puzzle.clone();
-    puzzle.initialGrid = initialGrid.clone(parseInt(width), parseInt(height));
-    puzzle.goalPattern.grid = goalGrid.clone(parseInt(width), parseInt(height));
+    puzzle.initialGrid = goalGrid.clone();
     this.updatePuzzle(puzzle);
   }
 
-  resetGridSizes () {
-    const { puzzle: { initialGrid: { width, height } } } = this.state;
-    this.setState({ width, height });
+  copyInitialGridToGoalGrid () {
+    const { puzzle: { initialGrid, goalPattern } } = this.state;
+    const puzzle = this.state.puzzle.clone();
+    puzzle.goalPattern.grid = initialGrid.clone();
+    this.updatePuzzle(puzzle);
+  }
+
+  updateGridSizes (size) {
+    const { puzzle: { initialGrid, goalPattern: { grid: goalGrid } } } = this.state;
+    const puzzle = this.state.puzzle.clone();
+    puzzle.initialGrid = initialGrid.cloneResize(parseInt(size), parseInt(size));
+    puzzle.goalPattern.grid = goalGrid.cloneResize(parseInt(size), parseInt(size));
+    this.updatePuzzle(puzzle);
+  }
+
+  updatePatternSizes (size) {
+    const puzzle = this.state.puzzle.clone();
+    puzzle.patternSize = size;
+    const solutionRulebook = new Rulebook();
+    const execution = new RulebookExecution(puzzle, solutionRulebook);
+    this.setState({ execution, puzzle, solutionRulebook, stepIndex: 0 }, () => this.play());
+  }
+
+  updateMaxTicks (maxTicks) {
+    const puzzle = this.state.puzzle.clone();
+    puzzle.maxTicks = maxTicks;
+    this.updatePuzzle(puzzle);
   }
 
   render () {
     const { onSave, onBackPress, puzzle: savedPuzzle } = this.props;
     const {
-      penValue, puzzle, stepIndex, execution, width, height, solutionRulebook,
-      puzzle: { maxTicks, palette, goalPattern: { grid: goalGrid } }
+      penValue, puzzle, stepIndex, execution, solutionRulebook,
+      puzzle: { maxTicks, palette, initialGrid, goalPattern: { grid: goalGrid }, patternSize }
     } = this.state;
     const grid = execution.getStep(stepIndex);
     const hasChanges = puzzle !== savedPuzzle;
+    const areGridsEqual = initialGrid.equals(goalGrid);
     return (
       <div className="puzzle-editor">
         <div className="header row">
@@ -145,9 +162,14 @@ export default class PuzzleEditor extends Component {
               />
             </div>
           </div>
-          <div className="column">
+          <div className="row">
             {hasChanges && (
-              <button onClick={() => onSave(this.state.puzzle)}>SAVE</button>
+              <IconButton
+                icon="save"
+                label="SAVE"
+                onPress={() => onSave(this.state.puzzle)}
+                style={{ marginRight: 16, background: '#FC3667', color: 'white' }}
+              />
             )}
             <RulebookExecutionControls
               stepIndex={stepIndex}
@@ -160,11 +182,27 @@ export default class PuzzleEditor extends Component {
         </div>
         <div className="row" style={{ background: '#E4E4E4', flex: 1 }}>
           <div className="column sidebar">
-            <div className="inner">
+            <div className="inner" style={{ alignItems: 'center' }}>
               <PaletteView
                 selectedPenValue={penValue}
                 palette={palette}
                 onSelectPen={penValue => this.setState({ penValue })}
+              />
+              <br /><br />
+              <Setting
+                label="Puzzle Size"
+                value={goalGrid.width}
+                onApply={puzzleSize => this.updateGridSizes(puzzleSize)}
+              />
+              <Setting
+                label="Pattern Size"
+                value={patternSize}
+                onApply={patternSize => this.updatePatternSizes(patternSize)}
+              />
+              <Setting
+                label="Max Steps"
+                value={maxTicks}
+                onApply={maxTicks => this.updateMaxTicks(maxTicks)}
               />
             </div>
           </div>
@@ -174,6 +212,7 @@ export default class PuzzleEditor extends Component {
                 rulebook={solutionRulebook}
                 palette={palette}
                 penValue={penValue}
+                patternSize={patternSize}
                 onUpdate={r => this.updateSolutionRulebook(r)}
               />
             </div>
@@ -189,7 +228,18 @@ export default class PuzzleEditor extends Component {
                 palette={palette}
                 onUpdate={g => this.updateInitialGrid(g)}
               />
-              <button onClick={() => this.updateInitialGrid(new Grid({ width: grid.width, height: grid.height }))}>CLEAR</button>
+              <div className="row" style={{ marginTop: 8, justifyContent: 'space-between' }}>
+                <IconButton
+                  icon="sync"
+                  onPress={() => this.copyGoalGridToInitialGrid()}
+                  disabled={areGridsEqual}
+                />
+                <IconButton
+                  icon="bomb"
+                  onPress={() => this.updateInitialGrid(new Grid({ width: grid.width, height: grid.height }))}
+                  disabled={initialGrid.isAll(0)}
+                />
+              </div>
               <div style={{ height: 16 }} />
               <Sign label="GOAL" />
               <GridView
@@ -200,16 +250,18 @@ export default class PuzzleEditor extends Component {
                 palette={palette}
                 onUpdate={g => this.updateGoalGrid(g)}
               />
-              <button onClick={() => this.updateGoalGrid(new Grid({ width: grid.width, height: grid.height }))}>CLEAR</button>
-              <div>
-                <input value={width} onChange={e => this.setState({ width: e.target.value })} />
-                x
-                <input value={height} onChange={e => this.setState({ height: e.target.value })} />
-                <button onClick={() => this.updateGridSizes()}>UPDATE</button>
-                <button onClick={() => this.resetGridSizes()}>RESET</button>
+              <div className="row" style={{ marginTop: 8, justifyContent: 'space-between' }}>
+                <IconButton
+                  icon="sync"
+                  onPress={() => this.copyInitialGridToGoalGrid()}
+                  disabled={areGridsEqual}
+                />
+                <IconButton
+                  icon="bomb"
+                  onPress={() => this.updateGoalGrid(new Grid({ width: grid.width, height: grid.height }))}
+                  disabled={goalGrid.isAll(0)}
+                />
               </div>
-              <br/>
-              <input value={maxTicks} />
             </div>
           </div>
         </div>

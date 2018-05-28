@@ -94,7 +94,7 @@ export default class PuzzleView extends Component {
   render () {
     const {
       onBackPress,
-      puzzle: { name, maxTicks, palette, goalPattern: { grid: goalGrid } }
+      puzzle: { name, maxTicks, palette, goalPattern: { grid: goalGrid }, patternSize }
     } = this.props;
     const { penValue, stepIndex, execution, solution } = this.state;
     const grid = execution.getStep(stepIndex);
@@ -136,6 +136,7 @@ export default class PuzzleView extends Component {
               <RulebookEditor
                 rulebook={solution.mostRecentRulebook}
                 palette={palette}
+                patternSize={patternSize}
                 penValue={penValue}
                 onUpdate={r => this.updateSolutionRulebook(r)}
               />

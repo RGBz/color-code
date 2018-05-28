@@ -2,15 +2,13 @@ import Rule from './Rule';
 import Pattern from './Pattern';
 import Grid from './Grid';
 
-const EMPTY_RULE = new Rule(-1, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))]);
-
 export default class Rulebook {
 
   static fromJSON ({ rules }) {
     return new Rulebook(rules.map(r => Rule.fromJSON(r)));
   }
 
-  constructor (rules = [EMPTY_RULE]) {
+  constructor (rules = []) {
     this.rules = rules;
   }
 
