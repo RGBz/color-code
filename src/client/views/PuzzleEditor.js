@@ -6,6 +6,7 @@ import GridView from './GridView';
 import PaletteView from './PaletteView';
 import RulebookEditor from './RulebookEditor';
 import IconButton from './buttons/IconButton';
+import IconToggle from './IconToggle';
 import RulebookExecutionControls from './RulebookExecutionControls';
 import Sign from './Sign';
 import Setting from './Setting';
@@ -139,11 +140,17 @@ export default class PuzzleEditor extends Component {
     this.updatePuzzle(puzzle);
   }
 
+  updateThumbnailPreviewType (thumbnailPreviewType) {
+    const puzzle = this.state.puzzle.clone();
+    puzzle.thumbnailPreviewType = thumbnailPreviewType;
+    this.updatePuzzle(puzzle);
+  }
+
   render () {
     const { onSave, onBackPress, puzzle: savedPuzzle } = this.props;
     const {
       penValue, puzzle, stepIndex, execution, solutionRulebook,
-      puzzle: { maxTicks, palette, initialGrid, goalPattern: { grid: goalGrid }, patternSize }
+      puzzle: { maxTicks, palette, initialGrid, goalPattern: { grid: goalGrid }, patternSize, thumbnailPreviewType }
     } = this.state;
     const grid = execution.getStep(stepIndex);
     const hasChanges = puzzle !== savedPuzzle;
@@ -203,6 +210,13 @@ export default class PuzzleEditor extends Component {
                 label="Max Steps"
                 value={maxTicks}
                 onApply={maxTicks => this.updateMaxTicks(maxTicks)}
+              />
+              <IconToggle
+                label="THUMBNAIL"
+                off={{ icon: 'square', value: 'initial' }}
+                on={{ icon: 'check-square', value: 'goal' }}
+                value={thumbnailPreviewType}
+                onToggle={type => this.updateThumbnailPreviewType(type)}
               />
             </div>
           </div>

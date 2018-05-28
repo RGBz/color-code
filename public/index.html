@@ -385,7 +385,7 @@
   .setting {
     padding-top: 16px;
   }
-  .setting .label {
+  .label {
     color: #888;
     text-transform: uppercase;
     font-size: 12px;
@@ -403,6 +403,38 @@
   }
   .setting button {
     margin-left: 4px;
+  }
+  .toggle {
+    padding-top: 16px;
+    width: 100%;
+  }
+  .toggle .label {
+    padding-left: 16px;
+  }
+  .toggle .row {
+    align-items: center;
+    cursor: pointer;
+  }
+  .toggle i {
+    padding: 16px;
+    color: #888;
+  }
+  .toggle .slide {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 4px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 2px;
+    overflow: visible;
+    flex: 1;
+  }
+  .toggle .knob {
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
   }
   .ReactModal__Overlay {
     opacity: 0;
