@@ -6,7 +6,7 @@ export default class Rule {
     return new Rule(targetValue, patterns.map(p => Pattern.fromJSON(p)));
   }
 
-  constructor (targetValue = 0, patterns = []) {
+  constructor (targetValue = -1, patterns = []) {
     this.targetValue = targetValue;
     this.patterns = patterns;
   }
@@ -23,7 +23,7 @@ export default class Rule {
   }
 
   matchesGridAtCoordinates (grid, x, y) {
-    if (this.targetValue) {
+    if (this.targetValue >= 0) {
       for (const pattern of this.patterns) {
         if (pattern.matchesGridAtCoordinates(grid, x, y)) {
           return true;
