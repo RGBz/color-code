@@ -6,23 +6,25 @@ import RulebookExecution from './RulebookExecution';
 
 export default class Puzzle {
 
-  static fromJSON ({ id, name, initialGrid, palette, goalPattern, maxTicks }) {
+  static fromJSON ({ id, name, initialGrid, palette, goalPattern, patternSize, maxTicks }) {
     return new Puzzle({
       id,
       name,
       initialGrid: Grid.fromJSON(initialGrid),
       goalPattern: Pattern.fromJSON(goalPattern),
+      patternSize,
       palette,
       maxTicks,
     });
   }
 
-  constructor ({ id, name, initialGrid, palette, goalPattern, maxTicks }) {
+  constructor ({ id, name, initialGrid, palette, goalPattern, patternSize, maxTicks }) {
     this.id = id || uuidv4();
     this.name = name;
     this.initialGrid = initialGrid;
     this.palette = palette || [];
     this.goalPattern = goalPattern;
+    this.patternSize = patternSize || 5;
     this.maxTicks = maxTicks || 50;
   }
 
@@ -33,6 +35,7 @@ export default class Puzzle {
       initialGrid: this.initialGrid.clone(),
       palette: this.palette.map(s => s),
       goalPattern: this.goalPattern.clone(),
+      patternSize: this.patternSize,
       maxTicks: this.maxTicks
     });
   }
@@ -44,6 +47,7 @@ export default class Puzzle {
       initialGrid: this.initialGrid,
       palette: this.palette,
       goalPattern: this.goalPattern,
+      patternSize: this.patternSize,
       maxTicks: this.maxTicks
     };
   }
