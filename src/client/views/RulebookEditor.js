@@ -13,7 +13,7 @@ export default class RulebookEditor extends Component {
   addRule () {
     const { rulebook, onUpdate } = this.props;
     const updatedRulebook = rulebook.clone();
-    updatedRulebook.addRule(new Rule(0, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))]));
+    updatedRulebook.addRule(new Rule(-1, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))]));
     onUpdate(updatedRulebook);
   }
 
