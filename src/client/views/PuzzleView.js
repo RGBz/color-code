@@ -10,27 +10,27 @@ import IconButton from './buttons/IconButton';
 import Sign from './Sign';
 import WinModal from './WinModal';
 
-import Grid from '../models/Grid';
-import Pattern from '../models/Pattern';
-import Rule from '../models/Rule';
 import Rulebook from '../models/Rulebook';
 import RulebookExecution from '../models/RulebookExecution';
-
-const EMPTY_RULEBOOK = new Rulebook([new Rule(0, [new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 }))])]);
+import Solution from '../models/Solution';
 
 export default class PuzzleView extends Component {
 
   constructor (props) {
     super(props);
     const { puzzle } = props;
-    const solutionRulebook = EMPTY_RULEBOOK;
+    const solution = Solution.loadByPuzzleId(puzzle.id);
     this.state = {
       penValue: 1,
-      solutionRulebook,
-      execution: new RulebookExecution(puzzle, solutionRulebook),
+      solution,
+      execution: new RulebookExecution(puzzle, solution.mostRecentRulebook),
       stepIndex: 0,
       showWinModal: false,
     };
+  }
+
+  componentDidMount () {
+    this.play();
   }
 
   componentWillUnmount () {
@@ -80,12 +80,14 @@ export default class PuzzleView extends Component {
   }
 
   updateSolutionRulebook (rulebook) {
-    const solutionRulebook = rulebook.rules.length > 0 ? rulebook : EMPTY_RULEBOOK;
-    const execution = new RulebookExecution(this.props.puzzle, solutionRulebook);
+    const solution = this.state.solution.clone();
+    solution.mostRecentRulebook = rulebook.rules.length > 0 ? rulebook : new Rulebook();
+    solution.save();
+    const execution = new RulebookExecution(this.props.puzzle, rulebook);
     if (!execution.equals(this.state.execution)) {
-      this.setState({ execution, solutionRulebook, stepIndex: 0 }, () => this.play());
+      this.setState({ execution, solution, stepIndex: 0 }, () => this.play());
     } else {
-      this.setState({ solutionRulebook });
+      this.setState({ solution });
     }
   }
 
@@ -94,7 +96,7 @@ export default class PuzzleView extends Component {
       onBackPress,
       puzzle: { name, maxTicks, palette, goalPattern: { grid: goalGrid } }
     } = this.props;
-    const { penValue, stepIndex, execution, solutionRulebook } = this.state;
+    const { penValue, stepIndex, execution, solution } = this.state;
     const grid = execution.getStep(stepIndex);
     return (
       <div className="puzzle-editor">
@@ -102,7 +104,7 @@ export default class PuzzleView extends Component {
           isOpen={this.state.showWinModal}
           onDismiss={onBackPress}
           stepCount={execution.stepCount}
-          patternCount={solutionRulebook.patternCount}
+          patternCount={solution.mostRecentRulebook.patternCount}
         />
         <div className="header row">
           <div className="column" style={{ flex: 1, flexDirection: 'row' }}>
@@ -132,7 +134,7 @@ export default class PuzzleView extends Component {
           <div className="column full">
             <div className="inner">
               <RulebookEditor
-                rulebook={solutionRulebook}
+                rulebook={solution.mostRecentRulebook}
                 palette={palette}
                 penValue={penValue}
                 onUpdate={r => this.updateSolutionRulebook(r)}
