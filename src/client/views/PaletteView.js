@@ -5,7 +5,7 @@ export default class PaletteView extends Component {
 
   renderSwatches () {
     const swatches = [];
-    for (let i = 1; i < this.props.palette.length; i++) {
+    for (let i = 0; i < this.props.palette.length; i++) {
       swatches.push(this.renderSwatch(i));
     }
     return swatches;
