@@ -14,7 +14,7 @@ export default class Grid {
 
   get (x, y) {
     if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
-      return 0;
+      return -1;
     }
     return this.cells[this.getCellIndex(x, y)];
   }

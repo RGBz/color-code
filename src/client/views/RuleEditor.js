@@ -18,9 +18,9 @@ export default class RuleEditor extends Component {
   }
 
   addPattern () {
-    const { rule, onUpdate } = this.props;
+    const { rule, onUpdate, patternSize } = this.props;
     const updatedRule = rule.clone();
-    updatedRule.patterns.push(new Pattern(new Grid({ width: 5, height: 5, fillValue: -1 })));
+    updatedRule.patterns.push(new Pattern(new Grid({ width: patternSize, height: patternSize, fillValue: -1 })));
     onUpdate(updatedRule);
   }
 
@@ -111,6 +111,7 @@ export default class RuleEditor extends Component {
 RuleEditor.propTypes = {
   penValue: PropTypes.number.isRequired,
   palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  patternSize: PropTypes.number.isRequired,
   rule: RulePropType.isRequired,
   onUpdate: PropTypes.func.isRequired,
   isOnlyRule: PropTypes.bool.isRequired,

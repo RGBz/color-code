@@ -29,7 +29,7 @@ export default class RulebookEditor extends Component {
   }
 
   render () {
-    const { rulebook, palette, penValue } = this.props;
+    const { rulebook, palette, penValue, patternSize } = this.props;
     const isOnlyOneRule = rulebook.rules.length === 1;
     return (
       <div className="rulebook-editor">
@@ -39,6 +39,7 @@ export default class RulebookEditor extends Component {
             rule={rule}
             palette={palette}
             penValue={penValue}
+            patternSize={patternSize}
             onUpdate={r => this.updateRule(i, r)}
             isOnlyRule={isOnlyOneRule}
           />

@@ -25,3 +25,8 @@ export const PuzzlePropType = PropTypes.shape({
   goalPattern: PatternPropType.isRequired,
   maxTicks: PropTypes.number,
 });
+
+export const PuzzlePackPropType = PropTypes.shape({
+  name: PropTypes.string.isRequired,
+  puzzles: PropTypes.arrayOf(PuzzlePropType.isRequired).isRequired,
+});
