@@ -17,7 +17,7 @@ export default class RulebookExecution {
   }
 
   get completed () {
-    return this.failed || this.succeeded || this.stepCount >= 50;//this.puzzle.maxTicks;
+    return this.failed || this.succeeded || this.stepCount >= this.puzzle.maxTicks;
   }
 
   get currentGrid () {

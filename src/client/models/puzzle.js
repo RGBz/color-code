@@ -6,20 +6,26 @@ import RulebookExecution from './RulebookExecution';
 
 export default class Puzzle {
 
-  static fromJSON ({ id, name, initialGrid, palette, goalPattern, patternSize, maxTicks, thumbnailPreviewType }) {
+  static fromJSON (json) {
     return new Puzzle({
-      id,
-      name,
-      initialGrid: Grid.fromJSON(initialGrid),
-      goalPattern: Pattern.fromJSON(goalPattern),
-      patternSize,
-      palette,
-      maxTicks,
-      thumbnailPreviewType,
+      ...json,
+      initialGrid: Grid.fromJSON(json.initialGrid),
+      goalPattern: Pattern.fromJSON(json.goalPattern),
     });
   }
 
-  constructor ({ id, name, initialGrid, palette, goalPattern, patternSize, maxTicks, thumbnailPreviewType }) {
+  constructor ({
+    id,
+    name,
+    thumbnailPreviewType,
+    palette,
+    patternSize,
+    maxTicks,
+    initialGrid,
+    goalPattern,
+    goalStepCount,
+    goalPatternCount,
+  }) {
     this.id = id || uuidv4();
     this.name = name;
     this.initialGrid = initialGrid;
@@ -28,6 +34,8 @@ export default class Puzzle {
     this.patternSize = patternSize || 5;
     this.maxTicks = maxTicks || 50;
     this.thumbnailPreviewType = thumbnailPreviewType || 'initial';
+    this.goalStepCount = goalStepCount;
+    this.goalPatternCount = goalPatternCount;
   }
 
   clone () {
@@ -40,6 +48,8 @@ export default class Puzzle {
       patternSize: this.patternSize,
       maxTicks: this.maxTicks,
       thumbnailPreviewType: this.thumbnailPreviewType,
+      goalStepCount: this.goalStepCount,
+      goalPatternCount: this.goalPatternCount,
     });
   }
 
@@ -53,6 +63,8 @@ export default class Puzzle {
       patternSize: this.patternSize,
       maxTicks: this.maxTicks,
       thumbnailPreviewType: this.thumbnailPreviewType,
+      goalStepCount: this.goalStepCount,
+      goalPatternCount: this.goalPatternCount,
     };
   }
 

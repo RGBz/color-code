@@ -4,17 +4,17 @@ import { PuzzlePropType } from './prop-types';
 
 import GridView from './GridView';
 import IconButton from './buttons/IconButton';
+import AchievementsIndicator from './AchievementsIndicator';
+
+import Solution from '../models/Solution';
 
 export default class PuzzleTileView extends Component {
-
-  renderAccolade (type, completed) {
-    return (<img key={type} src={`/images/${type}-${completed ? 'solid' : 'stroke'}.png`} />);
-  }
 
   render () {
     const { puzzle, onSelectPuzzle, onEditPuzzle } = this.props;
     const grid = puzzle.thumbnailPreviewType === 'initial' ?
       puzzle.initialGrid : puzzle.goalPattern.grid;
+    const solution = Solution.loadByPuzzleId(puzzle.id);
     return (
       <div className="puzzle-tile">
         <div onClick={() => onSelectPuzzle(puzzle)}>
@@ -26,12 +26,7 @@ export default class PuzzleTileView extends Component {
             showGrid={false}
           />
           <div className="puzzle-tile-name">{puzzle.name}</div>
-          <div className="accolades">
-            {['check', 'steps', 'pattern'].map((type, i) => {
-              const completed = (Math.random() * 100) > 50;
-              return this.renderAccolade(type, completed);
-            })}
-          </div>
+          <AchievementsIndicator records={solution.records} />
         </div>
         <IconButton icon="pencil-alt" onPress={() => onEditPuzzle(puzzle)} />
       </div>

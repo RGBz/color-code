@@ -9,6 +9,7 @@ import RulebookExecutionControls from './RulebookExecutionControls';
 import IconButton from './buttons/IconButton';
 import Sign from './Sign';
 import AchievementModal from './AchievementModal';
+import AchievementsIndicator from './AchievementsIndicator';
 
 import Rulebook from '../models/Rulebook';
 import RulebookExecution from '../models/RulebookExecution';
@@ -25,6 +26,7 @@ export default class PuzzleView extends Component {
       solution,
       execution: new RulebookExecution(puzzle, solution.mostRecentRulebook),
       stepIndex: 0,
+      newRecords: [],
       showAchievementModal: false,
     };
   }
@@ -59,12 +61,12 @@ export default class PuzzleView extends Component {
   }
 
   stepForward () {
-    const { stepIndex, execution } = this.state;
+    const { stepIndex, execution, newRecords } = this.state;
     if (stepIndex < execution.stepCount) {
       this.setState({ stepIndex: stepIndex + 1 });
     } else {
       this.pause();
-      if (execution.succeeded) {
+      if (newRecords.length > 0) {
         this.setState({ showAchievementModal: true });
       }
     }
@@ -80,12 +82,16 @@ export default class PuzzleView extends Component {
   }
 
   updateSolutionRulebook (rulebook) {
-    const solution = this.state.solution.clone();
+    const oldSolution = this.state.solution;
+    const solution = oldSolution.clone();
     solution.mostRecentRulebook = rulebook.rules.length > 0 ? rulebook : new Rulebook();
+    const execution = solution.executeRulebookForPuzzle(this.props.puzzle);
     solution.save();
-    const execution = new RulebookExecution(this.props.puzzle, rulebook);
     if (!execution.equals(this.state.execution)) {
-      this.setState({ execution, solution, stepIndex: 0 }, () => this.play());
+      const newRecords = Object.keys(solution.records).filter(type =>
+        solution.records[type].timestamp !== oldSolution.records[type].timestamp
+      ).map(name => ({ name, ...solution.records[name] }));
+      this.setState({ execution, solution, newRecords, stepIndex: 0 }, () => this.play());
     } else {
       this.setState({ solution });
     }
@@ -96,13 +102,14 @@ export default class PuzzleView extends Component {
       onBackPress,
       puzzle: { name, maxTicks, palette, goalPattern: { grid: goalGrid }, patternSize }
     } = this.props;
-    const { penValue, stepIndex, execution, solution } = this.state;
+    const { penValue, stepIndex, execution, solution, newRecords } = this.state;
     const grid = execution.getStep(stepIndex);
     return (
       <div className="puzzle-editor">
         <AchievementModal
           isOpen={this.state.showAchievementModal}
           onDismiss={onBackPress}
+          newRecords={newRecords}
           stepCount={execution.stepCount}
           patternCount={solution.mostRecentRulebook.patternCount}
         />
@@ -113,13 +120,16 @@ export default class PuzzleView extends Component {
               <div className="puzzle-name">{name || ''}</div>
             </div>
           </div>
-          <RulebookExecutionControls
-            stepIndex={stepIndex}
-            stepCount={execution.stepCount}
-            onReplayPress={() => this.play()}
-            onStepForwardPress={() => this.stepForward()}
-            onStepBackwardPress={() => this.stepBackward()}
-          />
+          <div className="column" style={{ flexDirection: 'row' }}>
+            <AchievementsIndicator records={solution.records} />
+            <RulebookExecutionControls
+              stepIndex={stepIndex}
+              stepCount={execution.stepCount}
+              onReplayPress={() => this.play()}
+              onStepForwardPress={() => this.stepForward()}
+              onStepBackwardPress={() => this.stepBackward()}
+            />
+          </div>
         </div>
         <div className="row" style={{ background: '#E4E4E4', flex: 1 }}>
           <div className="column sidebar">

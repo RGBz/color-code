@@ -110,6 +110,13 @@
     justify-content: center;
     align-items: center;
   }
+  .header .accolades {
+    margin-right: 24px;
+  }
+  .header .accolades img {
+    width: 24px;
+    margin-right: 8px;
+  }
   .puzzle-pack-list {
     flex: 1;
     display: flex;
@@ -396,6 +403,11 @@
     font-size: 32px;
     font-weight: 500;
   }
+  .stat-caption {
+    text-align: center;
+    font-weight: 300;
+    font-size: 14px;
+  }
   .achievement-modal-overlay {
     background: rgba(0,0,0,0.75);
     z-index: 2;
@@ -408,9 +420,26 @@
   }
   .achievement-modal .stat-label {
     color: #AAAAAA;
+    text-transform: uppercase;
   }
   .achievement-modal .stat-value {
     text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-right: 32px;
+  }
+  .achievement-modal .stat-value img {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+  .achievement-modal .stat-caption {
+    margin-top: 8px;
+    color: black;
+    font-weight: 500;
+    letter-spacing: 1px;
   }
   .achievement-modal .row {
     justify-content: space-between;

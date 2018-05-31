@@ -32,17 +32,34 @@ const signStyle = {
 
 export default class AchievementModal extends Component {
 
-  renderStatColumn (label, value) {
+  renderStatColumn (name, value) {
+    const newRecord = this.props.newRecords.find(record => record.name === name);
+    const imgPath = newRecord && newRecord.perfect ?
+      `/images/${name}-solid.png` : `/images/${name}-stroke.png`;
     return (
       <div className="stat-column">
         <div className="stat-label">
-          {label}
+          {name}
         </div>
         <div className="stat-value">
+          <img src={imgPath} />
           {value}
         </div>
+        {newRecord && (
+          <div className="stat-caption">
+            {newRecord.perfect ? 'PERFECT!' : 'NEW RECORD!'}
+          </div>
+        )}
       </div>
     );
+  }
+
+  renderMessage () {
+    const { newRecords } = this.props;
+    if (newRecords.some(record => record.type === 'completed')) {
+      return 'Puzzle complete!';
+    }
+    return `New ${newRecords.length === 1 ? 'record' : 'records'}!`;
   }
 
   render () {
@@ -51,18 +68,20 @@ export default class AchievementModal extends Component {
       <Modal isOpen={isOpen} style={modalStyle}>
         <div className="achievement-modal">
           <Sign
-            label="NEW RECORD!"
+            label="CONGRATULATIONS!"
             style={signStyle}
           />
           <div className="row" style={{ marginTop: 20 }}>
-            <div className="message">Puzzle complete!</div>
+            <div className="message">
+              {this.renderMessage()}
+            </div>
             <button onClick={onDismiss}>
               NEXT
             </button>
           </div>
           <div className="stats-table">
-            {this.renderStatColumn('STEPS', stepCount)}
-            {this.renderStatColumn('PATTERNS', patternCount)}
+            {this.renderStatColumn('steps', stepCount)}
+            {this.renderStatColumn('patterns', patternCount)}
           </div>
         </div>
       </Modal>
@@ -76,4 +95,10 @@ AchievementModal.propTypes = {
   stepCount: PropTypes.number.isRequired,
   patternCount: PropTypes.number.isRequired,
   onDismiss: PropTypes.func.isRequired,
+  newRecords: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    date: PropTypes.object.isRequired,
+    perfect: PropTypes.bool,
+    count: PropTypes.number,
+  }).isRequired).isRequired,
 };

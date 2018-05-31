@@ -146,11 +146,36 @@ export default class PuzzleEditor extends Component {
     this.updatePuzzle(puzzle);
   }
 
+  updateGoalStepCount (goalStepCount) {
+    const puzzle = this.state.puzzle.clone();
+    puzzle.goalStepCount = goalStepCount;
+    this.updatePuzzle(puzzle);
+  }
+
+  updateGoalPatternCount (goalPatternCount) {
+    const puzzle = this.state.puzzle.clone();
+    puzzle.goalPatternCount = goalPatternCount;
+    this.updatePuzzle(puzzle);
+  }
+
   render () {
     const { onSave, onBackPress, puzzle: savedPuzzle } = this.props;
     const {
-      penValue, puzzle, stepIndex, execution, solutionRulebook,
-      puzzle: { maxTicks, palette, initialGrid, goalPattern: { grid: goalGrid }, patternSize, thumbnailPreviewType }
+      penValue,
+      puzzle,
+      stepIndex,
+      execution,
+      solutionRulebook,
+      puzzle: {
+        maxTicks,
+        palette,
+        initialGrid,
+        patternSize,
+        thumbnailPreviewType,
+        goalStepCount,
+        goalPatternCount,
+        goalPattern: { grid: goalGrid },
+      },
     } = this.state;
     const grid = execution.getStep(stepIndex);
     const hasChanges = puzzle !== savedPuzzle;
@@ -276,6 +301,16 @@ export default class PuzzleEditor extends Component {
                   disabled={goalGrid.isAll(0)}
                 />
               </div>
+              <Setting
+                label="Steps Goal"
+                value={goalStepCount || ''}
+                onApply={goalStepCount => this.updateGoalStepCount(goalStepCount)}
+              />
+              <Setting
+                label="Patterns Goal"
+                value={goalPatternCount || ''}
+                onApply={goalPatternCount => this.updateGoalPatternCount(goalPatternCount)}
+              />
             </div>
           </div>
         </div>

@@ -198,7 +198,9 @@
         },
         "patternSize": "3",
         "maxTicks": 50,
-        "thumbnailPreviewType": "initial"
+        "thumbnailPreviewType": "initial",
+        "goalStepCount": "4",
+        "goalPatternCount": "5"
       },
       {
         "id": "c1e8961f-184c-43b2-a502-3921525d6bd1",
@@ -880,7 +882,9 @@
         },
         "patternSize": "1",
         "maxTicks": "5",
-        "thumbnailPreviewType": "initial"
+        "thumbnailPreviewType": "initial",
+        "goalStepCount": "1",
+        "goalPatternCount": "1"
       },
       {
         "id": "3b2501c7-7c66-41dc-9163-7e71bf57234d",
@@ -1077,7 +1081,9 @@
         },
         "patternSize": "1",
         "maxTicks": "5",
-        "thumbnailPreviewType": "initial"
+        "thumbnailPreviewType": "initial",
+        "goalStepCount": "1",
+        "goalPatternCount": "2"
       },
       {
         "id": "31b1628e-9307-4825-a108-23cfa5fcca7e",
@@ -1354,7 +1360,9 @@
         },
         "patternSize": 5,
         "maxTicks": "10",
-        "thumbnailPreviewType": "initial"
+        "thumbnailPreviewType": "initial",
+        "goalStepCount": "1",
+        "goalPatternCount": "5"
       }
     ]
   },
@@ -2122,7 +2130,9 @@
         },
         "patternSize": "3",
         "maxTicks": "10",
-        "thumbnailPreviewType": "initial"
+        "thumbnailPreviewType": "initial",
+        "goalStepCount": "3",
+        "goalPatternCount": "2"
       },
       {
         "id": "5e24f847-aa3d-4c62-9534-d21e282cd136",
@@ -2495,7 +2505,9 @@
         },
         "patternSize": "3",
         "maxTicks": "10",
-        "thumbnailPreviewType": "initial"
+        "thumbnailPreviewType": "initial",
+        "goalStepCount": "3",
+        "goalPatternCount": "2"
       },
       {
         "id": "b9ff1177-f5f6-4a03-a7de-c6e288f01beb",

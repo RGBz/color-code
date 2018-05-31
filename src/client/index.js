@@ -14,6 +14,8 @@ import Rulebook from './models/Rulebook';
 import Pattern from './models/Pattern';
 import puzzlePacks from './puzzle-packs';
 
+// Object.keys(localStorage).forEach(k => localStorage.removeItem(k));
+
 class App extends Component {
 
   constructor (props) {
