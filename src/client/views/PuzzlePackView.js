@@ -4,6 +4,7 @@ import { PuzzlePackPropType } from './prop-types';
 
 import AddButton from './buttons/AddButton';
 import PuzzleTileView from './PuzzleTileView';
+import Sign from './Sign';
 
 import Puzzle from '../models/Puzzle';
 import Pattern from '../models/Pattern';
@@ -43,7 +44,7 @@ export default class PuzzlePackView extends Component {
     const { puzzlePack, navigateToPlayPuzzle, navigateToEditPuzzle } = this.props;
     return (
       <div className="puzzle-pack">
-        <div className="heading">{puzzlePack.name}</div>
+        <Sign label={puzzlePack.name} />
         <div className="puzzles">
           {puzzlePack.puzzles.map(puzzle =>
             <PuzzleTileView

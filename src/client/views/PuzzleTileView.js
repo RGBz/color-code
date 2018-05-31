@@ -7,6 +7,10 @@ import IconButton from './buttons/IconButton';
 
 export default class PuzzleTileView extends Component {
 
+  renderAccolade (type, completed) {
+    return (<img key={type} src={`/images/${type}-${completed ? 'solid' : 'stroke'}.png`} />);
+  }
+
   render () {
     const { puzzle, onSelectPuzzle, onEditPuzzle } = this.props;
     const grid = puzzle.thumbnailPreviewType === 'initial' ?
@@ -16,12 +20,18 @@ export default class PuzzleTileView extends Component {
         <div onClick={() => onSelectPuzzle(puzzle)}>
           <GridView
             grid={grid}
-            width={100}
-            height={100}
+            width={160}
+            height={160}
             palette={puzzle.palette}
             showGrid={false}
           />
-          <div>{puzzle.name}</div>
+          <div className="puzzle-tile-name">{puzzle.name}</div>
+          <div className="accolades">
+            {['check', 'steps', 'pattern'].map((type, i) => {
+              const completed = (Math.random() * 100) > 50;
+              return this.renderAccolade(type, completed);
+            })}
+          </div>
         </div>
         <IconButton icon="pencil-alt" onPress={() => onEditPuzzle(puzzle)} />
       </div>
