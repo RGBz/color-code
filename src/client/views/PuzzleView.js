@@ -8,7 +8,7 @@ import RulebookEditor from './RulebookEditor';
 import RulebookExecutionControls from './RulebookExecutionControls';
 import IconButton from './buttons/IconButton';
 import Sign from './Sign';
-import WinModal from './WinModal';
+import AchievementModal from './AchievementModal';
 
 import Rulebook from '../models/Rulebook';
 import RulebookExecution from '../models/RulebookExecution';
@@ -25,7 +25,7 @@ export default class PuzzleView extends Component {
       solution,
       execution: new RulebookExecution(puzzle, solution.mostRecentRulebook),
       stepIndex: 0,
-      showWinModal: false,
+      showAchievementModal: false,
     };
   }
 
@@ -65,7 +65,7 @@ export default class PuzzleView extends Component {
     } else {
       this.pause();
       if (execution.succeeded) {
-        this.setState({ showWinModal: true });
+        this.setState({ showAchievementModal: true });
       }
     }
   }
@@ -100,8 +100,8 @@ export default class PuzzleView extends Component {
     const grid = execution.getStep(stepIndex);
     return (
       <div className="puzzle-editor">
-        <WinModal
-          isOpen={this.state.showWinModal}
+        <AchievementModal
+          isOpen={this.state.showAchievementModal}
           onDismiss={onBackPress}
           stepCount={execution.stepCount}
           patternCount={solution.mostRecentRulebook.patternCount}

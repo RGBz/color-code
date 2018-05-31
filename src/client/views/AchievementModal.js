@@ -30,7 +30,7 @@ const signStyle = {
   padding: '4px 12px',
 };
 
-export default class WinModal extends Component {
+export default class AchievementModal extends Component {
 
   renderStatColumn (label, value) {
     return (
@@ -49,9 +49,9 @@ export default class WinModal extends Component {
     const { isOpen, onDismiss, stepCount, patternCount } = this.props;
     return (
       <Modal isOpen={isOpen} style={modalStyle}>
-        <div className="win-modal">
+        <div className="achievement-modal">
           <Sign
-            label="CONGRATULATIONS!"
+            label="NEW RECORD!"
             style={signStyle}
           />
           <div className="row" style={{ marginTop: 20 }}>
@@ -71,7 +71,7 @@ export default class WinModal extends Component {
 
 }
 
-WinModal.propTypes = {
+AchievementModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   stepCount: PropTypes.number.isRequired,
   patternCount: PropTypes.number.isRequired,
