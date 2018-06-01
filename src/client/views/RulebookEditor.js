@@ -10,6 +10,12 @@ import RuleEditor from './RuleEditor';
 
 export default class RulebookEditor extends Component {
 
+  componentWillMount () {
+    if (this.props.rulebook.patternCount === 0) {
+      this.addRule();
+    }
+  }
+
   addRule () {
     const { rulebook, patternSize, onUpdate } = this.props;
     const updatedRulebook = rulebook.clone();
@@ -18,10 +24,13 @@ export default class RulebookEditor extends Component {
   }
 
   updateRule (ruleIndex, rule) {
-    const { rulebook, onUpdate } = this.props;
+    const { rulebook, patternSize, onUpdate } = this.props;
     const updatedRulebook = rulebook.clone();
     if (rule.patterns.length === 0) {
       updatedRulebook.rules.splice(ruleIndex, 1);
+      if (updatedRulebook.patternCount === 0) {
+        updatedRulebook.addRule(createEmptyRuleForSize(patternSize));
+      }
     } else {
       updatedRulebook.rules[ruleIndex] = rule;
     }
