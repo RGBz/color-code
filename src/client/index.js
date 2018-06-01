@@ -12,16 +12,16 @@ import Grid from './models/Grid';
 import Rule from './models/Rule';
 import Rulebook from './models/Rulebook';
 import Pattern from './models/Pattern';
-import puzzlePacks from './puzzle-packs';
+import { savePuzzlePacks, loadPuzzlePacks } from './dao';
 
-// Object.keys(localStorage).forEach(k => localStorage.removeItem(k));
+Object.keys(localStorage).forEach(k => localStorage.removeItem(k));
 
 class App extends Component {
 
   constructor (props) {
     super(props);
     this.state = {
-      puzzlePacks: puzzlePacks.map(PuzzlePack.fromJSON),
+      puzzlePacks: loadPuzzlePacks(),
       mode: 'list',
       selectedPuzzle: null,
     };
@@ -29,12 +29,7 @@ class App extends Component {
 
   async savePuzzlePacks (updatedPuzzlePacks) {
     try {
-      await fetch('/puzzle-packs', {
-        method: 'POST',
-        body: JSON.stringify(updatedPuzzlePacks),
-        headers: { 'Content-Type': 'application/json' }
-      });
-      this.setState({ puzzlePacks: updatedPuzzlePacks });
+      this.setState({ puzzlePacks: await savePuzzlePacks(updatedPuzzlePacks) });
     } catch (err) {
       console.error(err);
     }

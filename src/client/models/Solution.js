@@ -9,7 +9,6 @@ export default class Solution {
   }
 
   static fromJSON ({ puzzleId, mostRecentRulebook, records }) {
-    console.log('loaded', { puzzleId, mostRecentRulebook, records })
     return new Solution({
       puzzleId,
       mostRecentRulebook: Rulebook.fromJSON(mostRecentRulebook),
