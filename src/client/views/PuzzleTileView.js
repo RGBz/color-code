@@ -11,7 +11,14 @@ import Solution from '../models/Solution';
 export default class PuzzleTileView extends Component {
 
   render () {
-    const { puzzle, onSelectPuzzle, onEditPuzzle } = this.props;
+    const { puzzle, onSelectPuzzle, onEditPuzzle, isUnlocked, isEditable } = this.props;
+    if (!isEditable && !isUnlocked) {
+      return (
+        <div className="puzzle-tile">
+          <img src="/images/lock.png" width="160px" />
+        </div>
+      );
+    }
     const grid = puzzle.thumbnailPreviewType === 'initial' ?
       puzzle.initialGrid : puzzle.goalPattern.grid;
     const solution = Solution.loadByPuzzleId(puzzle.id);
@@ -28,7 +35,7 @@ export default class PuzzleTileView extends Component {
           <div className="puzzle-tile-name">{puzzle.name}</div>
           <AchievementsIndicator records={solution.records} />
         </div>
-        <IconButton icon="pencil-alt" onPress={() => onEditPuzzle(puzzle)} />
+        {isEditable && <IconButton icon="pencil-alt" onPress={() => onEditPuzzle(puzzle)} />}
       </div>
     );
   }
@@ -39,4 +46,5 @@ PuzzleTileView.propTypes = {
   puzzle: PuzzlePropType.isRequired,
   onSelectPuzzle: PropTypes.func.isRequired,
   onEditPuzzle: PropTypes.func.isRequired,
+  isUnlocked: PropTypes.bool.isRequired,
 };

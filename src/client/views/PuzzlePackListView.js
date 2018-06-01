@@ -4,6 +4,8 @@ import { PuzzlePackPropType } from './prop-types';
 
 import PuzzlePackView from './PuzzlePackView';
 
+import Solution from '../models/Solution';
+
 export default class PuzzlePackListView extends Component {
 
   render () {
@@ -12,16 +14,25 @@ export default class PuzzlePackListView extends Component {
       updatePuzzlePack,
       navigateToPlayPuzzle,
       navigateToEditPuzzle,
+      isEditable,
     } = this.props;
+    const lockedPuzzlePackIndex = puzzlePacks.findIndex(pack => {
+      const lastPuzle = pack.puzzles[pack.puzzles.length - 1];
+      return !Solution.loadByPuzzleId(lastPuzle.id).records.completed.timestamp
+    }) + 1;
+    const unlockedPacks = isEditable ?
+      puzzlePacks :
+      puzzlePacks.filter((pack, index) => index < lockedPuzzlePackIndex);
     return (
       <div className="puzzle-pack-list">
-        {puzzlePacks.map(puzzlePack =>
+        {unlockedPacks.map(puzzlePack =>
           <PuzzlePackView
             key={puzzlePack.nme}
             puzzlePack={puzzlePack}
             updatePuzzlePack={updatePuzzlePack}
             navigateToPlayPuzzle={navigateToPlayPuzzle}
             navigateToEditPuzzle={navigateToEditPuzzle}
+            isEditable={isEditable}
           />
         )}
       </div>

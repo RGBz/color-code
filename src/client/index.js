@@ -14,7 +14,9 @@ import Rulebook from './models/Rulebook';
 import Pattern from './models/Pattern';
 import { savePuzzlePacks, loadPuzzlePacks } from './dao';
 
-Object.keys(localStorage).forEach(k => localStorage.removeItem(k));
+// Object.keys(localStorage).forEach(k => localStorage.removeItem(k));
+
+const isEditable = false;
 
 class App extends Component {
 
@@ -76,6 +78,7 @@ class App extends Component {
         updatePuzzlePack={puzzlePack => this.savePuzzlePack(puzzlePack)}
         navigateToPlayPuzzle={selectedPuzzle => this.navigateToPlayPuzzle(selectedPuzzle)}
         navigateToEditPuzzle={selectedPuzzle => this.navigateToEditPuzzle(selectedPuzzle)}
+        isEditable={isEditable}
       />
     );
   }

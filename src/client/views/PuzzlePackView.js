@@ -7,6 +7,7 @@ import PuzzleTileView from './PuzzleTileView';
 import Sign from './Sign';
 
 import Puzzle from '../models/Puzzle';
+import Solution from '../models/Solution';
 import Pattern from '../models/Pattern';
 import Grid from '../models/Grid';
 
@@ -41,20 +42,25 @@ export default class PuzzlePackView extends Component {
   }
 
   render () {
-    const { puzzlePack, navigateToPlayPuzzle, navigateToEditPuzzle } = this.props;
+    const { puzzlePack, isEditable, navigateToPlayPuzzle, navigateToEditPuzzle } = this.props;
+    const lockedPuzzleIndex = (puzzlePack.puzzles.findIndex(puzzle =>
+      !Solution.loadByPuzzleId(puzzle.id).records.completed.timestamp
+    ) + 1) || puzzlePack.puzzles.length;
     return (
       <div className="puzzle-pack">
         <Sign label={puzzlePack.name} />
         <div className="puzzles">
-          {puzzlePack.puzzles.map(puzzle =>
+          {puzzlePack.puzzles.map((puzzle, index) =>
             <PuzzleTileView
               key={puzzle.id}
               puzzle={puzzle}
               onSelectPuzzle={navigateToPlayPuzzle}
               onEditPuzzle={navigateToEditPuzzle}
+              isUnlocked={index < lockedPuzzleIndex}
+              isEditable={isEditable}
             />
           )}
-          <AddButton onPress={() => this.createPuzzle()} />
+          {isEditable && <AddButton onPress={() => this.createPuzzle()} />}
         </div>
       </div>
     );
