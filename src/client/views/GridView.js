@@ -41,22 +41,21 @@ export default class GridView extends Component {
   updateCanvas (props) {
     const { width, height, grid, palette, showGrid } = props;
     const ctx = this.canvas.getContext('2d');
-    if (showGrid) {
-      ctx.strokeStyle = '#CCCCCC';
-      ctx.lineWidth = 0.1;
-    } else {
-      ctx.strokeStyle = 'transparent';
-      ctx.lineWidth = 0;
-    }
+    ctx.clearRect(0, 0, width, height);
     for (let x = 0; x < grid.width; x += 1) {
       for (let y = 0; y < grid.height; y += 1) {
         const scaledX = x * this.hScale;
         const scaledY = y * this.vScale;
         ctx.fillStyle = palette[grid.get(x, y)];
-        ctx.fillRect(scaledX, scaledY, this.hScale, this.vScale);
         if (showGrid) {
-          ctx.strokeRect(scaledX, scaledY, this.hScale, this.vScale);
+          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+        } else {
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = ctx.fillStyle;
         }
+        ctx.fillRect(scaledX, scaledY, this.hScale, this.vScale);
+        ctx.strokeRect(scaledX, scaledY, this.hScale, this.vScale);
       }
     }
   }
