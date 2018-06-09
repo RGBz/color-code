@@ -41,13 +41,13 @@ class App extends Component {
       this.setState({ loaded: true, player });
     } catch (err) {
       console.warn(err);
-      this.setState({ loaded: true });
+      this.setState({ loaded: true, player: new Player() });
     }
   }
 
   async logout () {
     await this.state.player.logout();
-    this.setState({ player: null });
+    this.setState({ player: new Player() });
   }
 
   async savePuzzlePacks (updatedPuzzlePacks) {
@@ -91,6 +91,14 @@ class App extends Component {
     this.setState({ mode: 'edit', selectedPuzzle });
   }
 
+  navigateToLogin () {
+    this.setState({ mode: 'login' });
+  }
+
+  navigateToSignUp () {
+    this.setState({ mode: 'sign up' });
+  }
+
   renderPuzzlePackList () {
     const { player, puzzlePacks } = this.state;
     return (
@@ -101,7 +109,9 @@ class App extends Component {
         navigateToPlayPuzzle={selectedPuzzle => this.navigateToPlayPuzzle(selectedPuzzle)}
         navigateToEditPuzzle={selectedPuzzle => this.navigateToEditPuzzle(selectedPuzzle)}
         isEditable={isEditable}
-        onLogout={() => this.logout()}
+        onLoginPressed={() => this.navigateToLogin()}
+        onSignUpPressed={() => this.navigateToSignUp()}
+        onLogoutPressed={() => this.logout()}
       />
     );
   }
@@ -128,17 +138,28 @@ class App extends Component {
     );
   }
 
+  renderLoginScreen () {
+    return (
+      <LoginScreen 
+        player={this.state.player}
+        onClose={() => this.setState({ mode: 'list' })} 
+        initialTab={this.state.mode} 
+      />
+    );
+  }
+
   render () {
     const { loaded, player, mode } = this.state;
     if (!loaded) {
-      return 'loading...';
-    }
-    if (!player) {
       return (
-        <LoginScreen onLogin={player => this.setState({ player })} />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: 1, color: '#ccc' }}>
+          loading...
+        </div>
       );
     }
     switch (mode) {
+      case 'login': return this.renderLoginScreen();
+      case 'sign up': return this.renderLoginScreen();
       case 'list': return this.renderPuzzlePackList();
       case 'play': return this.renderPuzzle();
       case 'edit': return this.renderPuzzleEditor();

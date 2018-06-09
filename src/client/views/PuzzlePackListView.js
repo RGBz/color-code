@@ -11,6 +11,19 @@ export default class PuzzlePackListView extends Component {
     scrollingElement.scrollTop = scrollingElement.scrollHeight;
   }
 
+  renderAuthButtons () {
+    const { player: { username }, onLoginPressed, onLogoutPressed, onSignUpPressed } = this.props;
+    if (!username) {
+      return [
+        <button className="logout" onClick={onLoginPressed}>login</button>,
+        <button className="logout" onClick={onSignUpPressed}>register</button>
+      ];
+    }
+    return (
+      <button className="logout" onClick={onLogoutPressed}>logout</button>
+    );
+  }
+
   render () {
     const {
       player,
@@ -18,7 +31,6 @@ export default class PuzzlePackListView extends Component {
       updatePuzzlePack,
       navigateToPlayPuzzle,
       navigateToEditPuzzle,
-      onLogout,
       isEditable,
     } = this.props;
     const lockedPuzzlePackIndex = puzzlePacks.findIndex(pack => {
@@ -32,7 +44,7 @@ export default class PuzzlePackListView extends Component {
       <div className="puzzle-pack-list">
         <div className="header">
           <img src="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Flogo.png?1527979638257" />
-          <button className="logout" onClick={onLogout}>logout</button>
+          {this.renderAuthButtons()}
         </div>
         {unlockedPacks.map(puzzlePack =>
           <PuzzlePackView
@@ -57,5 +69,7 @@ PuzzlePackListView.propTypes = {
   updatePuzzlePack: PropTypes.func.isRequired,
   navigateToPlayPuzzle: PropTypes.func.isRequired,
   navigateToEditPuzzle: PropTypes.func.isRequired,
-  onLogout: PropTypes.func.isRequired,
+  onLogoutPressed: PropTypes.func.isRequired,
+  onLoginPressed: PropTypes.func.isRequired,
+  onSignUpPressed: PropTypes.func.isRequired,
 };

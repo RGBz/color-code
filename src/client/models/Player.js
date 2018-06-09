@@ -2,28 +2,45 @@ import Solution from './Solution';
 
 export default class Player {
 
-  static async signUp (username, password) {
-    return Player.fromJSON(await post('/player', { username, password }));
-  }
-
-  static async login (username, password) {
-    return Player.fromJSON(await post('/login', { username, password }));
-  }
-
   static async fetchMe () {
     return Player.fromJSON(await get('/player'));
   }
 
   static fromJSON ({ username, solutions }) {
-    Object.keys(solutions).forEach(puzzleId => {
-      solutions[puzzleId] = Solution.fromJSON(solutions[puzzleId]);
-    });
-    return new Player({ username, solutions });
+    return new Player({ username, solutions: solutionsFromJSON(solutions) });
   }
 
-  constructor ({ username, solutions }) {
+  constructor ({ username, solutions = {} } = {}) {
     this.username = username;
     this.solutions = solutions;
+  }
+
+  get score () {
+    let score = 0;
+    for (const solution of Object.values(this.solutions)) {
+      if (solution.completed.timestamp) {
+        score += 3;
+      }
+      if (solution.patterns.timestamp) {
+        score += 1;
+      }
+      if (solution.steps.timestamp) {
+        score += 1;
+      }
+    }
+    return score;
+  }
+
+  async login (username, password) {
+    const { solutions } = await post('/login', { username, password });
+    this.username = username;
+    this.solutions = solutionsFromJSON(solutions);
+  }
+
+  async signUp (username, password) {
+    this.username = username;
+    await post('/player', { username, password });
+    return this.save();
   }
 
   getSolutionByPuzzleId (puzzleId) {
@@ -39,7 +56,9 @@ export default class Player {
   }
 
   save () {
-    return put('/player', this);
+    if (this.username) {
+      return put('/player', this);
+    }
   }
 
   logout () {
@@ -81,4 +100,12 @@ async function httpRequest ({ url, method, body }) {
     throw error;
   }
   return res.json();
+}
+
+function solutionsFromJSON (solutionsJson) {
+  const solutions = {};
+  Object.keys(solutionsJson).forEach(puzzleId => {
+    solutions[puzzleId] = Solution.fromJSON(solutionsJson[puzzleId]);
+  });
+  return solutions;
 }

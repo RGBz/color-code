@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/client/index.js',
   devtool: 'eval-source-map',
   output: {
-    path: path.resolve(__dirname, 'public/lib'),
+    path: path.resolve(__dirname, 'public'),
     filename: 'index.js'
   },
   module: {

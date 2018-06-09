@@ -7,14 +7,14 @@ export default class IconButton extends Component {
 
   constructor (props) {
     super(props);
-    this.state = { username: '', password: '', mode: 'login' };
+    this.state = { username: '', password: '', mode: props.initialTab };
   }
 
   async login () {
     const { username, password } = this.state;
     try {
-      const player = await Player.login(username, password);
-      this.props.onLogin(player);
+      await this.props.player.login(username, password);
+      this.props.onClose();
     } catch (error) {
       this.setState({ error });
     }
@@ -23,8 +23,8 @@ export default class IconButton extends Component {
   async signUp () {
     const { username, password } = this.state;
     try {
-      const player = await Player.signUp(username, password);
-      this.props.onLogin(player);
+      await this.props.player.signUp(username, password);
+      this.props.onClose();
     } catch (error) {
       this.setState({ error });
     }

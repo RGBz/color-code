@@ -108,6 +108,7 @@ window['_fs_namespace'] = 'FS';
     background-color: #F8F8F8;
     color: #888888;
     cursor: default;
+    border: none;
   }
   button.inverted {
     background-color: #333;
@@ -148,7 +149,7 @@ window['_fs_namespace'] = 'FS';
     color: white;
     letter-spacing: 1px;
     font-weight: 500;
-    background: #4A4A4A;
+    background: black;
     border-bottom: 2px solid #ccc;
     padding: 8px;
     z-index: 1;
@@ -180,19 +181,25 @@ window['_fs_namespace'] = 'FS';
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin: 0 auto;
-    padding-top: 40px;
-    padding-bottom: 100px;
+    padding: 40px 0 100px;
+/*     overflow-y: scroll; */
+    align-items: center;
+  }
+  .puzzle-pack-list::-webkit-scrollbar{
+    width:0;
+    background-color:transparent;
   }
   .puzzle-pack-list .header {
     display: flex;
+    width: 960px;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
     border: none;
+    padding-bottom: 128px;
   }
   .puzzle-pack {
-    padding-bottom: 60px;
+    padding-bottom: 64px;
   }
   .puzzle-pack .puzzles {
     display: flex;
@@ -225,8 +232,9 @@ window['_fs_namespace'] = 'FS';
     padding: 4px 8px 0;
   }
   .puzzle-tile .accolades img {
-    width: 18px;
-    height: 18px;
+    margin-top: 8px;
+    width: 32px;
+    height: 32px;
   }
   .puzzle-tile:hover button {
     opacity: 1;
