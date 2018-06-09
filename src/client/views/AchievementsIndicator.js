@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import AchievementIcon from './AchievementIcon';
+
 export default class AchievementsIndicator extends Component {
 
   renderAccolade (name) {
     const { timestamp, perfect, count } = this.props.records[name];
     const completed = timestamp && (!count || perfect);
     return (
-      <img key={name} src={`/images/${name}-${completed ? 'solid' : 'stroke'}.png`} />
+      <AchievementIcon key={name} type={name} styling={completed ? 'solid' : 'stroke'} />
     );
   }
 

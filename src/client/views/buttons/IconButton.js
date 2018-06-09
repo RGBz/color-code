@@ -7,7 +7,7 @@ export default class IconButton extends Component {
     const { style, label, className, icon, onPress, disabled } = this.props;
     return (
       <button className={className} onClick={onPress} disabled={disabled} style={style}>
-        <i className={`fa fa-${icon}`} />{label ? ` ${label}` : ''}
+        <img src={icon} />
       </button>
     );
   }

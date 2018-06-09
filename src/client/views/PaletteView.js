@@ -25,7 +25,7 @@ export default class PaletteView extends Component {
     const { palette } = this.props;
     if (penValue === -1) {
       return (
-        <img key={penValue} className="inner" src="/images/eraser.png" />
+        <img key={penValue} className="inner" src="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Feraser.png?1527980160865" />
       );
     } else {
       return (

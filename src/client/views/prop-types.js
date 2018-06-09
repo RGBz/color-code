@@ -1,32 +1,18 @@
 import PropTypes from 'prop-types';
+import Rulebook from '../models/Rulebook';
+import Pattern from '../models/Pattern';
+import Grid from '../models/Grid';
+import Rule from '../models/Rule';
+import Puzzle from '../models/Puzzle';
+import PuzzlePack from '../models/PuzzlePack';
+import Solution from '../models/Solution';
+import Player from '../models/Player';
 
-export const GridPropType = PropTypes.shape({
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  cells: PropTypes.arrayOf(PropTypes.number.isRequired).isRequired,
-});
-
-export const PatternPropType = PropTypes.shape({
-  grid: GridPropType.isRequired,
-});
-
-export const RulePropType = PropTypes.shape({
-  targetValue: PropTypes.number,
-  patterns: PropTypes.arrayOf(PatternPropType.isRequired),
-})
-
-export const RulebookPropType = PropTypes.shape({
-  rules: PropTypes.arrayOf(RulePropType.isRequired),
-});
-
-export const PuzzlePropType = PropTypes.shape({
-  initialGrid: GridPropType.isRequired,
-  palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  goalPattern: PatternPropType.isRequired,
-  maxTicks: PropTypes.number,
-});
-
-export const PuzzlePackPropType = PropTypes.shape({
-  name: PropTypes.string.isRequired,
-  puzzles: PropTypes.arrayOf(PuzzlePropType.isRequired).isRequired,
-});
+export const GridPropType = PropTypes.instanceOf(Grid);
+export const PatternPropType = PropTypes.instanceOf(Pattern);
+export const RulePropType = PropTypes.instanceOf(Rule);
+export const RulebookPropType = PropTypes.instanceOf(Rulebook);
+export const PuzzlePropType = PropTypes.instanceOf(Puzzle);
+export const PuzzlePackPropType = PropTypes.instanceOf(PuzzlePack);
+export const SolutionPropType = PropTypes.instanceOf(Solution);
+export const PlayerPropType = PropTypes.instanceOf(Player);

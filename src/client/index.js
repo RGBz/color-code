@@ -5,7 +5,9 @@ import Modal from 'react-modal';
 import PuzzlePackListView from './views/PuzzlePackListView';
 import PuzzleView from './views/PuzzleView';
 import PuzzleEditor from './views/PuzzleEditor';
+import LoginScreen from './views/LoginScreen';
 
+import Player from './models/Player';
 import PuzzlePack from './models/PuzzlePack';
 import Puzzle from './models/Puzzle';
 import Grid from './models/Grid';
@@ -14,8 +16,6 @@ import Rulebook from './models/Rulebook';
 import Pattern from './models/Pattern';
 import { savePuzzlePacks, loadPuzzlePacks } from './dao';
 
-// Object.keys(localStorage).forEach(k => localStorage.removeItem(k));
-
 const isEditable = false;
 
 class App extends Component {
@@ -23,10 +23,31 @@ class App extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      loaded: false,
+      player: null,
       puzzlePacks: loadPuzzlePacks(),
       mode: 'list',
       selectedPuzzle: null,
     };
+  }
+
+  componentDidMount () {
+    this.fetchPlayer();
+  }
+
+  async fetchPlayer () {
+    try {
+      const player = await Player.fetchMe();
+      this.setState({ loaded: true, player });
+    } catch (err) {
+      console.warn(err);
+      this.setState({ loaded: true });
+    }
+  }
+
+  async logout () {
+    await this.state.player.logout();
+    this.setState({ player: null });
   }
 
   async savePuzzlePacks (updatedPuzzlePacks) {
@@ -71,22 +92,25 @@ class App extends Component {
   }
 
   renderPuzzlePackList () {
-    const { puzzlePacks } = this.state;
+    const { player, puzzlePacks } = this.state;
     return (
       <PuzzlePackListView
+        player={player}
         puzzlePacks={puzzlePacks}
         updatePuzzlePack={puzzlePack => this.savePuzzlePack(puzzlePack)}
         navigateToPlayPuzzle={selectedPuzzle => this.navigateToPlayPuzzle(selectedPuzzle)}
         navigateToEditPuzzle={selectedPuzzle => this.navigateToEditPuzzle(selectedPuzzle)}
         isEditable={isEditable}
+        onLogout={() => this.logout()}
       />
     );
   }
 
   renderPuzzle () {
-    const { selectedPuzzle } = this.state;
+    const { player, selectedPuzzle } = this.state;
     return (
       <PuzzleView
+        player={player}
         puzzle={selectedPuzzle}
         onBackPress={() => this.setState({ mode: 'list' })}
       />
@@ -105,7 +129,16 @@ class App extends Component {
   }
 
   render () {
-    switch (this.state.mode) {
+    const { loaded, player, mode } = this.state;
+    if (!loaded) {
+      return 'loading...';
+    }
+    if (!player) {
+      return (
+        <LoginScreen onLogin={player => this.setState({ player })} />
+      );
+    }
+    switch (mode) {
       case 'list': return this.renderPuzzlePackList();
       case 'play': return this.renderPuzzle();
       case 'edit': return this.renderPuzzleEditor();

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { PuzzlePropType } from './prop-types';
+import { PlayerPropType, PuzzlePropType } from './prop-types';
 
 import GridView from './GridView';
 import PaletteView from './PaletteView';
@@ -13,14 +13,13 @@ import AchievementsIndicator from './AchievementsIndicator';
 
 import Rulebook from '../models/Rulebook';
 import RulebookExecution from '../models/RulebookExecution';
-import Solution from '../models/Solution';
 
 export default class PuzzleView extends Component {
 
   constructor (props) {
     super(props);
-    const { puzzle } = props;
-    const solution = Solution.loadByPuzzleId(puzzle.id);
+    const { player, puzzle } = props;
+    const solution = player.getSolutionByPuzzleId(puzzle.id);
     this.state = {
       penValue: 1,
       solution,
@@ -86,7 +85,7 @@ export default class PuzzleView extends Component {
     const solution = oldSolution.clone();
     solution.mostRecentRulebook = rulebook.rules.length > 0 ? rulebook : new Rulebook();
     const execution = solution.executeRulebookForPuzzle(this.props.puzzle);
-    solution.save();
+    this.props.player.updateSolution(solution);
     if (!execution.equals(this.state.execution)) {
       const newRecords = Object.keys(solution.records).filter(type =>
         solution.records[type].timestamp !== oldSolution.records[type].timestamp
@@ -115,7 +114,11 @@ export default class PuzzleView extends Component {
         />
         <div className="header row">
           <div className="column" style={{ flex: 1, flexDirection: 'row' }}>
-            <IconButton icon="arrow-left" className="back-button" onPress={onBackPress} />
+            <IconButton 
+              icon="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Fback.png?1528248484044" 
+              className="back-button" 
+              onPress={onBackPress} 
+            />
             <div className="puzzle-name-container">
               <div className="puzzle-name">{name || ''}</div>
             </div>
@@ -179,6 +182,7 @@ export default class PuzzleView extends Component {
 }
 
 PuzzleView.propTypes = {
+  player: PlayerPropType.isRequired,
   puzzle: PuzzlePropType.isRequired,
   onBackPress: PropTypes.func.isRequired,
 };

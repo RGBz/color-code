@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 
 import Sign from './Sign';
+import AchievementIcon from './AchievementIcon';
 
 const modalStyle = {
   overlay: {
@@ -18,7 +19,7 @@ const modalStyle = {
     transform: 'translate(-50%, -50%)',
     overflow: 'initial',
     border: 'none',
-    boxShadow: '0 2px 2px rgba(0,0,0,0.1)',
+    borderRadius: 0
   },
 };
 
@@ -34,15 +35,16 @@ export default class AchievementModal extends Component {
 
   renderStatColumn (name, value) {
     const newRecord = this.props.newRecords.find(record => record.name === name);
-    const imgPath = newRecord && newRecord.perfect ?
-      `/images/${name}-solid.png` : `/images/${name}-stroke.png`;
     return (
       <div className="stat-column">
         <div className="stat-label">
           {name}
         </div>
         <div className="stat-value">
-          <img src={imgPath} />
+          <AchievementIcon
+            type={name}
+            styling={newRecord && newRecord.perfect ? 'solid' : 'stroke'}
+          />
           {value}
         </div>
         {newRecord && (

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { PuzzlePackPropType } from './prop-types';
+import { PlayerPropType, PuzzlePackPropType } from './prop-types';
 
 import AddButton from './buttons/AddButton';
 import PuzzleTileView from './PuzzleTileView';
@@ -42,9 +42,9 @@ export default class PuzzlePackView extends Component {
   }
 
   render () {
-    const { puzzlePack, isEditable, navigateToPlayPuzzle, navigateToEditPuzzle } = this.props;
+    const { player, puzzlePack, isEditable, navigateToPlayPuzzle, navigateToEditPuzzle } = this.props;
     const lockedPuzzleIndex = (puzzlePack.puzzles.findIndex(puzzle =>
-      !Solution.loadByPuzzleId(puzzle.id).records.completed.timestamp
+      !player.getSolutionByPuzzleId(puzzle.id).records.completed.timestamp
     ) + 1) || puzzlePack.puzzles.length;
     return (
       <div className="puzzle-pack">
@@ -53,6 +53,7 @@ export default class PuzzlePackView extends Component {
           {puzzlePack.puzzles.map((puzzle, index) =>
             <PuzzleTileView
               key={puzzle.id}
+              player={player}
               puzzle={puzzle}
               onSelectPuzzle={navigateToPlayPuzzle}
               onEditPuzzle={navigateToEditPuzzle}
@@ -69,6 +70,7 @@ export default class PuzzlePackView extends Component {
 }
 
 PuzzlePackView.propTypes = {
+  player: PlayerPropType.isRequired,
   puzzlePack: PuzzlePackPropType.isRequired,
   updatePuzzlePack: PropTypes.func.isRequired,
   navigateToPlayPuzzle: PropTypes.func.isRequired,

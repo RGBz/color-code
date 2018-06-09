@@ -60,7 +60,13 @@ export default class RuleEditor extends Component {
         </div>
       );
       if (i + 1 < patterns.length) {
-        elements.push(<img key={`or-${i}`} src="/images/or.png" height="36px" />);
+        elements.push(
+          <img 
+            key={`or-${i}`} 
+            src="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2For.png?1528248474199" 
+            height="36px" 
+          />
+        );
       }
     }
     return elements;
@@ -98,9 +104,17 @@ export default class RuleEditor extends Component {
       <div className="rule">
         <div className="patterns">
           {this.renderPatterns()}
-          <button className="add-button" onClick={() => this.addPattern()}>+</button>
+          <button className="add-button" onClick={() => this.addPattern()}>
+            <img 
+              src="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Fplus.png?1528248757779" 
+              height="16px" 
+            />
+          </button>
         </div>
-        <img src="/images/then.png" height="36px" />
+        <img 
+          src="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Fthen.png?1528248956220" 
+          height="36px" 
+        />
         {this.renderConsequent()}
       </div>
     );

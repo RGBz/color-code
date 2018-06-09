@@ -18,10 +18,22 @@ export default class RulebookExecutionControls extends Component {
     const hasSteps = stepCount > 0;
     return (
       <div className="controls" style={containerStyle}>
-        <div className="step-index">STEP {stepIndex} / {stepCount}</div>
-        <IconButton icon="redo" onPress={onReplayPress} disabled={!hasSteps} />
-        <IconButton icon="step-backward" onPress={onStepBackwardPress} disabled={!hasSteps} />
-        <IconButton icon="step-forward" onPress={onStepForwardPress} disabled={!hasSteps} />
+        <div className="step-index">STEP {stepIndex}/{stepCount}</div>
+        <IconButton 
+          icon="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Freplay.png?1528250289604" 
+          onPress={onReplayPress} 
+          disabled={!hasSteps} 
+        />
+        <IconButton 
+          icon="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Fstep-backward.png?1528248485328" 
+          onPress={onStepBackwardPress} 
+          disabled={!hasSteps} 
+        />
+        <IconButton 
+          icon="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Fstep-forward.png?1528248486585" 
+          onPress={onStepForwardPress} 
+          disabled={!hasSteps} 
+        />
       </div>
     );
   }

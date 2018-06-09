@@ -53,7 +53,12 @@ export default class RulebookEditor extends Component {
             isOnlyRule={isOnlyOneRule}
           />
         )}
-        <button className="add-button" onClick={() => this.addRule()}>+</button>
+        <button className="add-button" onClick={() => this.addRule()}>
+          <img 
+            src="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Fplus.png?1528248757779" 
+            height="16px" 
+          />
+        </button>
       </div>
     );
   }

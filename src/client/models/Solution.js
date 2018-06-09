@@ -3,11 +3,6 @@ import RulebookExecution from './RulebookExecution';
 
 export default class Solution {
 
-  static loadByPuzzleId (puzzleId) {
-    const jsonStr = localStorage.getItem(getSolutionPathForPuzzleId(puzzleId));
-    return jsonStr ? Solution.fromJSON(JSON.parse(jsonStr)) : new Solution({ puzzleId });
-  }
-
   static fromJSON ({ puzzleId, mostRecentRulebook, records }) {
     return new Solution({
       puzzleId,
@@ -66,12 +61,4 @@ export default class Solution {
       records: this.records,
     };
   }
-
-  save () {
-    localStorage.setItem(getSolutionPathForPuzzleId(this.puzzleId), JSON.stringify(this));
-  }
-}
-
-function getSolutionPathForPuzzleId (puzzleId) {
-  return `solution/${puzzleId}`;
 }

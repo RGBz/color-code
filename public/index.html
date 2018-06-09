@@ -2,13 +2,32 @@
 <html>
 <head>
   <title>Color Code</title>
+  <link rel="icon" type="image/png" href="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Ffavicon.png?1527979637897">
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+  <script>
+window['_fs_debug'] = false;
+window['_fs_host'] = 'fullstory.com';
+window['_fs_org'] = 'CH1QH';
+window['_fs_namespace'] = 'FS';
+(function(m,n,e,t,l,o,g,y){
+    if (e in m) {if(m.console && m.console.log) { m.console.log('FullStory namespace conflict. Please set window["_fs_namespace"].');} return;}
+    g=m[e]=function(a,b){g.q?g.q.push([a,b]):g._api(a,b);};g.q=[];
+    o=n.createElement(t);o.async=1;o.src='https://'+_fs_host+'/s/fs.js';
+    y=n.getElementsByTagName(t)[0];y.parentNode.insertBefore(o,y);
+    g.identify=function(i,v){g(l,{uid:i});if(v)g(l,v)};g.setUserVars=function(v){g(l,v)};
+    g.shutdown=function(){g("rec",!1)};g.restart=function(){g("rec",!0)};
+    g.consent=function(a){g("consent",!arguments.length||a)};
+    g.identifyAccount=function(i,v){o='account';v=v||{};v.acctId=i;g(o,v)};
+    g.clearUserCookie=function(){};
+})(window,document,window['_fs_namespace'],'script','user');
+</script>
 <style>
   html {
     height: 100%;
     display: flex;
     flex: 1;
     flex-direction: column;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Press Start 2P', monospace;
   }
   body {
     margin: 0;
@@ -25,35 +44,67 @@
     flex: 1;
     flex-direction: column;
   }
+  .login {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin: 0 auto;
+  }
+  .login .tab {
+    margin-bottom: 32px;
+    display: flex;
+    flex: 1;
+  }
+  .login .tab.selected {
+    background-color: #ccc;
+  }
+  .login .error {
+    color: red;
+    text-align: center;
+    margin: 40px 0 0;
+  }
+  .login label {
+    margin: 32px 0 8px;
+  }
+  .login input {
+    font-size: 18px;
+    padding: 16px;
+    border: none;
+    background-color: #eee;
+  }
+  .login form button {
+    margin: 32px auto;   
+  }
   button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: none;
     background: transparent;
     box-sizing: border-box;
-    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.2);
+    border-bottom: 2px solid #ccc;
     color: #333;
     letter-spacing: 1px;
+    font-family: 'Press Start 2P', monospace;
     font-weight: 700;
     font-size: 14px;
     text-transform: uppercase;
-    padding: 0 10px;
+    padding: 10px;
     line-height: 32px;
-    border-radius: 6px;
     margin-bottom: 2px;
     outline: none;
     cursor: pointer;
   }
   button:hover {
     background: white;
-    box-shadow: 0 1px 4px 0 rgba(0,0,0,0.5);
+    border-bottom: 2px solid #888;
     color: black;
   }
   button:active {
-    box-shadow: none;
-    background-color: #F8F8F8;
+    border-bottom: 2px solid #eee;
     color: #888888;
   }
   button:disabled {
-    box-shadow: none;
     background-color: #F8F8F8;
     color: #888888;
     cursor: default;
@@ -70,16 +121,17 @@
     background-color: #333;
     color: white;
   }
+  button img {
+    height: 24px;
+  }
   .back-button, .back-button:hover {
-    box-shadow: none;
     font-size: 20px;
-    border-radius: 6px;
     margin: 0;
+    border: none;
   }
   .status-icon {
     padding: 0 10px;
     line-height: 32px;
-    border-radius: 5px;
     margin-bottom: 2px;
     background: #aab;
     color: #334;
@@ -88,23 +140,30 @@
     text-transform: uppercase;
   }
   .sign {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px;
     width: fit-content;
     margin-left: -5px;
     margin-bottom: -3px;
-    transform: rotate(-2deg);
     color: white;
     letter-spacing: 1px;
     font-weight: 500;
     background: #4A4A4A;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.5);
-    padding: 4px 8px;
+    border-bottom: 2px solid #ccc;
+    padding: 8px;
+    z-index: 1;
   }
   .header {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 16px;
     padding: 16px;
     border-bottom: 1px solid #F1F1F1;
     align-items: center;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05);
+    border-bottom: 2px solid #ccc;
     z-index: 1;
+  }
+  .step-index {
+    font-size: 12px;
   }
   .header .column {
     justify-content: center;
@@ -125,8 +184,15 @@
     padding-top: 40px;
     padding-bottom: 100px;
   }
+  .puzzle-pack-list .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    border: none;
+  }
   .puzzle-pack {
-    padding-top: 60px;
+    padding-bottom: 60px;
   }
   .puzzle-pack .puzzles {
     display: flex;
@@ -151,8 +217,6 @@
     width: 32px;
     height: 32px;
     background: white;
-    border-radius: 16px;
-    box-shadow: none;
     line-height: 32px;
     text-align: center;
   }
@@ -168,9 +232,10 @@
     opacity: 1;
   }
   .puzzle-tile-name {
+    font-family: 'Press Start 2P', monospace;
     cursor: pointer;
     margin-top: 16px;
-    font-size: 12px;
+    font-size: 8px;
     width: 160px;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -179,8 +244,9 @@
   .puzzle-tile-name:hover {
     color: #129BFF;
   }
-  .puzzle-tile .grid:hover {
-    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  .puzzle-tile:hover .grid {
+    margin-top: -4px;
+    margin-bottom: 4px;
   }
   .puzzle-name-container {
     flex: 1;
@@ -191,7 +257,6 @@
     font-size: 18px;
     font-weight: 500;
     border: none;
-    border-radius: 4px;
     line-height: 32px;
     padding-left: 8px;
     width: 100%;
@@ -209,10 +274,10 @@
   .header .controls {
     flex-direction: row;
     align-items: center;
+    font-size: 8px;
   }
   .header .controls button {
     margin-left: 8px;
-    padding: 0 16px;
   }
   .header .controls .frame-index {
     color: #666;
@@ -244,17 +309,14 @@
   .palette .swatch {
     width: 48px;
     height: 48px;
-    border-radius: 24px;
     margin-top: 16px;
     margin-left: 16px;
     box-sizing: border-box;
-    box-shadow: 0 3px 4px 0 rgba(0,0,0,0.13);
     cursor: pointer;
   }
   .palette .swatch .inner {
     width: 48px;
     height: 48px;
-    border-radius: 24px;
   }
   .palette .swatch.selected {
     border: 3px solid #00AAFF;
@@ -264,13 +326,11 @@
   .palette .swatch.selected .inner {
     width: 34px;
     height: 34px;
-    border-radius: 17px;
   }
-  .palette .swatch:hover {
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.4);
+  .palette .swatch:hover .inner {
+    margin-top: -2px;
   }
   .palette .swatch:active {
-    box-shadow: none;
     opacity: 0.9;
   }
   .row {
@@ -311,20 +371,16 @@
     flex-direction: row;
     align-items: center;
     background-color: white;
-    border-radius: 6px;
-    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.13);
+    border-bottom: 2px solid #ccc;
     margin-top: 16px;
     padding: 8px;
     justify-content: flex-start;
   }
   .add-button {
-    width: 36px;
-    height: 36px;
-    border-radius: 18px;
-    font-size: 32px;
-    font-weight: 500;
-    padding: 0 0 10px;
     margin-left: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .rule .add-button {
     margin-top: 0;
@@ -333,21 +389,21 @@
     margin: -18px auto 0;
     width: 18px;
     height: 18px;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
     border: none;
-    box-shadow: none;
     background-color: white;
     display: block;
     text-align: center;
     padding: 0;
     line-height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .rule .pattern-container .delete-button:hover {
     color: #D0011B;
   }
   .grid {
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.13);
+    border-bottom: 2px solid #ccc;
   }
   .rule .patterns {
     display: flex;
@@ -359,9 +415,8 @@
   .rule .cell {
     background: transparent;
     box-sizing: border-box;
-    border: 1px solid rgba(0,0,0,0.05);
+    /* border: 1px solid rgba(0,0,0,0.05); */
     margin: 1px;
-    border-radius: 2px;
     width: 12px;
     height: 12px;
     cursor: pointer;
@@ -376,14 +431,12 @@
   .consequent .indicator {
     width: 4px;
     height: 4px;
-    border-radius: 1px;
     background-color: #F1F1F1;
     margin: 6px;
   }
   .consequent .cell {
     width: 16px;
     height: 16px;
-    border-radius: 2px;
     box-sizing: border-box;
     border: 2px solid rgba(0,0,0,0.25);
     margin: 0px;
@@ -417,16 +470,14 @@
   }
   .achievement-modal .stats-table {
     background-color: #F9F9F9;
-    box-shadow: 0px 1px 4px rgba(0,0,0,0.05) inset;
+    border-top: 2px solid #ccc;
     padding: 24px;
-    border-radius: 5px;
   }
   .achievement-modal .stat-label {
     color: #AAAAAA;
     text-transform: uppercase;
   }
   .achievement-modal .stat-value {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.25);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -478,7 +529,6 @@
   }
   .setting input {
     border: none;
-    border-radius: 3px;
     box-sizing: border-box;
     padding-left: 8px;
   }
@@ -506,16 +556,14 @@
     align-items: center;
     height: 4px;
     background: rgba(0,0,0,0.25);
-    border-radius: 2px;
     overflow: visible;
     flex: 1;
   }
   .toggle .knob {
     width: 24px;
     height: 24px;
-    border-radius: 12px;
     background: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    border-bottom: 2px solid #ccc;
   }
   .ReactModal__Overlay {
     opacity: 0;
@@ -538,12 +586,9 @@
     opacity: 0;
   }
 </style>
-<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css" integrity="sha384-v2Tw72dyUXeU3y4aM2Y0tBJQkGfplr39mxZqlTBDUZAb9BGoC40+rdFCG0m10lXk" crossorigin="anonymous">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/fontawesome.css" integrity="sha384-q3jl8XQu1OpdLgGFvNRnPdj5VIlCvgsDQTQB6owSOHWlAurxul7f+JpUOVdAiJ5P" crossorigin="anonymous">
 </head>
 <body>
   <div id="root"></div>
-  <script src="/lib/index.js"></script>
+  <script src="/index.js"></script>
 </body>
 </html>

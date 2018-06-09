@@ -1,33 +1,43 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { PuzzlePackPropType } from './prop-types';
+import { PlayerPropType, PuzzlePackPropType } from './prop-types';
 
 import PuzzlePackView from './PuzzlePackView';
 
-import Solution from '../models/Solution';
-
 export default class PuzzlePackListView extends Component {
+
+  componentDidMount () {
+    const scrollingElement = (document.scrollingElement || document.body);
+    scrollingElement.scrollTop = scrollingElement.scrollHeight;
+  }
 
   render () {
     const {
+      player,
       puzzlePacks,
       updatePuzzlePack,
       navigateToPlayPuzzle,
       navigateToEditPuzzle,
+      onLogout,
       isEditable,
     } = this.props;
     const lockedPuzzlePackIndex = puzzlePacks.findIndex(pack => {
       const lastPuzle = pack.puzzles[pack.puzzles.length - 1];
-      return !Solution.loadByPuzzleId(lastPuzle.id).records.completed.timestamp
+      return !player.getSolutionByPuzzleId(lastPuzle.id).records.completed.timestamp
     }) + 1;
     const unlockedPacks = isEditable ?
       puzzlePacks :
       puzzlePacks.filter((pack, index) => index < lockedPuzzlePackIndex);
     return (
       <div className="puzzle-pack-list">
+        <div className="header">
+          <img src="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Flogo.png?1527979638257" />
+          <button className="logout" onClick={onLogout}>logout</button>
+        </div>
         {unlockedPacks.map(puzzlePack =>
           <PuzzlePackView
-            key={puzzlePack.nme}
+            key={puzzlePack.name}
+            player={player}
             puzzlePack={puzzlePack}
             updatePuzzlePack={updatePuzzlePack}
             navigateToPlayPuzzle={navigateToPlayPuzzle}
@@ -42,8 +52,10 @@ export default class PuzzlePackListView extends Component {
 }
 
 PuzzlePackListView.propTypes = {
+  player: PlayerPropType.isRequired,
   puzzlePacks: PropTypes.arrayOf(PuzzlePackPropType.isRequired).isRequired,
   updatePuzzlePack: PropTypes.func.isRequired,
   navigateToPlayPuzzle: PropTypes.func.isRequired,
   navigateToEditPuzzle: PropTypes.func.isRequired,
+  onLogout: PropTypes.func.isRequired,
 };

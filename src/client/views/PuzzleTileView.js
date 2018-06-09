@@ -1,27 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { PuzzlePropType } from './prop-types';
+import { PlayerPropType, PuzzlePropType } from './prop-types';
 
 import GridView from './GridView';
 import IconButton from './buttons/IconButton';
 import AchievementsIndicator from './AchievementsIndicator';
 
-import Solution from '../models/Solution';
-
 export default class PuzzleTileView extends Component {
 
   render () {
-    const { puzzle, onSelectPuzzle, onEditPuzzle, isUnlocked, isEditable } = this.props;
+    const { player, puzzle, onSelectPuzzle, onEditPuzzle, isUnlocked, isEditable } = this.props;
     if (!isEditable && !isUnlocked) {
       return (
         <div className="puzzle-tile">
-          <img src="/images/lock.png" width="160px" />
+          <img src="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Flock.png?1527824583311" width="160px" />
         </div>
       );
     }
     const grid = puzzle.thumbnailPreviewType === 'initial' ?
       puzzle.initialGrid : puzzle.goalPattern.grid;
-    const solution = Solution.loadByPuzzleId(puzzle.id);
+    const solution = player.getSolutionByPuzzleId(puzzle.id);
     return (
       <div className="puzzle-tile">
         <div onClick={() => onSelectPuzzle(puzzle)}>
@@ -32,7 +30,6 @@ export default class PuzzleTileView extends Component {
             palette={puzzle.palette}
             showGrid={false}
           />
-          <div className="puzzle-tile-name">{puzzle.name}</div>
           <AchievementsIndicator records={solution.records} />
         </div>
         {isEditable && <IconButton icon="pencil-alt" onPress={() => onEditPuzzle(puzzle)} />}
@@ -43,6 +40,7 @@ export default class PuzzleTileView extends Component {
 }
 
 PuzzleTileView.propTypes = {
+  player: PlayerPropType.isRequired,
   puzzle: PuzzlePropType.isRequired,
   onSelectPuzzle: PropTypes.func.isRequired,
   onEditPuzzle: PropTypes.func.isRequired,
