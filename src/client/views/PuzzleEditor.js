@@ -74,6 +74,7 @@ export default class PuzzleEditor extends Component {
   }
 
   updatePuzzle (puzzle) {
+    console.log('updated puzzle', JSON.stringify(puzzle, null, 2));
     this.setState({ puzzle }, () => this.executeSolutionRulebook());
   }
 
