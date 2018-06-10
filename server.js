@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
   const user = await fetchPlayerByUsername(username);
-  if (!user || user.passwordHash !== hash(password)) {
+  if (!user || user.passwordHash !== hash(password + (user.salt || ''))) {
     return res.status(403).json({ error: 'Invalid username or password' });
   }
   res.cookie('auth', createAuthTokenForUsername(username));
@@ -48,8 +48,9 @@ app.route('/player')
     if (user) {
       return res.status(403).json({ error: 'Username taken' });
     }
-    const passwordHash = hash(password);
-    const player = await storePlayer(username, { username, passwordHash, joined: Date.now(), solutions: {} });
+    const salt = uuidv4();
+    const passwordHash = hash(password + salt);
+    const player = await storePlayer(username, { username, passwordHash, salt, joined: Date.now(), solutions: {} });
     res.cookie('auth', createAuthTokenForUsername(username));
     return res.json(sanitizeUser(player));
   })
@@ -101,9 +102,8 @@ async function updatePlayer (username, updatedPlayer) {
   return sanitizeUser(existingPlayer);
 }
 
-function sanitizeUser (user) {
-  delete user.passwordHash;
-  return user;
+function sanitizeUser ({ username, solutions }) {
+  return { username, solutions };
 }
 
 function getPathToUserForUsername (username) {
