@@ -414,13 +414,28 @@ window['_fs_namespace'] = 'FS';
     margin-top: 16px;
     margin-right: 16px;
   }
+  .rulebook-editor .rule-container {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: row;
+  }
+  .rulebook-editor .rule-container .move-controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .rulebook-editor .rule-container .move-controls button {
+    border-bottom: none;
+  }
+  .rulebook-editor .rule-container .move-controls button:disabled {
+    opacity: 0.2;
+  }
   .rule {
     display: flex;
     flex-direction: row;
     align-items: center;
     background-color: white;
     border-bottom: 2px solid #ccc;
-    margin-top: 16px;
     padding: 8px;
     justify-content: flex-start;
   }

@@ -17,7 +17,7 @@ import Rulebook from './models/Rulebook';
 import Pattern from './models/Pattern';
 import { savePuzzlePacks, loadPuzzlePacks } from './dao';
 
-const isEditable = false;
+const isEditable = true;
 
 class App extends Component {
 
