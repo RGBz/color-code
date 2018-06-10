@@ -39,12 +39,12 @@ export default class RuleEditor extends Component {
   }
 
   renderPatterns () {
-    const { palette, penValue, isOnlyRule, rule: { targetValue, patterns } } = this.props;
+    const { palette, penValue, isOnlyRule, rule: { targetValue, patterns }, disabled } = this.props;
     const elements = [];
     const isOnlyOnePattern = patterns.length === 1;
     for (let i = 0; i < patterns.length; i++) {
       const pattern = patterns[i];
-      const showDelete = !(isOnlyRule && isOnlyOnePattern && pattern.isEmpty());
+      const showDelete = !disabled && !(isOnlyRule && isOnlyOnePattern && pattern.isEmpty());
       elements.push(
         <div key={i} className="pattern-container">
           {showDelete && (
@@ -56,6 +56,7 @@ export default class RuleEditor extends Component {
             palette={palette}
             pattern={pattern}
             onUpdate={p => this.updatePattern(i, p)}
+            disabled={disabled}
           />
         </div>
       );
@@ -73,7 +74,7 @@ export default class RuleEditor extends Component {
   }
 
   renderConsequent () {
-    const { palette, penValue, rule: { targetValue, patterns } } = this.props;
+    const { palette, penValue, rule: { targetValue, patterns }, disabled } = this.props;
     return (
       <div className="consequent">
         <div className="row">
@@ -87,6 +88,7 @@ export default class RuleEditor extends Component {
             penValue={targetValue}
             palette={palette}
             onClick={() => this.setTargetValue()}
+            disabled={disabled}
           />
           <div className="indicator" />
         </div>
@@ -100,16 +102,19 @@ export default class RuleEditor extends Component {
   }
 
   render () {
+    const { disabled, style } = this.props;
     return (
-      <div className="rule">
+      <div className="rule" style={style}>
         <div className="patterns">
           {this.renderPatterns()}
-          <button className="add-button" onClick={() => this.addPattern()}>
-            <img 
-              src="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Fplus.png?1528248757779" 
-              height="16px" 
-            />
-          </button>
+          {!disabled && (
+            <button className="add-button" onClick={() => this.addPattern()}>
+              <img 
+                src="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Fplus.png?1528248757779" 
+                height="16px" 
+              />
+            </button>
+          )}
         </div>
         <img 
           src="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Fthen.png?1528248956220" 
@@ -129,4 +134,5 @@ RuleEditor.propTypes = {
   rule: RulePropType.isRequired,
   onUpdate: PropTypes.func.isRequired,
   isOnlyRule: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool,
 };

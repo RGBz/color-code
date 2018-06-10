@@ -38,10 +38,10 @@ export default class RulebookEditor extends Component {
   }
 
   render () {
-    const { rulebook, palette, penValue, patternSize } = this.props;
+    const { rulebook, palette, penValue, patternSize, style, disabled } = this.props;
     const isOnlyOneRule = rulebook.rules.length === 1;
     return (
-      <div className="rulebook-editor">
+      <div className="rulebook-editor" style={style}>
         {rulebook.rules.map((rule, i) =>
           <RuleEditor
             key={i}
@@ -51,14 +51,17 @@ export default class RulebookEditor extends Component {
             patternSize={patternSize}
             onUpdate={r => this.updateRule(i, r)}
             isOnlyRule={isOnlyOneRule}
+            disabled={disabled}
           />
         )}
-        <button className="add-button" onClick={() => this.addRule()}>
-          <img 
-            src="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Fplus.png?1528248757779" 
-            height="16px" 
-          />
-        </button>
+        {!disabled && (
+          <button className="add-button" onClick={() => this.addRule()}>
+            <img 
+              src="https://cdn.glitch.com/5bb393f1-e781-4a01-8e4e-4b05e66e3d36%2Fplus.png?1528248757779" 
+              height="16px" 
+            />
+          </button>
+        )}
       </div>
     );
   }
@@ -71,6 +74,7 @@ RulebookEditor.propTypes = {
   palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   rulebook: RulebookPropType.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 };
 
 

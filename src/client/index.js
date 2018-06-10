@@ -6,6 +6,7 @@ import PuzzlePackListView from './views/PuzzlePackListView';
 import PuzzleView from './views/PuzzleView';
 import PuzzleEditor from './views/PuzzleEditor';
 import LoginScreen from './views/LoginScreen';
+import TutorialScreen from './views/TutorialScreen';
 
 import Player from './models/Player';
 import PuzzlePack from './models/PuzzlePack';
@@ -112,6 +113,7 @@ class App extends Component {
         onLoginPressed={() => this.navigateToLogin()}
         onSignUpPressed={() => this.navigateToSignUp()}
         onLogoutPressed={() => this.logout()}
+        onTutorialPressed={() => this.setState({ mode: 'tutorial' })}
       />
     );
   }
@@ -148,6 +150,14 @@ class App extends Component {
     );
   }
 
+  renderTutorialScreen () {
+    return (
+      <TutorialScreen 
+        onClose={() => this.setState({ mode: 'list' })}
+      />
+    );
+  }
+
   render () {
     const { loaded, player, mode } = this.state;
     if (!loaded) {
@@ -160,6 +170,7 @@ class App extends Component {
     switch (mode) {
       case 'login': return this.renderLoginScreen();
       case 'sign up': return this.renderLoginScreen();
+      case 'tutorial': return this.renderTutorialScreen();
       case 'list': return this.renderPuzzlePackList();
       case 'play': return this.renderPuzzle();
       case 'edit': return this.renderPuzzleEditor();

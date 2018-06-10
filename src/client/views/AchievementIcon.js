@@ -19,9 +19,7 @@ const imgUrls = {
 export default class AchievementIcon extends Component {
 
   render () {
-    return (
-      <img src={imgUrls[this.props.type][this.props.styling]} />
-    );
+    return (<img src={imgUrls[this.props.type][this.props.styling]} style={this.props.style} />);
   }
 
 }

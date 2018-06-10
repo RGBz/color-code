@@ -12,16 +12,17 @@ export default class PuzzlePackListView extends Component {
   }
 
   renderAuthButtons () {
-    const { player: { username }, onLoginPressed, onLogoutPressed, onSignUpPressed } = this.props;
+    const { player: { username }, onLoginPressed, onLogoutPressed, onSignUpPressed, onTutorialPressed } = this.props;
+    const buttons = [<button className="logout" onClick={onTutorialPressed}>how to</button>];
     if (!username) {
-      return [
+      buttons.push(
         <button className="logout" onClick={onLoginPressed}>login</button>,
         <button className="logout" onClick={onSignUpPressed}>register</button>
-      ];
+      );
+    } else {
+      buttons.push(<button className="logout" onClick={onLogoutPressed}>logout</button>);
     }
-    return (
-      <button className="logout" onClick={onLogoutPressed}>logout</button>
-    );
+    return buttons;
   }
 
   render () {

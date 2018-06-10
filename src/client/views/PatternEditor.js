@@ -6,10 +6,12 @@ import CellView from './CellView';
 export default class PatternEditor extends Component {
 
   onCellClick (x, y) {
-    const { penValue, pattern, onUpdate } = this.props;
-    const updatedPattern = pattern.clone();
-    updatedPattern.grid.set(x, y, penValue);
-    onUpdate(updatedPattern);
+    const { penValue, pattern, onUpdate, disabled } = this.props;
+    if (!disabled) {
+      const updatedPattern = pattern.clone();
+      updatedPattern.grid.set(x, y, penValue);
+      onUpdate(updatedPattern);
+    }
   }
 
   renderRow (y) {
@@ -39,6 +41,7 @@ export default class PatternEditor extends Component {
         palette={this.props.palette}
         style={cellStyle}
         onClick={() => this.onCellClick(x, y)}
+        disabled={this.props.disabled}
       />
     );
   }
@@ -58,4 +61,5 @@ PatternEditor.propTypes = {
   palette: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   pattern: PatternPropType.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 };
