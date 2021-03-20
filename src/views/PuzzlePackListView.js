@@ -13,28 +13,20 @@ export default class PuzzlePackListView extends Component {
   }
 
   renderAuthButtons () {
-    const { player: { username }, onLoginPressed, onLogoutPressed, onSignUpPressed, onTutorialPressed } = this.props;
+    const { player: { username }, onTutorialPressed } = this.props;
     const buttons = [<button className="logout" onClick={onTutorialPressed}>how to</button>];
-    if (!username) {
-      buttons.push(
-        <button className="logout" onClick={onLoginPressed}>login</button>,
-        <button className="logout" onClick={onSignUpPressed}>register</button>
-      );
-    } else {
-      buttons.push(<button className="logout" onClick={onLogoutPressed}>logout</button>);
-    }
     return buttons;
   }
 
   renderAchievements () {
     const { player, puzzlePacks } = this.props;
-    const completedAllPuzzles = puzzlePacks.every(pack => 
+    const completedAllPuzzles = puzzlePacks.every(pack =>
       pack.puzzles.every(p => player.getSolutionByPuzzleId(p.id).records.completed.timestamp > 0)
     );
-    const perfectStepsAllPuzzles = puzzlePacks.every(pack => 
+    const perfectStepsAllPuzzles = puzzlePacks.every(pack =>
       pack.puzzles.every(p => player.getSolutionByPuzzleId(p.id).records.steps.perfect)
     );
-    const perfectPatternsAllPuzzles = puzzlePacks.every(pack => 
+    const perfectPatternsAllPuzzles = puzzlePacks.every(pack =>
       pack.puzzles.every(p => player.getSolutionByPuzzleId(p.id).records.patterns.perfect)
     );
     if (perfectStepsAllPuzzles && perfectPatternsAllPuzzles) {
@@ -98,7 +90,7 @@ export default class PuzzlePackListView extends Component {
       const lastPuzle = pack.puzzles[pack.puzzles.length - 1];
       return !player.getSolutionByPuzzleId(lastPuzle.id).records.completed.timestamp
     }) + 1) || puzzlePacks.length;
-    
+
     const unlockedPacks = isEditable ?
       puzzlePacks :
       puzzlePacks.filter((pack, index) => index < lockedPuzzlePackIndex);
@@ -133,7 +125,4 @@ PuzzlePackListView.propTypes = {
   updatePuzzlePack: PropTypes.func.isRequired,
   navigateToPlayPuzzle: PropTypes.func.isRequired,
   navigateToEditPuzzle: PropTypes.func.isRequired,
-  onLogoutPressed: PropTypes.func.isRequired,
-  onLoginPressed: PropTypes.func.isRequired,
-  onSignUpPressed: PropTypes.func.isRequired,
 };

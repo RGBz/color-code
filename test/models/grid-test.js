@@ -5,17 +5,17 @@ describe('Grid', () => {
 
   describe('constructor()', () => {
     it('creates an empty grid of width x height', () => {
-      const grid = new Grid(2, 3);
+      const grid = new Grid({ width: 2, height: 3 });
       expect(grid.width).to.equal(2);
       expect(grid.height).to.equal(3);
       verifyGridIsEmpty(grid);
     });
     it('creates a grid based on the passed in multi-dimensional array', () => {
-      const grid = new Grid([
+      const grid = new Grid({ cells: [
         [1, 2],
         [3, 4],
         [5, 6]
-      ]);
+      ] });
       expect(grid.width).to.equal(2);
       expect(grid.height).to.equal(3);
       expect(grid.get(0, 0)).to.equal(1);
@@ -28,17 +28,17 @@ describe('Grid', () => {
   });
 
   describe('get()', () => {
-    const grid = new Grid(2, 3);
+    const grid = new Grid({ width: 2, height: 3 });
     it('gets the value at a location', () => {
       expect(grid.get(1, 2)).to.equal(0);
     });
-    it('returns 0 for values out of bounds', () => {
-      expect(grid.get(3, 4)).to.equal(0);
+    it('returns -1 for values out of bounds', () => {
+      expect(grid.get(3, 4)).to.equal(-1);
     });
   });
 
   describe('set()', () => {
-    const grid = new Grid(2, 3);
+    const grid = new Grid({ width: 2, height: 3 });
     it('changes the value at a location', () => {
       const x = 1;
       const y = 2;
@@ -49,7 +49,7 @@ describe('Grid', () => {
   });
 
   describe('clear()', () => {
-    const grid = new Grid(2, 3);
+    const grid = new Grid({ width: 2, height: 3 });
     it('resets all the cell values to 0', () => {
       grid.set(1, 2, 9);
       grid.clear();
@@ -58,19 +58,16 @@ describe('Grid', () => {
   });
 
   describe('clone()', () => {
-    const grid = new Grid([
+    const grid = new Grid({ cells: [
       [9, 8, 7],
       [6, 5, 4]
-    ]);
+    ] });
     it('makes a copy of the grid', () => {
       const clone = grid.clone();
       expect(clone.width).to.equal(grid.width);
       expect(clone.height).to.equal(grid.height);
       expect(clone).to.not.equal(grid);
-      expect(clone.rows).to.not.equal(grid.rows);
-      for (let i = 0; i < clone.rows.length; i += 1) {
-        expect(clone.rows[i]).to.not.equal(grid.rows[i]);
-      }
+      expect(clone.cells).to.not.equal(grid.cells);
       for (let x = 0; x < clone.width; x += 1) {
         for (let y = 0; y < clone.height; y += 1) {
           expect(clone.get(x, y)).to.equal(grid.get(x, y));
@@ -80,26 +77,26 @@ describe('Grid', () => {
   });
 
   describe('equals()', () => {
-    const grid = new Grid([
+    const grid = new Grid({ cells: [
       [1, 2],
       [3, 4],
       [5, 6]
-    ]);
-    const sameGrid = new Grid([
+    ] });
+    const sameGrid = new Grid({ cells: [
       [1, 2],
       [3, 4],
       [5, 6]
-    ]);
-    const differentGrid = new Grid([
+    ] });
+    const differentGrid = new Grid({ cells: [
       [6, 5],
       [4, 3]
       [2, 1]
-    ]);
-    const gridOfDifferentSize = new Grid([
+    ] });
+    const gridOfDifferentSize = new Grid({ cells: [
       [1, 2, 7],
       [3, 4, 8],
       [5, 6, 9]
-    ]);
+    ] });
     it('makes sure two different grids with the same cell values are seen as equal', () => {
       expect(grid.equals(sameGrid)).to.equal(true);
     });

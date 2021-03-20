@@ -2,74 +2,74 @@ import { expect } from 'chai';
 import Grid from '../../src/models/grid';
 import Pattern from '../../src/models/pattern';
 import Rule from '../../src/models/rule';
-import Ruleset from '../../src/models/ruleset';
+import Rulebook from '../../src/models/rulebook';
 
-describe('Ruleset', () => {
+describe('Rulebook', () => {
 
   describe('constructor()', () => {
-    it('if no args, creates a Ruleset with no rules to execute', () => {
-      const ruleset = new Ruleset();
-      expect(ruleset.rules.length).to.equal(0);
+    it('if no args, creates a Rulebook with no rules to execute', () => {
+      const rulebook = new Rulebook();
+      expect(rulebook.rules.length).to.equal(0);
     });
   });
 
   describe('addRule()', () => {
     it('adds a rule to the list', () => {
-      const ruleset = new Ruleset();
+      const rulebook = new Rulebook();
       const rule = new Rule();
-      ruleset.addRule(rule);
-      expect(ruleset.rules.length).to.equal(1);
-      expect(ruleset.rules[0]).to.equal(rule);
+      rulebook.addRule(rule);
+      expect(rulebook.rules.length).to.equal(1);
+      expect(rulebook.rules[0]).to.equal(rule);
     });
   });
 
   describe('removeRule()', () => {
     it('removes a rule from the list', () => {
-      const ruleset = new Ruleset();
+      const rulebook = new Rulebook();
       const rule1 = new Rule(1);
       const rule2 = new Rule(2);
       const rule3 = new Rule(2);
-      ruleset.addRule(rule1);
-      ruleset.addRule(rule2);
-      ruleset.addRule(rule3);
-      ruleset.removeRule(rule2);
-      expect(ruleset.rules.length).to.equal(2);
-      expect(ruleset.rules[0]).to.equal(rule1);
-      expect(ruleset.rules[1]).to.equal(rule3);
+      rulebook.addRule(rule1);
+      rulebook.addRule(rule2);
+      rulebook.addRule(rule3);
+      rulebook.removeRule(rule2);
+      expect(rulebook.rules.length).to.equal(2);
+      expect(rulebook.rules[0]).to.equal(rule1);
+      expect(rulebook.rules[1]).to.equal(rule3);
     });
   });
 
   describe('getFirstRuleThatMatchesGridAtCoordinates()', () => {
     const rules = [
       new Rule(1, [
-        new Pattern([
+        new Pattern({ cells: [
           [0, 0, 0],
           [0, 3, 0],
           [0, 0, 3],
-        ])
+        ] })
       ]),
       new Rule(2, [
-        new Pattern([
+        new Pattern({ cells: [
           [0, 0, 0],
           [0, 2, 0],
           [0, 0, 2],
-        ])
+        ] })
       ]),
     ];
-    const ruleset = new Ruleset(rules);
-    const grid = new Grid([
+    const rulebook = new Rulebook(rules);
+    const grid = new Grid({ cells: [
       [0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0],
       [0, 0, 0, 2, 0],
       [0, 0, 0, 0, 2],
-    ]);
+    ] });
     it('finds the first rule that matches the grid at the coordinates', () => {
-      const matchingRule = ruleset.getFirstRuleThatMatchesGridAtCoordinates(grid, 3, 3);
-      expect(matchingRule).to.equal(ruleset.rules[1]);
+      const matchingRule = rulebook.getFirstRuleThatMatchesGridAtCoordinates(grid, 3, 3);
+      expect(matchingRule).to.equal(rulebook.rules[1]);
     });
     it('returns undefined if no rules match the grid at the coordinates', () => {
-      const matchingRule = ruleset.getFirstRuleThatMatchesGridAtCoordinates(grid, 2, 2);
+      const matchingRule = rulebook.getFirstRuleThatMatchesGridAtCoordinates(grid, 2, 2);
       expect(matchingRule).to.equal(undefined);
     });
   });
@@ -77,56 +77,56 @@ describe('Ruleset', () => {
   describe('execute()', () => {
     const rules = [
       new Rule(8, [
-        new Pattern([
+        new Pattern({ cells: [
           [0, 0, 0],
           [0, 3, 0],
           [0, 0, 3],
-        ])
+        ] })
       ]),
       new Rule(9, [
-        new Pattern([
+        new Pattern({ cells: [
           [0, 0, 0],
           [0, 2, 0],
           [0, 0, 2],
-        ])
+        ] })
       ]),
     ];
-    const ruleset = new Ruleset(rules);
+    const rulebook = new Rulebook(rules);
     it('writes to the write grid based on the first matching rule', () => {
-      const readGrid = new Grid([
+      const readGrid = new Grid({ cells: [
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
         [0, 0, 0, 2, 0],
         [0, 0, 0, 0, 2]
-      ]);
-      const writeGrid = new Grid(5, 5);
-      ruleset.execute(readGrid, writeGrid);
-      expect(writeGrid.equals(new Grid([
+      ] });
+      const writeGrid = new Grid({ width: 5, height: 5 });
+      rulebook.execute(readGrid, writeGrid);
+      expect(writeGrid.equals(new Grid({ cells: [
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
         [0, 0, 0, 9, 0],
         [0, 0, 0, 0, 2]
-      ]))).to.equal(true);
+      ] }))).to.equal(true);
     });
     it('simply copies the readGrid if no rules match', () => {
-      const readGrid = new Grid([
+      const readGrid = new Grid({ cells: [
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
         [0, 0, 0, 4, 0],
         [0, 0, 0, 0, 4]
-      ]);
-      const writeGrid = new Grid(5, 5);
-      ruleset.execute(readGrid, writeGrid);
-      expect(writeGrid.equals(new Grid([
+      ] });
+      const writeGrid = new Grid({ width: 5, height: 5 });
+      rulebook.execute(readGrid, writeGrid);
+      expect(writeGrid.equals(new Grid({ cells: [
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0],
         [0, 0, 0, 4, 0],
         [0, 0, 0, 0, 4]
-      ]))).to.equal(true);
+      ] }))).to.equal(true);
     });
   });
 

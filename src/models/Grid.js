@@ -9,7 +9,15 @@ export default class Grid {
   constructor ({ width, height, cells, fillValue }) {
     this.width = width;
     this.height = height;
-    this.cells = cells || new Array(width * height).fill(fillValue || EMPTY_CELL_VALUE);
+    if (cells && cells[0].length) {
+      this.cells = cells.flat();
+      this.height = cells.length;
+      this.width = cells[0].length;
+    } else if (cells) {
+      this.cells = cells;
+    } else {
+      this.cells = new Array(width * height).fill(fillValue || EMPTY_CELL_VALUE);
+    }
   }
 
   get (x, y) {
@@ -39,7 +47,9 @@ export default class Grid {
   }
 
   clone () {
-    return new Grid({ width: this.width, height: this.height, cells: this.cells.slice(0) });
+    const clone = new Grid({ width: this.width, height: this.height });
+    clone.cells = [...this.cells];
+    return clone;
   }
 
   cloneResize (width, height) {
@@ -66,7 +76,14 @@ export default class Grid {
   }
 
   toJSON () {
-    return { width: this.width, height: this.height, cells: this.cells };
+    const cells = [];
+    for (let y = 0; y < this.height; y++) {
+      const row = [];
+      for (let x = 0; x < this.width; x++) {
+        row.push(this.get(x, y));
+      }
+    }
+    return { width: this.width, height: this.height, cells };
   }
 
 }

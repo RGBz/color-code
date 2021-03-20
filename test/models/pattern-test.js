@@ -5,48 +5,44 @@ import Pattern from '../../src/models/pattern';
 describe('Pattern', () => {
 
   describe('constructor()', () => {
-    const rows = [
+    const cells = [
       [0, 0, 0],
       [0, 3, 0],
       [0, 0, 3]
     ];
-    const grid = new Grid(rows);
     it('creates a pattern with the passed in grid', () => {
+      const grid = new Grid({ cells });
       const pattern = new Pattern(grid);
       expect(pattern.grid).to.equal(grid);
-    });
-    it('creates a pattern with the passed in array', () => {
-      const pattern = new Pattern(rows);
-      expect(pattern.grid.rows).to.equal(rows);
     });
   });
 
   describe('matchesGrid()', () => {
-    const pattern = new Pattern([
+    const pattern = new Pattern({ cells: [
       [0, 0, 0],
       [0, 3, 0],
       [0, 0, 3]
-    ]);
-    const exactMatchGrid = new Grid([
+    ] });
+    const exactMatchGrid = new Grid({ cells: [
       [0, 0, 0],
       [0, 3, 0],
       [0, 0, 3]
-    ]);
-    const looseMatchGrid = new Grid([
+    ] });
+    const looseMatchGrid = new Grid({ cells: [
       [3, 0, 0],
       [0, 3, 0],
       [0, 0, 3]
-    ]);
-    const noMatchGrid = new Grid([
+    ] });
+    const noMatchGrid = new Grid({ cells: [
       [0, 0, 0],
       [0, 3, 0],
       [0, 0, 4]
-    ]);
-    const differentSizeGrid = new Grid([
+    ] });
+    const differentSizeGrid = new Grid({ cells: [
       [0, 0, 0, 4],
       [0, 3, 0, 5],
       [0, 0, 3, 6]
-    ]);
+    ] });
     it('returns true if this pattern exactly matches the grid', () => {
       expect(pattern.matchesGrid(exactMatchGrid)).to.equal(true);
     });
@@ -62,18 +58,18 @@ describe('Pattern', () => {
   });
 
   describe('matchesGridAtCoordinates()', () => {
-    const pattern = new Pattern([
+    const pattern = new Pattern({ cells: [
       [0, 0, 0],
       [0, 3, 0],
       [0, 0, 3]
-    ]);
-    const targetGrid = new Grid([
+    ] });
+    const targetGrid = new Grid({ cells: [
       [0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0],
       [0, 0, 0, 3, 0],
       [0, 3, 0, 0, 3],
       [0, 4, 3, 0, 0],
-    ])
+    ] });
     it('returns true if this pattern is found at the coordinates in the grid', () => {
       expect(pattern.matchesGridAtCoordinates(targetGrid, 3, 2)).to.equal(true);
     });
@@ -86,11 +82,11 @@ describe('Pattern', () => {
   });
 
   describe('clone()', () => {
-    const pattern = new Pattern([
+    const pattern = new Pattern({ cells: [
       [0, 0, 0],
       [0, 3, 0],
       [0, 0, 3]
-    ]);
+    ] });
     it('makes a copy', () => {
       const clone = pattern.clone();
       expect(clone).to.not.equal(pattern);

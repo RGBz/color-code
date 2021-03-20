@@ -2,10 +2,10 @@ const path = require('path');
 
 module.exports = {
   mode: 'production',
-  entry: './src/client/index.js',
+  entry: './src/index.js',
   devtool: 'eval-source-map',
   output: {
-    path: path.resolve(__dirname, 'public'),
+    path: __dirname,
     filename: 'index.js'
   },
   module: {

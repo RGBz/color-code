@@ -5,7 +5,6 @@ import Modal from 'react-modal';
 import PuzzlePackListView from './views/PuzzlePackListView';
 import PuzzleView from './views/PuzzleView';
 import PuzzleEditor from './views/PuzzleEditor';
-import LoginScreen from './views/LoginScreen';
 import TutorialScreen from './views/TutorialScreen';
 
 import Player from './models/Player';
@@ -36,19 +35,8 @@ class App extends Component {
     this.fetchPlayer();
   }
 
-  async fetchPlayer () {
-    try {
-      const player = await Player.fetchMe();
-      this.setState({ loaded: true, player });
-    } catch (err) {
-      console.warn(err);
-      this.setState({ loaded: true, player: new Player() });
-    }
-  }
-
-  async logout () {
-    await this.state.player.logout();
-    this.setState({ player: new Player() });
+  fetchPlayer () {
+    this.setState({ loaded: true, player: Player.fetchMe() });
   }
 
   async savePuzzlePacks (updatedPuzzlePacks) {
@@ -92,14 +80,6 @@ class App extends Component {
     this.setState({ mode: 'edit', selectedPuzzle });
   }
 
-  navigateToLogin () {
-    this.setState({ mode: 'login' });
-  }
-
-  navigateToSignUp () {
-    this.setState({ mode: 'sign up' });
-  }
-
   renderPuzzlePackList () {
     const { player, puzzlePacks } = this.state;
     return (
@@ -110,9 +90,6 @@ class App extends Component {
         navigateToPlayPuzzle={selectedPuzzle => this.navigateToPlayPuzzle(selectedPuzzle)}
         navigateToEditPuzzle={selectedPuzzle => this.navigateToEditPuzzle(selectedPuzzle)}
         isEditable={isEditable}
-        onLoginPressed={() => this.navigateToLogin()}
-        onSignUpPressed={() => this.navigateToSignUp()}
-        onLogoutPressed={() => this.logout()}
         onTutorialPressed={() => this.setState({ mode: 'tutorial' })}
       />
     );
@@ -140,19 +117,9 @@ class App extends Component {
     );
   }
 
-  renderLoginScreen () {
-    return (
-      <LoginScreen 
-        player={this.state.player}
-        onClose={() => this.setState({ mode: 'list' })} 
-        initialTab={this.state.mode} 
-      />
-    );
-  }
-
   renderTutorialScreen () {
     return (
-      <TutorialScreen 
+      <TutorialScreen
         onClose={() => this.setState({ mode: 'list' })}
       />
     );
@@ -168,8 +135,6 @@ class App extends Component {
       );
     }
     switch (mode) {
-      case 'login': return this.renderLoginScreen();
-      case 'sign up': return this.renderLoginScreen();
       case 'tutorial': return this.renderTutorialScreen();
       case 'list': return this.renderPuzzlePackList();
       case 'play': return this.renderPuzzle();

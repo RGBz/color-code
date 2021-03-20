@@ -7,12 +7,10 @@ export default class Pattern {
   }
 
   constructor (grid) {
-    if (grid instanceof Grid) {
+    if (grid.get) {
       this.grid = grid;
-    } else if (grid instanceof Array) {
-      this.grid = new Grid(grid);
     } else {
-      throw new TypeError(`'grid' argument must either be of type Grid or type Array`);
+      this.grid = new Grid(grid);
     }
   }
 
