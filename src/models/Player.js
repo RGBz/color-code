@@ -4,7 +4,7 @@ export default class Player {
 
   static fetchMe () {
     const jsonStr = localStorage.getItem('player');
-    return jsonStr ? Player.fromJSON(JSON.parse()) : new Player();
+    return jsonStr ? Player.fromJSON(JSON.parse(jsonStr)) : new Player();
   }
 
   static fromJSON ({ solutions }) {
